@@ -1,0 +1,10 @@
+{
+  "id": "diagram-id",
+  "objective_ids": ["X.Y"],
+  "learning_goal": "この図を見た学習者が説明できること",
+  "source_ids": ["official-source-id"],
+  "format": "mermaid",
+  "file": "diagrams/path/to/file.md",
+  "status": "draft",
+  "last_verified": "YYYY-MM-DD"
+}
