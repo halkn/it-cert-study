@@ -24,6 +24,11 @@
 現在完成している章:
 
 - [1.1 アーキテクチャを説明し、利用する](textbook/domain-1/01-architecture.md)
+- [1.2 インターフェースとツールを利用する](textbook/domain-1/02-interfaces-and-tools.md)
+- [1.3 オブジェクト階層と種類を区別する](textbook/domain-1/03-object-hierarchy.md)
+- [1.4 Virtual Warehouseを構成する](textbook/domain-1/04-virtual-warehouses.md)
+- [1.5 ストレージ概念を説明する](textbook/domain-1/05-storage-concepts.md)
+- [1.6 AI/MLとアプリケーション開発機能を説明する](textbook/domain-1/06-ai-ml-app-development.md)
 
 ## 教材完成後の学習順序
 
