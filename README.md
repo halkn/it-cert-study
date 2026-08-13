@@ -4,11 +4,14 @@ SnowPro Core COF-C03 の公式試験範囲を、Snowflake 公式情報だけを�
 
 ## 現在の状態
 
-Issue #1 で教材全体の設計基盤を整備しました。試験目標はすべて登録済みですが、教材本文と演習は順次執筆します。進捗は [Coverage Matrix](docs/coverage-matrix.json) を Source of Truth とし、`planned` を完了とは扱いません。
+Issue #1 に向けた教材全体の設計基盤を整備しています。公式試験目標と配下トピックは登録済みですが、教材本文と演習は順次執筆します。この設計基盤だけでは Issue #1 の完了条件を満たさないため、関連する PR は `Refs #1` とし、全教材が完成するまで Issue を close しません。
+
+進捗は [Coverage Matrix](docs/coverage-matrix.json) を Source of Truth とし、`planned` を完了とは扱いません。
 
 ## 読み始める
 
-- [教材ガイド](docs/README.md)
+- **学習する方:** [START HERE](START_HERE.md)
+- **執筆する方:** [教材ガイド](docs/README.md)
 - [C03 syllabus](docs/syllabus.md)
 - [Coverage Matrix の見方](docs/coverage-matrix.md)
 - [出典ポリシー](docs/policies/source-policy.md)

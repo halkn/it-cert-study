@@ -3,3 +3,10 @@
 > Status: planned
 
 Snowflake Marketplace、private／public listing、Native App を扱う章です。本文・技術出典・図・確認問題は未執筆です。
+
+<a id="marketplace"></a>
+## Snowflake Marketplace
+<a id="listings"></a>
+## Listing
+<a id="native-apps"></a>
+## Native App

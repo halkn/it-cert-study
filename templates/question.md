@@ -1,7 +1,9 @@
 # [Question ID] 問題タイトル
 
 - Layer: chapter | domain | mock
-- Objective: X.Y
+- Objective IDs: X.Y, X.Z
+- Question type: single-choice | multiple-select
+- Required selections: 1
 - Chapter: path
 - Status: draft
 

@@ -21,7 +21,8 @@
       "checked_on": "2026-08-13",
       "review_interval_days": 30,
       "status": "active",
-      "notes": "日本語試験の公式ページ。試験概要と日本語 Study Guide の申込フォームを確認。"
+      "verification_level": "certification-page-only",
+      "notes": "日本語試験の公式ページと日本語 Study Guide の申込フォームを確認。配布PDFの版・内容は独立に照合できていないため、日本語版との同等性は未検証。"
     },
     {
       "id": "exam-study-guide-c03-2026-07-08",
@@ -33,7 +34,8 @@
       "checked_on": "2026-08-13",
       "review_interval_days": 30,
       "status": "active",
-      "notes": "試験 domain、weight、objective、topic の Source of Truth。PDF は再配布しない。"
+      "verification_level": "full-content",
+      "notes": "英語版。試験 domain、weight、objective、topic の現時点の Source of Truth。日本語版との同等性は別途確認する。PDF は再配布しない。"
     },
     {
       "id": "docs-home",
