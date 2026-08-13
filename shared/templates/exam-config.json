@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "vendor-exam-code",
+  "vendor": "Vendor name",
+  "exam_code": "EXAM-CODE",
+  "display_name": "Exam display name",
+  "registries": {
+    "coverage_matrix": "docs/coverage-matrix.json",
+    "sources": "docs/sources.json",
+    "diagrams": "docs/diagrams.json",
+    "questions": "docs/questions.json"
+  },
+  "expected": {
+    "objective_ids": ["objective-id"],
+    "domain_weights": {}
+  },
+  "official_hosts": ["official.example.com"],
+  "release_completion_requirements": {}
+}
