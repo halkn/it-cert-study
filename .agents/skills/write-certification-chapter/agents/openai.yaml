@@ -1,0 +1,4 @@
+interface:
+  display_name: "認定試験教材の章を執筆"
+  short_description: "任意の公式試験範囲に沿った初学者向けの章を設計・執筆・検証"
+  default_prompt: "$write-certification-chapter を使い、対象試験を指定して次のObjectiveを初学者向けの章と演習一式として実装してください。"

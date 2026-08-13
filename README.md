@@ -1,33 +1,45 @@
-# SnowPro Core COF-C03 Study Guide
+# IT Certification Study Materials
 
-SnowPro Core COF-C03 の公式試験範囲を、Snowflake 公式情報だけを根拠に学ぶための日本語教材プロジェクトです。試験問題の再現や暗記ではなく、概念の仕組み、使い分け、周辺知識まで説明できることを目標にします。
+複数のIT資格試験について、公式試験範囲と公式技術資料を根拠に日本語教材を作るリポジトリです。
+各試験は独立したパッケージとして管理し、共通の品質基準、テンプレート、検証入口を共有します。
 
-## 現在の状態
+## 収録している試験
 
-Issue #1 に向けた教材全体の設計基盤を整備しています。公式試験目標と配下トピックは登録済みですが、教材本文と演習は順次執筆します。この設計基盤だけでは Issue #1 の完了条件を満たさないため、関連する PR は `Refs #1` とし、全教材が完成するまで Issue を close しません。
+| ベンダー | 試験 | 状態 | 教材 |
+|---|---|---|---|
+| Snowflake | SnowPro Core COF-C03 | 執筆中 | [SnowPro Core COF-C03](exams/snowflake/snowpro-core-cof-c03/README.md) |
 
-進捗は [Coverage Matrix](docs/coverage-matrix.json) を Source of Truth とし、`planned` を完了とは扱いません。
+## リポジトリ構造
 
-## 読み始める
+```text
+exams/<vendor>/<exam>/
+  exam-config.json
+  textbook/
+  exercises/
+  diagrams/
+  reference/
+  docs/
+shared/
+  policies/
+  templates/
+scripts/
+```
 
-- **学習する方:** [START HERE](START_HERE.md)
-- **執筆する方:** [教材ガイド](docs/README.md)
-- [C03 syllabus](docs/syllabus.md)
-- [Coverage Matrix の見方](docs/coverage-matrix.md)
-- [出典ポリシー](docs/policies/source-policy.md)
-- [図のポリシー](docs/policies/diagram-policy.md)
-- [品質基準](docs/policies/content-quality.md)
+試験固有のObjective、出典、問題、進捗は各試験ディレクトリ内で完結させます。
+異なる試験間でObjective ID、Domain番号、source IDが同じでも衝突しません。
 
-## 執筆・検証
+## 検証
 
-章、問題、図は `templates/` の雛形から作成します。変更後は次を実行してください。
+すべての試験を検証します。
 
 ```bash
 python3 scripts/validate_content.py
 ```
 
-検証は Coverage Matrix、出典台帳、図台帳、章ファイルの参照整合性を確認します。
+特定の試験だけを検証する場合は、試験ディレクトリまたは設定ファイルを指定します。
 
-## 免責
+```bash
+python3 scripts/validate_content.py --exam exams/snowflake/snowpro-core-cof-c03
+```
 
-Snowflake、SnowPro は Snowflake Inc. の商標です。本リポジトリは Snowflake Inc. による公式教材ではありません。公式 Study Guide や公式図を転載せず、参照 URL と確認履歴を保持したうえで独自に説明・作図します。
+執筆方法は[CONTRIBUTING.md](CONTRIBUTING.md)、共通基準と雛形は[shared](shared/README.md)を参照してください。

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Validate the COF-C03 content registries using only the Python standard library."""
+"""Validate one or more certification-exam content packages."""
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
@@ -12,25 +13,7 @@ from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs"
 ALLOWED_STATUSES = {"planned", "draft", "review", "complete"}
-EXPECTED_OBJECTIVES = {
-    "1.1", "1.2", "1.3", "1.4", "1.5", "1.6",
-    "2.1", "2.2", "2.3",
-    "3.1", "3.2", "3.3",
-    "4.1", "4.2", "4.3", "4.4",
-    "5.1", "5.2", "5.3",
-}
-EXPECTED_WEIGHTS = {1: 31, 2: 20, 3: 18, 4: 21, 5: 10}
-EXPECTED_TOPIC_COUNT = 87
-EXPECTED_TOPIC_SCOPE_SHA256 = "d769c8dbdf6d550e6aac586120f613dfd4ca02aa75315a68765f914d682a64ac"
-OFFICIAL_HOSTS = {
-    "docs.snowflake.com",
-    "learn.snowflake.com",
-    "www.snowflake.com",
-    "snowflake.com",
-    "publish-p93462-e887935.adobeaemcloud.com",
-}
 
 
 class Validation:
@@ -42,15 +25,16 @@ class Validation:
             self.errors.append(message)
 
 
-def load_json(relative_path: str):
-    path = ROOT / relative_path
+def load_json(path: Path):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise SystemExit(f"Cannot read {relative_path}: {exc}") from exc
+        raise SystemExit(f"Cannot read {path}: {exc}") from exc
 
 
 def is_safe_repo_path(value: str) -> bool:
+    if not isinstance(value, str):
+        return False
     path = Path(value)
     return bool(value) and not path.is_absolute() and ".." not in path.parts
 
@@ -61,12 +45,48 @@ def markdown_section_has_content(text: str, heading: str) -> bool:
     return bool(match and match.group("body").strip())
 
 
-def main() -> int:
+def find_exam_configs(selected_exam: str | None) -> list[Path]:
+    if selected_exam:
+        selected = Path(selected_exam)
+        if not selected.is_absolute():
+            selected = ROOT / selected
+        config = selected if selected.name == "exam-config.json" else selected / "exam-config.json"
+        if not config.is_file():
+            raise SystemExit(f"Exam config does not exist: {config}")
+        return [config]
+
+    configs = sorted((ROOT / "exams").glob("*/*/exam-config.json"))
+    if not configs:
+        raise SystemExit("No exam packages found under exams/<vendor>/<exam>/")
+    return configs
+
+
+def validate_exam(config_path: Path) -> tuple[Validation, str]:
     validation = Validation()
-    matrix = load_json("docs/coverage-matrix.json")
-    source_data = load_json("docs/sources.json")
-    diagram_data = load_json("docs/diagrams.json")
-    question_data = load_json("docs/questions.json")
+    exam_root = config_path.parent
+    config = load_json(config_path)
+    registries = config.get("registries", {})
+    expected = config.get("expected", {})
+    expected_objectives = set(expected.get("objective_ids", []))
+    expected_weights = {int(key): value for key, value in expected.get("domain_weights", {}).items()}
+    official_hosts = set(config.get("official_hosts", []))
+
+    validation.check(config.get("schema_version") == 1, "exam-config.json has unsupported schema_version")
+    validation.check(bool(config.get("id")), "exam-config.json needs id")
+    validation.check(bool(config.get("vendor")), "exam-config.json needs vendor")
+    validation.check(bool(config.get("exam_code")), "exam-config.json needs exam_code")
+    validation.check(bool(expected_objectives), "exam-config.json needs expected objective_ids")
+    validation.check(bool(official_hosts), "exam-config.json needs official_hosts")
+
+    def registry_path(key: str) -> Path:
+        value = registries.get(key, "")
+        validation.check(is_safe_repo_path(value), f"exam registry {key} has an unsafe path")
+        return exam_root / value
+
+    matrix = load_json(registry_path("coverage_matrix"))
+    source_data = load_json(registry_path("sources"))
+    diagram_data = load_json(registry_path("diagrams"))
+    question_data = load_json(registry_path("questions"))
 
     sources = source_data.get("sources", [])
     source_ids = [item.get("id") for item in sources]
@@ -75,8 +95,8 @@ def main() -> int:
         source_id = source.get("id", "<missing>")
         parsed = urlparse(source.get("url", ""))
         validation.check(
-            parsed.scheme == "https" and parsed.hostname in OFFICIAL_HOSTS,
-            f"source {source_id} is not an allowed Snowflake official HTTPS URL",
+            parsed.scheme == "https" and parsed.hostname in official_hosts,
+            f"source {source_id} is not an allowed official HTTPS URL for {config.get('id')}",
         )
         validation.check(
             bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", source.get("checked_on", ""))),
@@ -85,12 +105,15 @@ def main() -> int:
         validation.check(source.get("status") in {"active", "superseded", "unavailable"}, f"source {source_id} has invalid status")
 
     domains = matrix.get("domains", [])
+    domain_ids = {item.get("id") for item in domains}
     weights = {item.get("id"): item.get("weight_percent") for item in domains}
-    validation.check(weights == EXPECTED_WEIGHTS, f"domain weights differ from C03 guide: {weights}")
-    validation.check(sum(weights.values()) == 100, "domain weights do not total 100")
+    if expected_weights:
+        validation.check(weights == expected_weights, f"domain weights differ from exam config: {weights}")
+        validation.check(sum(weights.values()) == 100, "domain weights do not total 100")
     validation.check(matrix.get("exam", {}).get("study_guide_source_id") in source_ids, "exam study guide source is missing")
     exam_metadata = matrix.get("exam", {})
-    validation.check(exam_metadata.get("japanese_guide_verification") in {"pending", "verified"}, "exam has invalid Japanese-guide verification state")
+    if "japanese_guide_verification" in exam_metadata:
+        validation.check(exam_metadata.get("japanese_guide_verification") in {"pending", "verified"}, "exam has invalid Japanese-guide verification state")
     validation.check(exam_metadata.get("release_status") in ALLOWED_STATUSES, "exam has invalid release status")
 
     diagrams = diagram_data.get("diagrams", [])
@@ -99,13 +122,13 @@ def main() -> int:
     for diagram in diagrams:
         diagram_id = diagram.get("id", "<missing>")
         validation.check(diagram.get("status") in ALLOWED_STATUSES, f"diagram {diagram_id} has invalid status")
-        validation.check(set(diagram.get("objective_ids", [])) <= EXPECTED_OBJECTIVES, f"diagram {diagram_id} references an unknown objective")
+        validation.check(set(diagram.get("objective_ids", [])) <= expected_objectives, f"diagram {diagram_id} references an unknown objective")
         validation.check(set(diagram.get("source_ids", [])) <= set(source_ids), f"diagram {diagram_id} references an unknown source")
         if diagram.get("status") != "planned":
             file_value = diagram.get("file")
             validation.check(isinstance(file_value, str) and is_safe_repo_path(file_value), f"diagram {diagram_id} needs a safe file path")
             if isinstance(file_value, str) and is_safe_repo_path(file_value):
-                validation.check((ROOT / file_value).is_file(), f"diagram {diagram_id} file does not exist: {file_value}")
+                validation.check((exam_root / file_value).is_file(), f"diagram {diagram_id} file does not exist: {file_value}")
             validation.check(bool(diagram.get("source_ids")), f"diagram {diagram_id} needs official sources")
 
     questions = question_data.get("questions", [])
@@ -118,10 +141,14 @@ def main() -> int:
         objective_refs = question.get("objective_ids", [])
         validation.check(question.get("layer") in {"chapter", "domain", "mock"}, f"question {question_id} has invalid layer")
         validation.check(question_status in ALLOWED_STATUSES, f"question {question_id} has invalid status")
-        validation.check(bool(objective_refs) and set(objective_refs) <= EXPECTED_OBJECTIVES, f"question {question_id} needs one or more valid objectives")
+        validation.check(bool(objective_refs) and set(objective_refs) <= expected_objectives, f"question {question_id} needs one or more valid objectives")
         validation.check(question.get("question_type") in {"single-choice", "multiple-select"}, f"question {question_id} has invalid question_type")
         selections = question.get("required_selections")
+        correct_options = question.get("correct_option_ids", [])
         validation.check(isinstance(selections, int) and selections >= 1, f"question {question_id} has invalid required_selections")
+        validation.check(len(correct_options) == selections, f"question {question_id} correct options do not match required_selections")
+        validation.check(len(correct_options) == len(set(correct_options)), f"question {question_id} has duplicate correct options")
+        validation.check(all(re.fullmatch(r"[A-Z]", str(option)) for option in correct_options), f"question {question_id} has invalid correct option ids")
         if question.get("question_type") == "single-choice":
             validation.check(selections == 1, f"single-choice question {question_id} must require one selection")
         if question.get("question_type") == "multiple-select":
@@ -133,9 +160,9 @@ def main() -> int:
         file_value = question.get("file")
         validation.check(isinstance(file_value, str) and is_safe_repo_path(file_value), f"question {question_id} needs a safe file path")
         if isinstance(file_value, str) and is_safe_repo_path(file_value):
-            validation.check((ROOT / file_value).is_file(), f"question {question_id} file does not exist: {file_value}")
-            if (ROOT / file_value).is_file() and question_status in {"review", "complete"}:
-                question_text = (ROOT / file_value).read_text(encoding="utf-8")
+            validation.check((exam_root / file_value).is_file(), f"question {question_id} file does not exist: {file_value}")
+            if (exam_root / file_value).is_file() and question_status in {"review", "complete"}:
+                question_text = (exam_root / file_value).read_text(encoding="utf-8")
                 for heading in ["問題", "選択肢", "正解", "正解理由", "各誤答が誤りである理由", "周辺知識", "解答根拠", "追加学習"]:
                     validation.check(markdown_section_has_content(question_text, heading), f"question {question_id} has no content in section: {heading}")
         if question_status in {"review", "complete"}:
@@ -144,7 +171,7 @@ def main() -> int:
 
     objectives = matrix.get("objectives", [])
     objective_ids = [item.get("objective_id") for item in objectives]
-    validation.check(set(objective_ids) == EXPECTED_OBJECTIVES, "Coverage Matrix does not contain exactly all 19 C03 objectives")
+    validation.check(set(objective_ids) == expected_objectives, "Coverage Matrix objectives differ from exam config")
     validation.check(len(objective_ids) == len(set(objective_ids)), "Coverage Matrix has duplicate objective ids")
     topic_rows = []
     all_topic_ids = []
@@ -153,19 +180,21 @@ def main() -> int:
             all_topic_ids.append(topic.get("topic_id"))
             topic_rows.append(str(topic.get("topic_id")) + "|" + "|".join(topic.get("scope", [])))
     topic_digest = hashlib.sha256("\n".join(sorted(topic_rows)).encode()).hexdigest()
-    validation.check(len(all_topic_ids) == EXPECTED_TOPIC_COUNT, f"Coverage Matrix must contain {EXPECTED_TOPIC_COUNT} official topics")
+    expected_topic_count = expected.get("topic_count")
+    if expected_topic_count is not None:
+        validation.check(len(all_topic_ids) == expected_topic_count, f"Coverage Matrix must contain {expected_topic_count} official topics")
     validation.check(len(all_topic_ids) == len(set(all_topic_ids)), "Coverage Matrix has duplicate topic ids")
-    validation.check(topic_digest == EXPECTED_TOPIC_SCOPE_SHA256, "official topic ids or scopes differ from the verified C03 blueprint")
+    if expected.get("topic_scope_sha256"):
+        validation.check(topic_digest == expected.get("topic_scope_sha256"), "official topic ids or scopes differ from the verified exam blueprint")
     for objective in objectives:
         objective_id = objective.get("objective_id", "<missing>")
         status = objective.get("status")
         validation.check(status in ALLOWED_STATUSES, f"objective {objective_id} has invalid status")
-        expected_domain = int(str(objective_id).split(".")[0]) if re.fullmatch(r"[1-5]\.\d", str(objective_id)) else None
-        validation.check(objective.get("domain") == expected_domain, f"objective {objective_id} has wrong domain")
+        validation.check(objective.get("domain") in domain_ids, f"objective {objective_id} references an unknown domain")
 
         chapter = objective.get("chapter", "")
         validation.check(is_safe_repo_path(chapter), f"objective {objective_id} has an unsafe chapter path")
-        chapter_path = ROOT / chapter
+        chapter_path = exam_root / chapter
         validation.check(chapter_path.is_file(), f"objective {objective_id} chapter does not exist: {chapter}")
         if chapter_path.is_file():
             chapter_text = chapter_path.read_text(encoding="utf-8")
@@ -220,29 +249,48 @@ def main() -> int:
             validation.check(objective.get("last_verified") is not None, f"complete objective {objective_id} needs last_verified")
 
     if exam_metadata.get("release_status") == "complete":
-        validation.check(exam_metadata.get("japanese_guide_verification") == "verified", "complete Japanese exam coverage requires a verified Japanese Study Guide")
+        for key, value in config.get("release_completion_requirements", {}).items():
+            validation.check(exam_metadata.get(key) == value, f"complete exam coverage requires exam.{key}={value}")
         validation.check(all(item.get("status") == "complete" for item in objectives), "complete exam coverage requires every objective to be complete")
 
     required_template_sections = {
-        "templates/chapter.md": ["## 前提知識", "## この章の用語", "## What", "## How", "## When / Why", "## Compare", "## 確認問題", "## 章のまとめ", "## 次に学ぶこと", "## 根拠"],
-        "templates/question.md": ["## 問題", "## 選択肢", "## 正解理由", "## 各誤答", "## 周辺知識", "## 解答根拠", "## 追加学習"],
+        "shared/templates/chapter.md": ["## 前提知識", "## この章の用語", "## What", "## How", "## When / Why", "## Compare", "## 確認問題", "## 章のまとめ", "## 次に学ぶこと", "## 根拠"],
+        "shared/templates/question.md": ["## 問題", "## 選択肢", "## 正解理由", "## 各誤答", "## 周辺知識", "## 解答根拠", "## 追加学習"],
     }
     for relative_path, headings in required_template_sections.items():
         text = (ROOT / relative_path).read_text(encoding="utf-8")
         for heading in headings:
             validation.check(heading in text, f"{relative_path} is missing required section: {heading}")
 
-    if validation.errors:
-        print(f"Validation failed with {len(validation.errors)} error(s):")
-        for error in validation.errors:
-            print(f"- {error}")
+    summary = (
+        f"{config.get('id')}: {len(objectives)} objectives, {len(all_topic_ids)} topics, "
+        f"{len(sources)} sources, {len(diagrams)} diagrams, {len(questions)} questions"
+    )
+    return validation, summary
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--exam", help="Exam directory or exam-config.json path; validates all exams when omitted")
+    args = parser.parse_args()
+
+    config_paths = find_exam_configs(args.exam)
+    package_ids = [load_json(path).get("id") for path in config_paths]
+    if len(package_ids) != len(set(package_ids)):
+        print("Validation failed: exam package ids must be unique.")
         return 1
 
-    print(
-        f"Validation passed: {len(objectives)} objectives, {len(all_topic_ids)} topics, "
-        f"{len(sources)} sources, {len(diagrams)} diagrams, {len(questions)} questions."
-    )
-    return 0
+    failures = 0
+    for config_path in config_paths:
+        validation, summary = validate_exam(config_path)
+        if validation.errors:
+            failures += 1
+            print(f"Validation failed for {summary} with {len(validation.errors)} error(s):")
+            for error in validation.errors:
+                print(f"- {error}")
+        else:
+            print(f"Validation passed: {summary}.")
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "diagrams": [
+    {
+      "id": "d1-three-layer-architecture",
+      "objective_ids": ["1.1"],
+      "learning_goal": "storage、compute、cloud services の責務と分離を説明できる",
+      "source_ids": ["docs-key-concepts-architecture", "docs-supported-cloud-platforms"],
+      "format": "svg",
+      "file": "diagrams/domain-1/three-layer-architecture.svg",
+      "status": "complete",
+      "last_verified": "2026-08-13"
+    },
+    {
+      "id": "d1-object-hierarchy",
+      "objective_ids": ["1.3"],
+      "learning_goal": "organization から schema object までの包含関係を区別できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d1-warehouse-scaling",
+      "objective_ids": ["1.4"],
+      "learning_goal": "scale up/down と scale out/in の違いを選択できる",
+      "source_ids": [],
+      "format": "mermaid",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d1-micro-partition-pruning",
+      "objective_ids": ["1.5", "4.1"],
+      "learning_goal": "micro-partition metadata と pruning の関係を説明できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d2-role-privilege-object",
+      "objective_ids": ["2.1"],
+      "learning_goal": "role、privilege、securable object の grant 関係を追跡できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d2-governance-policies",
+      "objective_ids": ["2.2"],
+      "learning_goal": "masking、row access、tag などの適用関係を区別できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d3-ingestion-selection",
+      "objective_ids": ["3.1", "3.2"],
+      "learning_goal": "COPY、Snowpipe、Snowpipe Streaming、Stream/Task、Dynamic Table の用途を選択できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d4-query-bottlenecks",
+      "objective_ids": ["4.1", "4.2"],
+      "learning_goal": "Query Profile の症状から適切な最適化手段へ進める",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d4-optimization-selection",
+      "objective_ids": ["4.2"],
+      "learning_goal": "clustering、search optimization、materialized view、query acceleration を比較できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d4-cache-layers",
+      "objective_ids": ["4.3"],
+      "learning_goal": "result、metadata、warehouse cache の場所と再利用条件を区別できる",
+      "source_ids": [],
+      "format": "mermaid",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d5-data-protection-lifecycle",
+      "objective_ids": ["5.1"],
+      "learning_goal": "clone、Time Travel、Fail-safe、replication の目的を区別できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    },
+    {
+      "id": "d5-sharing-model",
+      "objective_ids": ["5.2", "5.3"],
+      "learning_goal": "provider、consumer、reader、listing のデータと compute の関係を説明できる",
+      "source_ids": [],
+      "format": "svg",
+      "file": null,
+      "status": "planned",
+      "last_verified": null
+    }
+  ]
+}
