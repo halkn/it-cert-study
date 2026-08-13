@@ -148,6 +148,25 @@ table typeの詳細は[1.5 ストレージ概念](05-storage-concepts.md)で扱�
 
 これらは別々の軸です。Editionを上げてもwarehouseが自動的に大きくなるわけではなく、warehouseを大きくしてもEdition限定機能が有効になるわけではありません。
 
+## 公式ドキュメントで根拠を確認する
+
+公式ドキュメントは最初から最後まで暗記するのではなく、Study GuideのTopicに対応する記述を探します。Objective 1.1では、次の順に確認すると本文と公式情報を対応付けられます。
+
+1. [Snowflake key concepts and architecture](https://docs.snowflake.com/en/user-guide/intro-key-concepts)の「Snowflake architecture」で、3層の図と各layerの説明を確認する。
+2. 同じページのComputeで、Virtual Warehouseが他のwarehouseとcompute resourceを共有しない記述を確認する。
+3. Database Storageで、Snowflake tableのdataが最適化・圧縮されたcolumnar形式でcloud storageへ保存される記述を確認する。
+4. Cloud Servicesで、authentication、metadata管理、queryのparse／optimizationを確認する。
+5. [Snowflake editions](https://docs.snowflake.com/en/user-guide/intro-editions)の概要で、上位Editionが下位Editionへ機能を追加する関係を確認する。
+6. 同ページのEdition matrixで、本文にある代表例が現在も対象Editionに含まれるか確認する。
+
+読み終えたら、次の問いへ本文を見ずに答えます。
+
+- 中央で共有されるものと、warehouseごとに独立するものは何か。
+- queryの解析と実行は、それぞれどのlayerが主に担うか。
+- security機能が必要な場合、Editionとwarehouse sizeのどちらを確認するか。
+
+公式ページにはObjective 1.1より広い機能も掲載されています。Iceberg table、Hybrid table、warehouse scalingなどの詳細へ進みすぎず、この3問の根拠を特定できたところで次へ進みます。
+
 ## 現在のEditionを確認する
 
 現在のEditionは、権限があれば`SNOWFLAKE.ORGANIZATION_USAGE.ACCOUNTS`で確認できます。
@@ -159,6 +178,86 @@ WHERE account_name = CURRENT_ACCOUNT();
 ```
 
 このviewをqueryするには`ORGANIZATION_USAGE`への適切なaccessが必要です。結果はaccountのEditionを示し、使用中のwarehouse sizeを示すものではありません。
+
+## ミニハンズオン：同じdataを2つのwarehouseから利用する
+
+この演習では、ETL用とBI用の2つのVirtual Warehouseを作り、同じtableを利用します。2つのwarehouseが共有するものと、共有しないものを実際に確認します。
+
+### 実行前の条件
+
+- Snowflakeのtrial accountなど、演習用accountを使用する。
+- `SYSADMIN`、またはwarehouse、database、tableを作成できるroleを使用する。
+- Warehouseが動作するとcreditを消費する。演習では`XSMALL`、`AUTO_SUSPEND = 60`、`INITIALLY_SUSPENDED = TRUE`を指定し、終了後に削除する。
+- 同名のobjectが存在する場合は実行せず、演習専用の名前へ変更する。
+- 組織の共有accountでは、管理者が定めた命名規則とcost管理ルールを優先する。
+
+### 1. 2つのwarehouseを作成する
+
+```sql
+USE ROLE SYSADMIN;
+
+CREATE WAREHOUSE OBJ11_ETL_WH
+  WAREHOUSE_SIZE = 'XSMALL'
+  AUTO_SUSPEND = 60
+  AUTO_RESUME = TRUE
+  INITIALLY_SUSPENDED = TRUE;
+
+CREATE WAREHOUSE OBJ11_BI_WH
+  WAREHOUSE_SIZE = 'XSMALL'
+  AUTO_SUSPEND = 60
+  AUTO_RESUME = TRUE
+  INITIALLY_SUSPENDED = TRUE;
+```
+
+作成した2つのwarehouseは、どちらもCompute layerの独立したcompute resourceです。この時点では、dataをwarehouseごとに作成していません。
+
+### 2. ETL用warehouseでtableを作成する
+
+```sql
+CREATE DATABASE OBJ11_LAB;
+
+USE WAREHOUSE OBJ11_ETL_WH;
+
+CREATE TABLE OBJ11_LAB.PUBLIC.EVENTS AS
+SELECT * FROM VALUES
+  (1, 'loaded by ETL'),
+  (2, 'shared persistent data')
+  AS events(event_id, description);
+```
+
+`CREATE TABLE ... AS SELECT`の処理には`OBJ11_ETL_WH`を使います。作成されたtableの永続dataは`OBJ11_ETL_WH`の内部だけに保存されるのではなく、Database Storage layerで管理されます。
+
+### 3. BI用warehouseから同じtableをqueryする
+
+```sql
+USE WAREHOUSE OBJ11_BI_WH;
+
+SELECT CURRENT_WAREHOUSE(), event_id, description
+FROM OBJ11_LAB.PUBLIC.EVENTS
+ORDER BY event_id;
+```
+
+`CURRENT_WAREHOUSE()`は`OBJ11_BI_WH`を示しますが、ETL用warehouseで作成した2行を取得できます。永続dataを共有しながら、queryを実行するcomputeは切り替わっています。
+
+### 4. 3層へ分類する
+
+実行した操作を次のように分類します。
+
+| 観察したこと | 対応するlayer |
+|---|---|
+| roleとobjectへのaccessを確認し、SQLをparse／optimizeする | Cloud Services |
+| `CREATE TABLE ... AS SELECT`と`SELECT`を実行する | 選択中のVirtual Warehouse |
+| `EVENTS`の永続dataを保持する | Database Storage |
+
+### 5. 演習用objectを削除する
+
+```sql
+DROP DATABASE IF EXISTS OBJ11_LAB;
+DROP WAREHOUSE IF EXISTS OBJ11_ETL_WH;
+DROP WAREHOUSE IF EXISTS OBJ11_BI_WH;
+```
+
+この演習では独立性の確認だけを扱います。warehouse size、auto-suspend、scalingの選定は[1.4 Virtual Warehouse](04-virtual-warehouses.md)で詳しく扱います。
 
 <a id="snowflake-editions"></a>
 ## Snowflake Edition
@@ -233,9 +332,13 @@ row access policyなどEnterprise以上の機能が必要なら、warehouseを�
 ## 確認問題
 
 - [C1-1.1-Q01: query最適化を担当する層](../../exercises/chapter/c1-1.1-q01.md)
-- [C1-1.1-Q02: workload分離](../../exercises/chapter/c1-1.1-q02.md)
+- [C1-1.1-Q02: queryを実行するcompute](../../exercises/chapter/c1-1.1-q02.md)
 - [C1-1.1-Q03: 永続storage](../../exercises/chapter/c1-1.1-q03.md)
 - [C1-1.1-Q04: Edition選定](../../exercises/chapter/c1-1.1-q04.md)
+- [C1-1.1-Q05: query処理と3層の対応](../../exercises/chapter/c1-1.1-q05.md)
+- [C1-1.1-Q06: hybrid architecture](../../exercises/chapter/c1-1.1-q06.md)
+
+章末問題を解いた後は、複数概念を組み合わせる[Domain演習D1-Q01〜Q03](../../exercises/domain/README.md)へ進みます。最後に、本番に近い要件判断を行う[模擬問題M1-Q01〜Q03](../../exercises/mock/README.md)で確認します。
 
 ## 章のまとめ
 
@@ -252,4 +355,6 @@ SnowflakeではDatabase Storageが永続dataを中央管理し、独立したVir
 - `docs-snowflake-editions` — [Snowflake editions](https://docs.snowflake.com/en/user-guide/intro-editions)
 - `docs-supported-cloud-platforms` — [Supported cloud platforms](https://docs.snowflake.com/en/user-guide/intro-cloud-platforms)
 - `docs-compute-cost` — [Understanding compute cost](https://docs.snowflake.com/en/user-guide/cost-understanding-compute)
+- `docs-create-warehouse` — [CREATE WAREHOUSE](https://docs.snowflake.com/en/sql-reference/sql/create-warehouse)
+- `docs-current-warehouse` — [CURRENT_WAREHOUSE](https://docs.snowflake.com/en/sql-reference/functions/current_warehouse)
 - `docs-iceberg-tables` — [Apache Iceberg tables](https://docs.snowflake.com/en/user-guide/tables-iceberg)

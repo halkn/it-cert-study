@@ -102,6 +102,28 @@
       "review_interval_days": 90,
       "status": "active",
       "notes": "Iceberg tableが利用するstorage、catalog、Snowflake tableとの違いを確認する追加学習資料。"
+    },
+    {
+      "id": "docs-create-warehouse",
+      "title": "CREATE WAREHOUSE",
+      "url": "https://docs.snowflake.com/en/sql-reference/sql/create-warehouse",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "Objective 1.1ミニハンズオンのwarehouse作成、XSMALL、AUTO_SUSPEND、AUTO_RESUME、INITIALLY_SUSPENDED、必要権限の直接根拠。"
+    },
+    {
+      "id": "docs-current-warehouse",
+      "title": "CURRENT_WAREHOUSE",
+      "url": "https://docs.snowflake.com/en/sql-reference/functions/current_warehouse",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 90,
+      "status": "active",
+      "notes": "ミニハンズオンで現在のsessionが使用するwarehouseを確認するcontext functionの直接根拠。"
     }
   ]
 }
