@@ -29,6 +29,9 @@
 - [1.4 Virtual Warehouseを構成する](textbook/domain-1/04-virtual-warehouses.md)
 - [1.5 ストレージ概念を説明する](textbook/domain-1/05-storage-concepts.md)
 - [1.6 AI/MLとアプリケーション開発機能を説明する](textbook/domain-1/06-ai-ml-app-development.md)
+- [2.1 セキュリティモデルと原則を説明する](textbook/domain-2/01-security-model.md)
+- [2.2 データガバナンス機能と用途を定義する](textbook/domain-2/02-data-governance.md)
+- [2.3 監視とコスト管理を説明する](textbook/domain-2/03-monitoring-cost.md)
 
 ## 教材完成後の学習順序
 
