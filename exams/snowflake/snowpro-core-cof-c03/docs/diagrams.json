@@ -15,31 +15,41 @@
       "id": "d1-object-hierarchy",
       "objective_ids": ["1.3"],
       "learning_goal": "organization から schema object までの包含関係を区別できる",
-      "source_ids": [],
+      "source_ids": ["docs-organizations", "docs-access-control-objects", "docs-databases"],
       "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "file": "diagrams/domain-1/object-hierarchy.svg",
+      "status": "complete",
+      "last_verified": "2026-08-13"
     },
     {
       "id": "d1-warehouse-scaling",
       "objective_ids": ["1.4"],
       "learning_goal": "scale up/down と scale out/in の違いを選択できる",
-      "source_ids": [],
+      "source_ids": ["docs-warehouses-overview", "docs-multicluster-warehouses"],
       "format": "mermaid",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "file": "diagrams/domain-1/warehouse-scaling.md",
+      "status": "complete",
+      "last_verified": "2026-08-13"
     },
     {
       "id": "d1-micro-partition-pruning",
       "objective_ids": ["1.5", "4.1"],
       "learning_goal": "micro-partition metadata と pruning の関係を説明できる",
-      "source_ids": [],
+      "source_ids": ["docs-micro-partitions"],
       "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "file": "diagrams/domain-1/micro-partition-pruning.svg",
+      "status": "complete",
+      "last_verified": "2026-08-13"
+    },
+    {
+      "id": "d1-ai-ml-app-selection",
+      "objective_ids": ["1.6"],
+      "learning_goal": "成果物とdata typeからAI/ML・application開発機能を選べる",
+      "source_ids": ["docs-notebooks", "docs-streamlit", "docs-snowpark", "docs-cortex-ai-functions", "docs-cortex-search", "docs-cortex-analyst", "docs-snowflake-ml"],
+      "format": "mermaid",
+      "file": "diagrams/domain-1/ai-ml-app-selection.md",
+      "status": "complete",
+      "last_verified": "2026-08-13"
     },
     {
       "id": "d2-role-privilege-object",

@@ -124,6 +124,172 @@
       "review_interval_days": 90,
       "status": "active",
       "notes": "ミニハンズオンで現在のsessionが使用するwarehouseを確認するcontext functionの直接根拠。"
-    }
+    },
+    {
+      "id": "docs-snowsight",
+      "title": "Snowsight: The Snowflake web interface",
+      "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "Snowsightの用途、主要機能、region／platformによる可用性差の直接根拠。UI名称は変更されやすいため短い間隔で再確認する。"
+    },
+    {
+      "id": "docs-snowsight-workspaces",
+      "title": "Working with workspaces",
+      "url": "https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces-working",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "Snowsight Workspacesのfile-based開発、SQL／Python実行、Git連携の直接根拠。Legacy Worksheetsから移行中。"
+    },
+    {
+      "id": "docs-snowflake-cli",
+      "title": "Snowflake CLI",
+      "url": "https://docs.snowflake.com/en/developer-guide/snowflake-cli/index",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "snowコマンド、SQL実行、object／stage／Snowpark／Streamlit／Native App等のdeveloper workload管理の直接根拠。"
+    },
+    {
+      "id": "docs-vscode-extension",
+      "title": "Snowflake Extension for Visual Studio Code",
+      "url": "https://docs.snowflake.com/en/user-guide/vscode-ext",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "VS Codeからの接続、SQL実行、object探索、Snowpark Python stored procedureのauthoring／debuggingの直接根拠。"
+    },
+    {
+      "id": "docs-organizations",
+      "title": "Introduction to organizations",
+      "url": "https://docs.snowflake.com/en/user-guide/organizations",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 90,
+      "status": "active",
+      "notes": "Organizationが複数accountを包含し、account管理・billing・replication・sharingを横断することの直接根拠。"
+    },
+    {
+      "id": "docs-access-control-objects",
+      "title": "Overview of Access Control",
+      "url": "https://docs.snowflake.com/en/user-guide/security-access-control-overview",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 60,
+      "status": "active",
+      "notes": "organization、account、database、schema、schema objectのsecurable object階層の直接根拠。"
+    },
+    {
+      "id": "docs-databases",
+      "title": "Databases, Tables & Views",
+      "url": "https://docs.snowflake.com/en/user-guide/databases",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 90,
+      "status": "active",
+      "notes": "databaseがschemaを、schemaがtableやviewなどのdatabase objectを含むことの直接根拠。"
+    },
+    {
+      "id": "docs-parameters",
+      "title": "Parameters",
+      "url": "https://docs.snowflake.com/en/sql-reference/parameters",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 30,
+      "status": "active",
+      "notes": "account／session／object parameter、session parameterのaccount→user→session precedenceの直接根拠。"
+    },
+    {
+      "id": "docs-sql-variables",
+      "title": "SQL variables",
+      "url": "https://docs.snowflake.com/en/sql-reference/session-variables",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 90,
+      "status": "active",
+      "notes": "SET／UNSET、$name、IDENTIFIER、session終了時の破棄の直接根拠。"
+    },
+    {
+      "id": "docs-context-functions",
+      "title": "Context functions",
+      "url": "https://docs.snowflake.com/en/sql-reference/functions-context",
+      "kind": "technical-documentation",
+      "authority": "Snowflake",
+      "checked_on": "2026-08-13",
+      "review_interval_days": 90,
+      "status": "active",
+      "notes": "CURRENT_USER／ROLE／WAREHOUSE／DATABASE／SCHEMA等のsession context確認の直接根拠。"
+    },
+    {
+      "id": "docs-warehouses-overview",
+      "title": "Overview of warehouses",
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 30, "status": "active",
+      "notes": "size、credit、auto-suspend／resume、query concurrency、scale up／outの直接根拠。"
+    },
+    {
+      "id": "docs-warehouse-considerations",
+      "title": "Warehouse considerations",
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-considerations",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 30, "status": "active",
+      "notes": "workload別size、homogeneous workload、cacheとsuspend、auto-suspend best practiceの直接根拠。"
+    },
+    {
+      "id": "docs-multicluster-warehouses",
+      "title": "Multi-cluster warehouses",
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-multicluster",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 30, "status": "active",
+      "notes": "scale out／in、Auto-scale／Maximized、Standard／Economy scaling policy、Enterprise以上の直接根拠。"
+    },
+    {
+      "id": "docs-gen2-warehouses",
+      "title": "Snowflake generation 2 standard warehouses",
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-gen2",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 14, "status": "active",
+      "notes": "Standard Gen1／Gen2、利用可能region、Gen2 default条件の直接根拠。availability変更が速いため短期再確認。"
+    },
+    {
+      "id": "docs-snowpark-optimized-warehouses",
+      "title": "Snowpark-optimized warehouses",
+      "url": "https://docs.snowflake.com/en/user-guide/warehouses-snowpark-optimized",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 30, "status": "active",
+      "notes": "memory-intensive Snowpark workload、RESOURCE_CONSTRAINT、standard warehouseとの差の直接根拠。"
+    },
+    {
+      "id": "docs-create-warehouse-c03",
+      "title": "CREATE WAREHOUSE",
+      "url": "https://docs.snowflake.com/en/sql-reference/sql/create-warehouse",
+      "kind": "technical-documentation", "authority": "Snowflake", "checked_on": "2026-08-13", "review_interval_days": 14, "status": "active",
+      "notes": "WAREHOUSE_TYPE、GENERATION、size、cluster、scaling、AUTO_SUSPEND／RESUMEの現行構文。Preview値は教材範囲外。"
+    },
+    {"id":"docs-micro-partitions","title":"Micro-partitions & Data Clustering","url":"https://docs.snowflake.com/en/user-guide/tables-clustering-micropartitions","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"micro-partition、columnar metadata、pruning、natural clusteringの直接根拠。"},
+    {"id":"docs-clustering-keys","title":"Clustering Keys & Clustered Tables","url":"https://docs.snowflake.com/en/user-guide/tables-clustering-keys","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"cluster key選定、clustering depth、benefitとmaintenance costの直接根拠。"},
+    {"id":"docs-temp-transient-tables","title":"Working with Temporary and Transient Tables","url":"https://docs.snowflake.com/en/user-guide/tables-temp-transient","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"permanent／temporary／transientのpersistence、Time Travel、Fail-safe比較。"},
+    {"id":"docs-external-tables","title":"Introduction to external tables","url":"https://docs.snowflake.com/en/user-guide/tables-external-intro","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"external stage上dataのread-only queryとfile metadataの直接根拠。"},
+    {"id":"docs-dynamic-tables","title":"Dynamic tables","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/overview","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":30,"status":"active","notes":"SELECT結果のmaterialization、target lag、automatic refreshの直接根拠。"},
+    {"id":"docs-views","title":"Overview of Views","url":"https://docs.snowflake.com/en/user-guide/views-introduction","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"standard／materialized／secure viewの比較。"},
+    {"id":"docs-secure-views","title":"Working with Secure Views","url":"https://docs.snowflake.com/en/user-guide/views-secure","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"definition保護とprivacy優先optimizationの直接根拠。"}
+    ,{"id":"docs-notebooks","title":"Snowflake Notebooks in Workspaces","url":"https://docs.snowflake.com/en/user-guide/ui-snowsight/notebooks-in-workspaces/notebooks-in-workspaces-overview","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":14,"status":"active","notes":"Workspaces世代のJupyter互換notebook開発。Legacyから移行中のため短期再確認。"}
+    ,{"id":"docs-streamlit","title":"About Streamlit in Snowflake","url":"https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":30,"status":"active","notes":"Snowflake内data application、RBAC、warehouse／container runtimeの直接根拠。"}
+    ,{"id":"docs-snowpark","title":"Snowpark API","url":"https://docs.snowflake.com/en/developer-guide/snowpark/index","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":60,"status":"active","notes":"Python／Java／Scala APIとpushdown processingの直接根拠。"}
+    ,{"id":"docs-cortex-ai-functions","title":"Snowflake Cortex AI Functions","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/aisql","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":14,"status":"active","notes":"AI SQL functions、region／function別GA・Preview、privilegeの直接根拠。"}
+    ,{"id":"docs-cortex-search","title":"Query a Cortex Search Service","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-search/query-cortex-search-service","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":30,"status":"active","notes":"unstructured textのhybrid search serviceとquery APIの直接根拠。"}
+    ,{"id":"docs-cortex-analyst","title":"Cortex Analyst","url":"https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":30,"status":"active","notes":"semantic model／viewを使うstructured dataのnatural-language-to-SQLの直接根拠。"}
+    ,{"id":"docs-snowflake-ml","title":"Snowflake ML","url":"https://docs.snowflake.com/en/developer-guide/snowflake-ml/overview","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-13","review_interval_days":30,"status":"active","notes":"feature engineering、training、registry、inference、observabilityを含むend-to-end MLの直接根拠。"}
   ]
 }
