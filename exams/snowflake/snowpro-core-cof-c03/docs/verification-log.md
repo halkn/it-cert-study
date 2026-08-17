@@ -16,3 +16,4 @@
 | 2026-08-16 | Objective 2.1 | RBAC／DAC、object hierarchy、network／authentication policy、MFA、federation、OAuth／key pair、role種別、account identifier、logging／tracingの公式docsを確認。権限図、本文、章末10問、関連Domain 4問、関連模擬6問へ対応。MFA移行条件は14日周期で再確認。 |
 | 2026-08-16 | Objective 2.2 | Masking／row access／tag／differential privacy、Trust Center、hierarchical key／Tri-Secret Secure、alert／notification、replication／failover、lineageの公式docsを確認。policy図、本文、章末9問、関連Domain 5問、関連模擬7問へ対応。EditionとPreview／GA条件を本文・source notesへ記録。 |
 | 2026-08-16 | Objective 2.3 | Resource Monitor、warehouse credit、ACCOUNT_USAGE／WAREHOUSE_METERING_HISTORYの公式docsを確認。計算例、SQL、章末3問、関連Domain 2問、模擬1問へ対応。Latencyとmetered／billed creditの境界を確認。 |
+| 2026-08-17 | Domain 2 初学者レビュー | 図への導線とgrant方向、account identifierの用途別形式、masking／row access policyの実行手順を公式docsで再確認。42問の正解肢へ個別理由を追加し、Domain／模擬問題のdistractorを要件判断型へ修正。 |

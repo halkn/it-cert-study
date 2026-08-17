@@ -1,7 +1,7 @@
 # 2.2 データガバナンス機能と用途を定義する
 
 > Status: complete
-> Last verified: 2026-08-16
+> Last verified: 2026-08-17
 
 ## この章で学ぶこと
 
@@ -63,7 +63,7 @@ Data governanceはpolicy objectを作るだけでは完了しません。
 3. Trust Center、policy reference、query historyなどで状態を検証する。
 4. Alert／notificationで変化へ対応する。
 
-![Governance policyの適用単位](../../diagrams/domain-2/governance-policies.md)
+[図を開く: Governance policyの適用単位](../../diagrams/domain-2/governance-policies.md)
 
 <a id="data-masking"></a>
 ## Data masking — Query結果を行と列で制御する
@@ -210,10 +210,19 @@ SnowsightのLineage tabに加え、`SNOWFLAKE.CORE.GET_LINEAGE`でprogrammatic�
 
 ## Mini hands-on — policyの適用単位を観察する
 
-次は概念確認用の構成例です。Enterprise以上の演習accountとpolicy作成権限が必要です。共有環境では管理者のpolicyを変更せず、専用databaseで実行します。
+次は、同じtableにmasking policyとrow access policyを適用し、roleによる結果の違いを確認する構成例です。Enterprise以上の演習accountと、database・role・policyを作成できる管理roleが必要です。共有環境では管理者のpolicyを変更せず、専用databaseで実行します。
 
 ```sql
+USE ROLE ACCOUNTADMIN;
+
 CREATE DATABASE OBJ22_LAB;
+CREATE ROLE OBJ22_APAC_ANALYST;
+CREATE ROLE OBJ22_GLOBAL_PII;
+
+SET LAB_USER = CURRENT_USER();
+GRANT ROLE OBJ22_APAC_ANALYST TO USER IDENTIFIER($LAB_USER);
+GRANT ROLE OBJ22_GLOBAL_PII TO USER IDENTIFIER($LAB_USER);
+
 CREATE TABLE OBJ22_LAB.PUBLIC.CUSTOMERS (
   REGION STRING,
   EMAIL STRING
@@ -222,12 +231,68 @@ CREATE TABLE OBJ22_LAB.PUBLIC.CUSTOMERS (
 INSERT INTO OBJ22_LAB.PUBLIC.CUSTOMERS VALUES
   ('APAC', 'a@example.com'),
   ('EMEA', 'e@example.com');
+
+CREATE MASKING POLICY OBJ22_LAB.PUBLIC.EMAIL_MASK AS
+  (val STRING) RETURNS STRING ->
+  CASE
+    WHEN IS_ROLE_IN_SESSION('OBJ22_GLOBAL_PII') THEN val
+    ELSE '***MASKED***'
+  END;
+
+CREATE ROW ACCESS POLICY OBJ22_LAB.PUBLIC.REGION_FILTER AS
+  (region STRING) RETURNS BOOLEAN ->
+    region = 'APAC'
+    OR IS_ROLE_IN_SESSION('OBJ22_GLOBAL_PII');
+
+ALTER TABLE OBJ22_LAB.PUBLIC.CUSTOMERS
+  MODIFY COLUMN EMAIL
+  SET MASKING POLICY OBJ22_LAB.PUBLIC.EMAIL_MASK;
+
+ALTER TABLE OBJ22_LAB.PUBLIC.CUSTOMERS
+  ADD ROW ACCESS POLICY OBJ22_LAB.PUBLIC.REGION_FILTER ON (REGION);
+
+GRANT USAGE ON DATABASE OBJ22_LAB TO ROLE OBJ22_APAC_ANALYST;
+GRANT USAGE ON SCHEMA OBJ22_LAB.PUBLIC TO ROLE OBJ22_APAC_ANALYST;
+GRANT SELECT ON TABLE OBJ22_LAB.PUBLIC.CUSTOMERS TO ROLE OBJ22_APAC_ANALYST;
+
+GRANT USAGE ON DATABASE OBJ22_LAB TO ROLE OBJ22_GLOBAL_PII;
+GRANT USAGE ON SCHEMA OBJ22_LAB.PUBLIC TO ROLE OBJ22_GLOBAL_PII;
+GRANT SELECT ON TABLE OBJ22_LAB.PUBLIC.CUSTOMERS TO ROLE OBJ22_GLOBAL_PII;
 ```
 
-Masking policyを`EMAIL`へ適用すると、row数は変えず返却値を制御します。Row access policyを`REGION`へ適用すると、許可されないrow自体が結果から除外されます。実環境でpolicyを作る場合はpolicy administratorとobject ownerを分離します。
+Secondary roleの影響を除き、APAC担当roleで結果を確認します。
 
 ```sql
+USE ROLE OBJ22_APAC_ANALYST;
+USE SECONDARY ROLES NONE;
+
+SELECT REGION, EMAIL
+FROM OBJ22_LAB.PUBLIC.CUSTOMERS
+ORDER BY REGION;
+```
+
+結果はAPACの1 rowだけで、`EMAIL`は`***MASKED***`になります。Row access policyがEMEA rowを除外した後、masking policyが返却するemail値を変えるためです。
+
+次に、全regionのPIIを参照できるroleへ切り替えます。
+
+```sql
+USE ROLE OBJ22_GLOBAL_PII;
+USE SECONDARY ROLES NONE;
+
+SELECT REGION, EMAIL
+FROM OBJ22_LAB.PUBLIC.CUSTOMERS
+ORDER BY REGION;
+```
+
+結果はAPACとEMEAの2 rowsで、どちらも元のemailを返します。これにより、row access policyはrow数、masking policyは残ったrowのcolumn valueを制御すると観察できます。実環境ではpolicy administratorとobject ownerを分離します。
+
+演習後は、policyを所有する管理roleへ戻して専用objectを削除します。
+
+```sql
+USE ROLE ACCOUNTADMIN;
 DROP DATABASE IF EXISTS OBJ22_LAB;
+DROP ROLE IF EXISTS OBJ22_APAC_ANALYST;
+DROP ROLE IF EXISTS OBJ22_GLOBAL_PII;
 ```
 
 ## Compare — governance要件から機能を選ぶ
@@ -292,6 +357,8 @@ DROP DATABASE IF EXISTS OBJ22_LAB;
 
 - `docs-column-security` — https://docs.snowflake.com/en/user-guide/security-column-intro
 - `docs-row-access-policies` — https://docs.snowflake.com/en/user-guide/security-row-intro
+- `docs-create-masking-policy` — https://docs.snowflake.com/en/sql-reference/sql/create-masking-policy
+- `docs-create-row-access-policy` — https://docs.snowflake.com/en/sql-reference/sql/create-row-access-policy
 - `docs-object-tagging` — https://docs.snowflake.com/en/user-guide/object-tagging/introduction
 - `docs-privacy-overview` — https://docs.snowflake.com/en/guides-overview-privacy
 - `docs-differential-privacy` — https://docs.snowflake.com/en/user-guide/diff-privacy/differential-privacy-overview

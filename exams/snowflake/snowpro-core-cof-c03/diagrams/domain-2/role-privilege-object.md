@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-  U[User / service] -->|account roleをgrant| FR[Functional account role]
+  FR[Functional account role] -->|userへgrant| U[User / service]
   AR[Access account role] -->|roleをgrant<br/>privilegeを継承| FR
   DR[Database role] -->|account roleへgrant| AR
   P[Privilege<br/>SELECT / USAGE等] -->|grant| AR

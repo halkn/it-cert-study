@@ -1,7 +1,7 @@
 # 2.1 セキュリティモデルと原則を説明する
 
 > Status: complete
-> Last verified: 2026-08-16
+> Last verified: 2026-08-17
 
 ## この章で学ぶこと
 
@@ -64,7 +64,7 @@ Snowflakeへの操作が成功するには、接続元、主体、操作の三�
 
 Network policyを通過しても`SELECT` privilegeは得られません。MFAに成功してもtable accessが自動付与されるわけではありません。設問では「どの関門を変更する要件か」を先に特定します。
 
-![Role・privilege・objectの関係](../../diagrams/domain-2/role-privilege-object.md)
+[図を開く: Role・privilege・objectの関係](../../diagrams/domain-2/role-privilege-object.md)
 
 <a id="rbac"></a>
 ## RBAC — privilegeをrole経由で届ける
@@ -196,9 +196,17 @@ SELECT CURRENT_ROLE(), CURRENT_SECONDARY_ROLES();
 <a id="account-identifiers"></a>
 ## Account identifier — 接続先accountを一意に示す
 
-Account identifierはSnowflake accountをorganization内およびglobal network上で識別します。推奨形式はorganization名とaccount名の組合せです。用途により`organization-account`または`organization.account`の表現を使います。
+Account identifierはSnowflake accountをorganization内およびglobal network上で識別します。推奨形式はorganization名とaccount名の組合せです。区切り記号は用途で決まります。
 
-Snowflake-assigned account locatorを使うlegacy形式もありますが、新しい構成ではorganization nameとaccount nameを使う形式が推奨されます。Account identifierはlogin URL、CLI、driver、sharing、replicationなどで接続先や相手accountを指定します。
+| 用途 | 形式 | `MYORG`と`PROD`の例 |
+|---|---|---|
+| Snowsightや接続先URL | `organization-account.snowflakecomputing.com` | `myorg-prod.snowflakecomputing.com` |
+| CLI、driver、connectorのaccount設定 | `organization-account` | `myorg-prod` |
+| SQL内の完全修飾account名 | `organization.account` | `MYORG.PROD` |
+| Data Sharingで相手accountを指定 | `organization.account` | `MYORG.PROD` |
+| Replication／failoverのSQL | `organization.account` | `MYORG.PROD` |
+
+Snowflake-assigned account locatorを使うlegacy形式もありますが、新しい構成ではorganization nameとaccount nameを使う形式が推奨されます。接続設定ではhyphen、SQLで完全修飾account名を指定するときはperiod、と判断します。
 
 Account identifierはuser名やdatabase名ではなく、accountそのものを示します。Region情報が常に手入力で必要とは限りません。
 
