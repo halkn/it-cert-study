@@ -113,6 +113,8 @@ python3 scripts/validate_content.py --exam <対象試験ディレクトリ>
 検証成功だけを理由に`complete`へ変更しない。
 品質基準の全条件を満たしてから状態を更新する。
 
+Domain内の全Objectiveを実装し、そのDomainを`complete`へ進める場合は、続けて`$evaluate-certification-domain`を使用する。最低性能モデルによる問題品質試験とtextbook限定試験の両方が合格し、保存した評価レポートの検証が成功するまでDomainを完了扱いにしない。
+
 ## 編集規範の由来
 
 文章設計には、次の外部規範のうち技術教材に適合する部分を取り入れている。

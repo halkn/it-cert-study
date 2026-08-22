@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "exam-domain-N-YYYY-MM-DD",
+  "evaluation_type": "textbook-only",
+  "evaluated_on": "YYYY-MM-DD",
+  "exam_id": "vendor-exam-id",
+  "domains": [1],
+  "model": {
+    "id": "model-id",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model"
+  },
+  "source_revision": {
+    "git_commit": "commit-sha",
+    "working_tree_dirty": false
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": ["textbook/domain-1/*.md"]
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": "sha256",
+    "questions_sha256": "sha256",
+    "coverage_matrix_sha256": "sha256"
+  },
+  "questions": [
+    {
+      "id": "M1-Q01",
+      "selected_option_ids": ["A"],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/chapter.md",
+          "heading": "Relevant heading"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {"1": 100.0},
+    "textbook_evidence_percent": 100.0,
+    "ambiguous_question_count": 0,
+    "passed": true
+  }
+}

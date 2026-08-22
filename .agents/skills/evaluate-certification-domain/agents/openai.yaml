@@ -1,0 +1,4 @@
+interface:
+  display_name: "認定試験Domainをモデル評価"
+  short_description: "教材限定のブラインド試験でDomainの合格可能性を検証"
+  default_prompt: "$evaluate-certification-domain を使い、対象試験の指定Domainを最低性能モデルと教材限定条件で評価してください。"
