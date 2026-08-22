@@ -17,3 +17,15 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D1-Q11: declarative pipeline](d1-q11.md)
 - [D1-Q12: AI機能の組合せ](d1-q12.md)
 - [D1-Q13: ML application構成](d1-q13.md)
+
+## Domain 2
+
+- [D2-Q01: Least-privilege role設計](d2-q01.md)
+- [D2-Q02: 接続securityの組合せ](d2-q02.md)
+- [D2-Q03: Role contextとobservability](d2-q03.md)
+- [D2-Q04: Sensitive data protection](d2-q04.md)
+- [D2-Q05: Security postureとkey control](d2-q05.md)
+- [D2-Q06: Condition判定とmessage配送](d2-q06.md)
+- [D2-Q07: BCDRとimpact analysis](d2-q07.md)
+- [D2-Q08: Cost guardrailと履歴分析](d2-q08.md)
+- [D2-Q09: Policyの適用単位](d2-q09.md)

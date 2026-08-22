@@ -23,6 +23,16 @@
 
 1 objective の `complete` には、章、技術根拠、必要な図、章末問題、Domain 演習、模擬試験のすべてが必要です。Preview / GA など変動要素が期限切れなら `complete` を維持できません。
 
+Domain の対象Objectiveをすべて `complete` にする前に、[Domain評価ポリシー](../evals/evaluation-policy.md)に従って次を実施します。
+
+- 最軽量の利用可能モデルによる問題品質のブラインド受験
+- textbook本文だけを根拠にするCoverage監査
+- 総合正答率80%以上、Domain別正答率70%以上、textbook根拠十分率90%以上
+- 解釈により正解が変わる問題0件
+- 評価対象のtextbook、模擬問題、Coverage Matrixと一致するcontent hashの保存
+
+保存済み評価のcontent hashが現在の教材と一致しない場合、その評価は失効し、再評価が必要です。
+
 ## レビュー
 
 内容レビューでは最低限、技術的正確性、出典一致、試験範囲との対応、教育的な分かりやすさ、SQL と図の整合性を確認します。

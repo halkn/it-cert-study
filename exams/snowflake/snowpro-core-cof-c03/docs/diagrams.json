@@ -55,21 +55,21 @@
       "id": "d2-role-privilege-object",
       "objective_ids": ["2.1"],
       "learning_goal": "role、privilege、securable object の grant 関係を追跡できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "source_ids": ["docs-access-control-overview", "docs-access-control-best-practices"],
+      "format": "mermaid",
+      "file": "diagrams/domain-2/role-privilege-object.md",
+      "status": "complete",
+      "last_verified": "2026-08-17"
     },
     {
       "id": "d2-governance-policies",
       "objective_ids": ["2.2"],
       "learning_goal": "masking、row access、tag などの適用関係を区別できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "source_ids": ["docs-column-security", "docs-row-access-policies", "docs-object-tagging", "docs-differential-privacy"],
+      "format": "mermaid",
+      "file": "diagrams/domain-2/governance-policies.md",
+      "status": "complete",
+      "last_verified": "2026-08-16"
     },
     {
       "id": "d3-ingestion-selection",

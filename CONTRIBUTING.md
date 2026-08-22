@@ -13,6 +13,8 @@
 4. 必要な図と問題を各テンプレートから作る。
 5. Coverage Matrix の参照と状態を更新する。
 6. `python3 scripts/validate_content.py --exam <試験ディレクトリ>` を実行する。
+7. Domain の模擬問題が揃ったら、`shared/evals/evaluation-policy.md` に従ってブラインド受験と textbook 単独 Coverage 監査を実施する。
+8. 評価結果を対象試験の `evals/` へ保存し、`python3 scripts/validate_domain_evaluation.py --exam <試験ディレクトリ> --report <評価結果>` を実行する。
 
 ## 状態遷移
 
