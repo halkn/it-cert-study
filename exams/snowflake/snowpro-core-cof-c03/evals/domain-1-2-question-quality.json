@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-cof-c03-domain-1-2-question-quality-haiku-2026-08-22b",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-08-22",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    1,
+    2
+  ],
+  "model": {
+    "id": "claude-haiku-4-5-20251001",
+    "reasoning_effort": "not configurable for sub-agents; default effort used",
+    "selection_basis": "lowest-capability Claude model available as an independent sub-agent"
+  },
+  "source_revision": {
+    "git_commit": "f9735179fc6d78e35ec8fd255dfd8d391196d913",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "e1e0c4045b98ce3f1672eee72f81fcd762c142f50940da811703b3066be50d31",
+    "coverage_matrix_sha256": "cdfe3f2ed196e95cd9c862a71f0626b9e99467d80704cc96e908fa08fde7936d"
+  },
+  "questions": [
+    {
+      "id": "M1-Q01",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Snowflake の compute/storage 分離アーキテクチャにより、ETL とダッシュボードの独立ウェアハウスは同じ永続データにアクセス可能。この設計で同時ワークロードの競合を排除しながら鮮度を保持できる。"
+    },
+    {
+      "id": "M1-Q02",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "PHI（保護対象保健情報）の保存には Business Critical Edition が必須であり、Snowflake との BAA（業務提携契約）の署名が必要。Edition や warehouse タイプだけでは compliance 要件を満たさない。"
+    },
+    {
+      "id": "M1-Q03",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "地理的位置 → cloud/region 選択、行レベルセキュリティ → Enterprise Edition 要件、compute 分離 → 独立ウェアハウス割り当て。各要件が明確に対応する選択肢。"
+    },
+    {
+      "id": "M1-Q04",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Snowflake CLI とバージョン管理された project/SQL file により、Git review と CI runner からの自動 deployment が実現でき、IaC アプローチに対応。Terraform は Snowflake object 管理に適用可能だが、Streamlit code との統合は CLI が標準。"
+    },
+    {
+      "id": "M1-Q05",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Authorization error の直接原因は、セッションの current role と その role への privilege である。Snowsight と VS Code で役割が異なる場合、SELECT 権限の有無が変わる。Database/schema の解決も関連するが、まず role と privilege を確認すべき。"
+    },
+    {
+      "id": "M1-Q06",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "複数のクラウドプラットフォームと地域にまたがるアカウント間のビリングと使用状況の一元管理には Organization が必須。Organization はアカウント間の identity、replication、cost を統一的に管理する。"
+    },
+    {
+      "id": "M1-Q07",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "アカウント全体の既定値を維持しながら特定ユーザーの session timeout を別の既定値に設定するには、User level で設定を追加。他のレベルではアカウント既定の維持か個別 session の上書きになり、要件に合致しない。"
+    },
+    {
+      "id": "M1-Q08",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Response time 優先の場合、Auto-scale multi-cluster warehouse で必要に応じて cluster を追加。Standard policy は scale-up に responsive で、Economy policy はコスト優先のため不適切。Maximized も可能だが常時起動はコスト高。"
+    },
+    {
+      "id": "M1-Q09",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "待機中コスト削減には短い auto-suspend、必要時の自動起動には auto-resume 有効が必須。60 分は待機コストが増加し、auto-resume 無効では自動起動できない。Snowpark-optimized は不要。"
+    },
+    {
+      "id": "M1-Q10",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "日付フィルタが頻繁だが pruning が効かない原因は、micro-partition の物理レイアウトが日付でソートされていないこと。Clustering key（日付）を設定すれば物理レイアウトが最適化され、pruning が向上。"
+    },
+    {
+      "id": "M1-Q11",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Sensitive data を秘匿しつつ expensive query 結果を保持するには、Materialized view を secure として定義（正解 B）し、cost と performance tradeoff を評価（正解 D）。Standard view は結果を保持せず、secure 指定は maintenance cost を削減しない。"
+    },
+    {
+      "id": "M1-Q12",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "数百万件のマニュアルから関連 passage を低遅延で取得する要件は、Vector embedding + index による semantic search。Cortex Search が低遅延の RAG を実現。Cortex Analyst は business metrics、個別実行は latency 増加。"
+    },
+    {
+      "id": "M1-Q13",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "自然言語から承認済み metric 定義に沿う SQL 生成には、Cortex Analyst（正解 A）が semantic model（正解 D）を使用。Semantic model は metric 定義の source であり、Cortex Analyst は NL→SQL 変換で制御を効かせる。"
+    },
+    {
+      "id": "M1-Q14",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Managed access schema（正解 B）にすれば owner は grant できず、schema owner（security team）だけが grant 可能。Future grant（正解 C）を security role に設定すれば、新規 table も security team の統制下。Regular schema では owner 権限が残る。"
+    },
+    {
+      "id": "M1-Q15",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Human は corporate SSO（B SAML/OIDC）+ MFA 強制（D）。ETL service は key-pair auth（C）で interactive prompt 不要。Interactive app は OAuth（E）で委任 token。Shared password は weak、browser-based SSO は interactive prompt 必要。"
+    },
+    {
+      "id": "M1-Q16",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "FINANCE_ROLE を primary にすれば object owner が FINANCE_ROLE になり、DB_A/DB_B の account role を secondary で active にすれば両 database へ access 可能。Primary role が owner を決めるため、FINANCE_ROLE を primary に設定することが必須。"
+    },
+    {
+      "id": "M1-Q17",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "PII 列を tag で分類（正解 A）、tag-based masking policy で非承認 role に値を隠す（正解 C）、data lineage で派生先への伝播を追跡（正解 E）。Row policy は行フィルタリング、automatic classification だけでは不十分。"
+    },
+    {
+      "id": "M1-Q18",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Support user には masking policy（正解 D）で末尾 4 桁だけ返す。Research analyst の集計には aggregation policy（正解 A）で differential privacy を適用。Row policy は行フィルタリング、privacy policy は存在しない用語。"
+    },
+    {
+      "id": "M1-Q19",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Security misconfiguration を継続検出（正解 A Trust Center scanner）、critical finding を PagerDuty へ送信（正解 C notification integration）、UDF 修正後の内部処理を追跡（正解 E logging/event table）。ALERT_HISTORY や LOGIN_HISTORY は異なる目的。"
+    },
+    {
+      "id": "M1-Q20",
+      "selected_option_ids": [
+        "B",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Secondary account を writable primary に切り替えるには failover group（正解 B）が必須。切替後のアカウント指定には organization/account identifier（正解 E）が必要。定期 refresh と promotion runbook（正解 D）で自動復旧体制を整備。"
+    },
+    {
+      "id": "M1-Q21",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Early notification には resource monitor NOTIFY trigger（正解 A）、hard limit で query 停止には SUSPEND_IMMEDIATE（正解 C）、翌日の usage 分析には WAREHOUSE_METERING_HISTORY（正解 E）。Budget notification だけでは suspend できず、queue 時間だけでは原因分析不足。"
+    },
+    {
+      "id": "M1-Q22",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "CMK を Snowflake key と組み合わせるには Tri-Secret Secure（正解 A）、Business Critical Edition（正解 C）が必須。CMK の availability/rotation/recovery（正解 D）と periodic rekeying 要件（正解 E）を確認。Snowflake-managed key だけでは不可、rekeying で recovery plan 不要にはならない。"
+    },
+    {
+      "id": "M1-Q23",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "新規 row 到着時だけ評価するには alert on new data（正解 A）。Condition と action（正解 C）で alert ロジック構成。Webhook notification integration（正解 D）で送信。1 分ごとの rescan は効率が悪く、change tracking を活用できない。"
+    },
+    {
+      "id": "M1-Q24",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Least privilege の権限分離：USERADMIN が user/role 管理（正解 B）、SECURITYADMIN が grant 管理（正解 C）、SYSADMIN が warehouse/database object 管理（正解 E）。SECURITYADMIN の全管理は過剰権限、USERADMIN に warehouse 管理は権限外。"
+    }
+  ],
+  "result": {
+    "overall_score_percent": 91.7,
+    "per_domain_score_percent": {
+      "1": 100.0,
+      "2": 81.8
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  }
+}

@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-cof-c03-domain-1-2-haiku-2026-08-22b",
+  "evaluation_type": "textbook-only",
+  "evaluated_on": "2026-08-22",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    1,
+    2
+  ],
+  "model": {
+    "id": "claude-haiku-4-5-20251001",
+    "reasoning_effort": "not configurable for sub-agents; default effort used",
+    "selection_basis": "lowest-capability Claude model available as an independent sub-agent。引用は bundle 内の行番号照合を義務づけて記録させた。 引用のfile名は、同じsub-agentが記録した行番号(file_marker_line/heading_line)から機械的に正規化した。"
+  },
+  "source_revision": {
+    "git_commit": "f9735179fc6d78e35ec8fd255dfd8d391196d913",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": [
+      "textbook/domain-1/*.md",
+      "textbook/domain-2/*.md"
+    ]
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": "b70151eaa0a16727fe4ab29c3999d764702a0e25c79ff55004c52865dba57268",
+    "questions_sha256": "e1e0c4045b98ce3f1672eee72f81fcd762c142f50940da811703b3066be50d31",
+    "coverage_matrix_sha256": "cdfe3f2ed196e95cd9c862a71f0626b9e99467d80704cc96e908fa08fde7936d"
+  },
+  "questions": [
+    {
+      "id": "M1-Q01",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "3層に分ける理由"
+        },
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "3層の責務"
+        }
+      ],
+      "notes": "Snowflakeの3層アーキテクチャでは、複数のcomputeが中央の永続データを共有し、Virtual Warehouseごとに独立している。同じdataを使うETLとdashboardを、dataのcopyを作らず別々のcomputeで処理できる。 Database Storageは永続データを保持し、複数のVirtual Warehouseが利用できる。Compute layerの中心はVirtual Warehouseであり、Virtual Warehouse同士はcompute resourceを共有しない。"
+    },
+    {
+      "id": "M1-Q02",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "Edition選定で注意すること"
+        },
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "Snowflake Edition"
+        }
+      ],
+      "notes": "Business CriticalでPHIを扱う場合、Editionだけで条件が完了するわけではなく、SnowflakeとのBAAなど必要条件がある。 Editionは下位Editionを土台に、上位になるほど追加機能やより高いservice levelを提供する。Business Critical以上が必要とされる機能がある。"
+    },
+    {
+      "id": "M1-Q03",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "利用者が選ぶ3つの軸"
+        },
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "分離とEditionを使い分ける場面"
+        },
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "workloadを分離したい"
+        }
+      ],
+      "notes": "利用者が選択・管理する代表例は、accountを配置するcloud platformとregion、accountのEdition、workloadに使うVirtual Warehouseのsizeや稼働設定である。これらは別々の軸である。 Row access policyなどEnterprise以上の機能が必要なら、warehouseを大きくするのではなくEdition要件を確認する。 同じdataを使うETLとdashboardが互いのcompute性能へ直接影響しないようにしたい場合、別々のVirtual Warehouseを利用する。"
+    },
+    {
+      "id": "M1-Q04",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "Snowflake CLIでterminalから反復可能に操作する"
+        },
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "CLIを選ぶ場面"
+        }
+      ],
+      "notes": "Snowflake CLIはdeveloper workload向けのopen-source command-line toolで、SQLの実行だけでなくobject管理ができる。CLIではconnectionを設定し、project repositoryでversion管理できる。 Local shellから同じSQL fileを繰り返し実行し、deployment手順をrepositoryでversion管理し、CI/CDからapplicationやSnowflake objectを操作する場面ではCLIを選ぶ。"
+    },
+    {
+      "id": "M1-Q05",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "3つのtoolで共通するsession context"
+        },
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "同じSnowflakeへ異なる入口から接続する"
+        }
+      ],
+      "notes": "Interface選択と実行contextは別の判断である。実行前に、少なくとも現在のuser、role、warehouse、database、schemaを確認する必要がある。roleが違えば可視objectと許可操作が変わる。 InterfaceはSnowflakeへの入口の違いであり、authorization errorは接続先、接続ユーザー、active roleに関連する。"
+    },
+    {
+      "id": "M1-Q06",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/03-object-hierarchy.md",
+          "heading": "OrganizationとAccountの境界"
+        }
+      ],
+      "notes": "Organizationはbusiness entityに属する複数accountを結び付ける。Accountをregionやcloud platformをまたいで管理し、organization-levelのusage、billing、replicationを横断的に扱う単位である。"
+    },
+    {
+      "id": "M1-Q07",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/03-object-hierarchy.md",
+          "heading": "Session context、SQL variable、parameterを区別する"
+        }
+      ],
+      "notes": "Parameter hierarchy: account → user → sessionのlevelがあり、より具体的なlevelが上位のdefaultをoverrideする。User設定が新規sessionのdefaultになる。 Session parameterはaccount → user → sessionの順で具体的な設定がoverrideする。User levelで設定すればそのuserの新規sessionだけが対象になる。"
+    },
+    {
+      "id": "M1-Q08",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Workloadから構成を選ぶ"
+        },
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Multi-clusterとScaling policyでconcurrencyを処理する"
+        }
+      ],
+      "notes": "BI/reporting: queueが多ければmulti-cluster、response time重視ならStandard policyを使う。 Standard policyはqueueの抑制と応答性を優先する。Economy policyはcluster起動を控えてcredit節約を優先し、queryがqueueで待つ時間が長くなり得る。"
+    },
+    {
+      "id": "M1-Q09",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Auto-suspendとcacheのtrade-off"
+        },
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Workloadから構成を選ぶ"
+        }
+      ],
+      "notes": "短いidleでsuspendすればcreditを節約できる。Query間隔に合わせてauto-suspend設定する。Auto-resumeで必要なstatementで自動再開できる。 Ad-hoc/開発: 小さめ、auto-suspend短め。"
+    },
+    {
+      "id": "M1-Q10",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "Data clusteringは値範囲の重なりを減らす"
+        },
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "Micro-partition metadataがscanを減らす"
+        }
+      ],
+      "notes": "Clustering keyはlarge tableで頻繁にselective filterやjoinへ使うcolumn/expressionを明示し、Automatic Clusteringで配置を維持する。Pruning効率が落ちた場合に使う。 Query optimizerはpredicateとmetadataを比較し、条件に一致し得ないmicro-partitionをpruneする。Pruningはrowを読んでから捨てる処理ではなく、metadataでstorage scan自体を避ける仕組み。"
+    },
+    {
+      "id": "M1-Q11",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "View typeを計算・保存・privacyで選ぶ"
+        },
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "View typeを計算・保存・privacyで選ぶ"
+        }
+      ],
+      "notes": "Materialized viewは結果を保存しexpensive queryのscan削減。Secureはstandard/materializedの属性で、definitionとunderlying dataのprivacyを優先。Non-materialized viewもmaterialized viewもsecureにできる。 Secure viewは、性能影響（optimization制約）がある一方、definition protection と underlying data privacy を優先する設計である。Maintenance costは依然として存在する。"
+    },
+    {
+      "id": "M1-Q12",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/06-ai-ml-app-development.md",
+          "heading": "Cortex Search"
+        }
+      ],
+      "notes": "Cortex SearchはDocument、support ticket、transcriptなどunstructured text corpusから関連箇所を低latencyで検索するservice。Hybrid retrieval、attribute filterを提供し、RAGやenterprise searchのretrieval layerに向く。"
+    },
+    {
+      "id": "M1-Q13",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/06-ai-ml-app-development.md",
+          "heading": "Cortex Analyst"
+        }
+      ],
+      "notes": "Cortex Analystはstructured business dataへのnatural-language questionからSQLを生成するmanaged feature。Semantic model/viewがmetric、dimension、relationship、business termをphysical tableへ対応付け、text-to-SQLの精度を支える。"
+    },
+    {
+      "id": "M1-Q14",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "DAC — ownerがaccessを委任する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "DAC — ownerがaccessを委任する"
+        }
+      ],
+      "notes": "Managed access schemaでは例外がある。配下objectのownerではなく、schema ownerまたは`MANAGE GRANTS`を持つroleがgrant判断を集約する。 Schema ownerまたは`MANAGE GRANTS`を持つroleが、その schemaの配下objectへのgrantを集約管理できる。"
+    },
+    {
+      "id": "M1-Q15",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Federated authenticationとSSOはIdPへ本人確認を委ねる"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Key-pair authenticationは非対話serviceに適する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "MFAはpasswordを増やす仕組みではない"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "OAuthはapplicationへ限定accessを委任する"
+        }
+      ],
+      "notes": "Federated authenticationでは外部IdPがcredentialを保持・認証し、Snowflakeは認証結果を受け取る。SnowflakeはSAML 2.0とOIDCをサポート。SSOはIdP認証を使ってSnowflakeへaccessする。 Key-pair authenticationは秘密鍵による署名で認証。Password入力やMFA promptが困難なservice、script、connectorに適する。 MFAはhuman userのinteractive loginを強化する。Authentication policyでMFA要件を定義できる。 OAut"
+    },
+    {
+      "id": "M1-Q16",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Secondary role — 複数roleの権限をsessionで集約する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Secondary role — 複数roleの権限をsessionで集約する"
+        }
+      ],
+      "notes": "Cross-database queryで、別々のroleにある権限を同時に使う場面がsecondary role代表例。通常の`SELECT`などはactiveなprimary/secondary roleのaggregate privilegesでauthorizeできる。 `CREATE <object>`のauthorizationと新規objectのownershipはprimary roleだけを基準にする。Secondary roleをactiveにしても、新規object ownerはprimary roleになる。"
+    },
+    {
+      "id": "M1-Q17",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Object tagging — 分類をpolicyとcostへ再利用する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data masking — Query結果を行と列で制御する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data lineage — upstreamとdownstreamを追跡する"
+        }
+      ],
+      "notes": "Tagはschema-level objectでSnowflake objectへtag valueを関連付ける分類metadata。Tag-based maskingではmasking policyをtagへ関連付け、そのtagが付いたcolumnへpolicyを適用する。 Dynamic Data Maskingはmasking policyをcolumnへ適用し、query実行時にcontextを評価して返却値を変える。 Data lineageはdataがどこから来てどこへ進むかを示す。Sensitive columnの派生先を追うに向く。"
+    },
+    {
+      "id": "M1-Q18",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Privacy policy — 個人に関する推測riskを制限する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data masking — Query結果を行と列で制御する"
+        }
+      ],
+      "notes": "Privacy policyはtable/viewへdifferential privacyを適用。Analyst が集計queryを繰り返しても、特定個人に関する情報を推測しすぎないようprivacy budgetとnoiseを使う。 Masking policyはquery実行時にcontextを評価し、columnの返却値を変換する。Support userへ電話番号末尾4桁だけ返すには、masking policyで値を変換する。"
+    },
+    {
+      "id": "M1-Q19",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Trust Center — scannerでsecurity postureを評価する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Alert — conditionがtrueならactionを実行する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Logging／tracing — handler codeの動作をevent tableへ記録する"
+        }
+      ],
+      "notes": "Trust Centerはaccountをsecurity recommendationに照らして継続評価し、potential riskをfindingとして示す。Scanner packageをenableし実行する。 Snowflake Alertはcondition、action、評価timingを持つobject。Credit使用量が閾値を超えたかを定期的に調べ、trueなら通知procedureをcallする。 Logging、tracing、metricsはfunctionやstored procedureのhandler code、Snowpark codeのobservabi"
+    },
+    {
+      "id": "M1-Q20",
+      "selected_option_ids": [
+        "B",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data replication／failover — 同期と昇格を分ける"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data replication／failover — 同期と昇格を分ける"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Account identifier — 接続先accountを一意に示す"
+        }
+      ],
+      "notes": "Failoverは障害やdrillでsecondary failover groupを新しいwritable primaryへpromotionする。Failback は元のregionが復旧した後、primaryを戻す手順。Failover groupはreplicationとpromotionを提供。 Replicationはbackupと同義ではなく、誤った変更も refreshによりsecondaryへ伝播しえる。Recovery pointとrecovery time要件からrefresh頻度、runbook、client redirectを設計する。 推奨形式はorganizati"
+    },
+    {
+      "id": "M1-Q21",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/03-monitoring-cost.md",
+          "heading": "Resource Monitor — quotaとtriggerでwarehouseを制御する"
+        },
+        {
+          "file": "textbook/domain-2/03-monitoring-cost.md",
+          "heading": "Resource Monitor — quotaとtriggerでwarehouseを制御する"
+        },
+        {
+          "file": "textbook/domain-2/03-monitoring-cost.md",
+          "heading": "Virtual Warehouseのcredit使用量 — rate × cluster × timeで概算する"
+        }
+      ],
+      "notes": "Resource Monitorはcredit quota、frequency、trigger を持つ。75%でNOTIFYし早期通知、100%でSUSPEND、110%でSUSPEND_IMMEDIATEでrunning queryもcancelして停止する。 Hard limitでrunning queryを停止するには、SUSPEND_IMMEDIATE triggerを使う。 WAREHOUSE_METERING_HISTORYで過去のwarehouse usageを集計できる。"
+    },
+    {
+      "id": "M1-Q22",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Encryption key management — key hierarchyとCMKの責任を分ける"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Encryption key management — key hierarchyとCMKの責任を分ける"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Encryption key management — key hierarchyとCMKの責任を分ける"
+        }
+      ],
+      "notes": "Tri-Secret SecureはSnowflake-managed keyとcustomer-managed key（CMK）を組み合わせ、composite account master keyを構成。Tri-Secret SecureはBusiness Critical以上。 Enterprise以上ではperiodic rekeyingにより既存dataを新しいkeyで再暗号化できる。 CMKを無効化・削除するとdata accessへ影響するため、availability、rotation、recoveryを含む運用責任が増える。"
+    },
+    {
+      "id": "M1-Q23",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Alert — conditionがtrueならactionを実行する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Alert — conditionがtrueならactionを実行する"
+        },
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Notification — messageを外部channelへ配送する"
+        }
+      ],
+      "notes": "Alert on new dataはtable/viewへ新しいrowが現れたとき、その新規dataを評価する。Change tracking対応のevent tableへ新しいerror rowが到着した時だけconditionを評価するのに向く。 Alertはcondition、actionを持つobject。 Notification integrationにendpointや許可情報を設定し、`SYSTEM$SEND_SNOWFLAKE_NOTIFICATION`やalertから利用。Webhookへのmessage配送に使う。"
+    },
+    {
+      "id": "M1-Q24",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "System-defined role — account管理責務を分離する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "System-defined role — account管理責務を分離する"
+        }
+      ],
+      "notes": "System-defined roleはSnowflakeが作成し、dropできない。`USERADMIN`はuserとroleの作成・管理。`SECURITYADMIN`はgrant管理。`SYSADMIN`はwarehouse、databaseなどのobject管理。 System roleへ業務tableのprivilegeを直接積み増すより、custom roleへgrantし、custom hierarchyを`SYSADMIN`へ接続。これによりaccount管理権限と業務data accessを分離できる。"
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "1": 100.0,
+      "2": 100.0
+    },
+    "textbook_evidence_percent": 100.0,
+    "ambiguous_question_count": 0,
+    "passed": true
+  }
+}
