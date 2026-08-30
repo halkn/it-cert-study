@@ -72,14 +72,34 @@
       "last_verified": "2026-08-16"
     },
     {
+      "id": "d3-stage-types",
+      "objective_ids": ["3.1"],
+      "learning_goal": "internal/external stage の種類、privilege、PUT/GET と directory table の関係を区別できる",
+      "source_ids": ["docs-create-stage", "docs-data-load-local-create-stage", "docs-access-control-privileges", "docs-put", "docs-get", "docs-data-load-dirtables"],
+      "format": "mermaid",
+      "file": "diagrams/domain-3/stage-types.md",
+      "status": "complete",
+      "last_verified": "2026-08-30"
+    },
+    {
       "id": "d3-ingestion-selection",
       "objective_ids": ["3.1", "3.2"],
       "learning_goal": "COPY、Snowpipe、Snowpipe Streaming、Stream/Task、Dynamic Table の用途を選択できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "source_ids": ["docs-data-load-overview", "docs-snowpipe-intro", "docs-snowpipe-streaming-overview", "docs-streams-intro", "docs-tasks-intro", "docs-dynamic-tables"],
+      "format": "mermaid",
+      "file": "diagrams/domain-3/ingestion-selection.md",
+      "status": "complete",
+      "last_verified": "2026-08-30"
+    },
+    {
+      "id": "d3-integration-map",
+      "objective_ids": ["3.3"],
+      "learning_goal": "driver / connector / integration の担当範囲と接続の向きを区別できる",
+      "source_ids": ["docs-drivers-overview", "docs-kafka-connector-overview", "docs-spark-connector-overview", "docs-storage-integration-ddl", "docs-api-integration-ddl", "docs-git-repository-ddl", "docs-external-access-integration-ddl", "docs-notification-integration-ddl", "docs-security-integration-ddl"],
+      "format": "mermaid",
+      "file": "diagrams/domain-3/integration-map.md",
+      "status": "complete",
+      "last_verified": "2026-08-30"
     },
     {
       "id": "d4-query-bottlenecks",

@@ -29,3 +29,15 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D2-Q07: BCDRとimpact analysis](d2-q07.md)
 - [D2-Q08: Cost guardrailと履歴分析](d2-q08.md)
 - [D2-Q09: Policyの適用単位](d2-q09.md)
+
+## Domain 3
+
+- [D3-Q01: Stage選定と権限の組合せ](d3-q01.md)
+- [D3-Q02: ロードとアンロードの非対称](d3-q02.md)
+- [D3-Q03: ロード失敗の切り分け手順](d3-q03.md)
+- [D3-Q04: 取り込み方式の選定](d3-q04.md)
+- [D3-Q05: Stream + task pipelineの構成](d3-q05.md)
+- [D3-Q06: Snowpipeのcostと監視](d3-q06.md)
+- [D3-Q07: Dynamic Tableとstream + taskの選定](d3-q07.md)
+- [D3-Q08: Integrationの選定](d3-q08.md)
+- [D3-Q09: 接続部品の使い分け](d3-q09.md)
