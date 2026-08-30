@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-question-quality-haiku-2026-08-30",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-08-30",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    3
+  ],
+  "model": {
+    "id": "claude-haiku-4-5-20251001",
+    "reasoning_effort": "not configurable for sub-agents; default effort used",
+    "selection_basis": "lowest-capability Claude model available as an independent sub-agent"
+  },
+  "source_revision": {
+    "git_commit": "3539465a5b1e1fca0bbe5ebd9584c4f98f2dcda8",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "8b5fae60a651424f546d7541ed33865f924f86b9dad9be164dc31c3b0c05270f",
+    "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
+  },
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "3": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "questions": [
+    {
+      "id": "M1-Q25",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "storage integrationで認証情報を安全に管理し、external stageを通じてroleの権限制御が可能。複数roleの共有用途に最適。"
+    },
+    {
+      "id": "M1-Q27",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "FORCE = TRUEを指定すると、既ロード済みファイルでも強制的に再度ロードされる。既定ではSnowflakeが既ロードファイルを追跡するため、FORCEが無い限り重複ロードされない。"
+    },
+    {
+      "id": "M1-Q28",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "ON_ERROR = SKIP_FILEはファイル単位で失敗を処理する唯一のオプション。エラー行のあるファイルをスキップし、残りファイルは続行する要件に正確に対応。"
+    },
+    {
+      "id": "M1-Q29",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "SINGLE = TRUEで1つのファイルに出力、HEADER = TRUEで列見出しを付ける。この2つがquery結果のCSVエクスポートに必須。"
+    },
+    {
+      "id": "M1-Q30",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Snowpipeはevent notificationでファイル到着を検知し、warehouseを常時稼働させずに自動ロード。数分おきのファイル到着という要件に合致。"
+    },
+    {
+      "id": "M1-Q31",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "streamをSELECTで参照しただけでは消費されない。taskで実際にDML（INSERT等）を実行する必要がある。消費されないと同じ変更が返り続ける。"
+    },
+    {
+      "id": "M1-Q32",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "TARGET_LAGはbase dataに対する鮮度目標を指定する（A正解）。最小TARGET_LAGは60秒（C正解）。Bは運用中に自動で切り替わらないため誤り。Dも誤り。"
+    },
+    {
+      "id": "M1-Q33",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "External functionはSQLから外部API（住所正規化など）を呼び出す機能。API integrationで呼び出し先を許可する。"
+    },
+    {
+      "id": "M1-Q34",
+      "selected_option_ids": [
+        "A",
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "GitHub private repositoryのSQL実行には、認証用secret（A）、Git API integration（B）、ORIGIN指定のGit repository object（C）が必要。storage integrationはcloud storage向けで不要。"
+    }
+  ]
+}
