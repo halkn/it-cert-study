@@ -327,10 +327,12 @@ SELECT * FROM TABLE(VALIDATE(orders, JOB_ID => '_last'));
 
 | View | 対象 | 主な特徴 |
 |---|---|---|
-| `SNOWFLAKE.ACCOUNT_USAGE.COPY_HISTORY` | `COPY INTO`とSnowpipeの両方 | 365日保持。latencyは多くの場合最大120分。`LOAD_HISTORY`の10,000行制限を回避できる |
+| `SNOWFLAKE.ACCOUNT_USAGE.COPY_HISTORY` | `COPY INTO`とSnowpipeの両方 | 365日保持。latencyは多くの場合最大120分 |
 | `SNOWFLAKE.ACCOUNT_USAGE.LOAD_HISTORY` | `COPY INTO`のみ | 365日保持。latencyは多くの場合最大90分。**Snowpipeによるロードは返さない** |
 
-「Snowpipeのロード履歴を調べたい」なら`COPY_HISTORY`です。`LOAD_HISTORY`では見えません。
+「Snowpipeのロード履歴を調べたい」なら`COPY_HISTORY`です。Account Usageの`LOAD_HISTORY`では見えません。
+
+なお、10,000行という上限を持つのはInformation Schemaの`LOAD_HISTORY` viewです。`COPY_HISTORY`はこの制限を受けません。Account Usageの`LOAD_HISTORY`にこの行数上限はなく、違いはlatencyとretention、そしてSnowpipeを含むかどうかにあります。
 
 ### 値の長さと処理量に関わるoption
 

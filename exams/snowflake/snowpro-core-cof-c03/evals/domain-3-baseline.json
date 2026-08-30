@@ -31,8 +31,8 @@
     "textbook_evidence_percent": 90
   },
   "content_hashes": {
-    "textbook_sha256": "d2d817bc41274b5f843ac6c9f83b1891ac5027c4a07d4a270fa5871a40ec7b0b",
-    "questions_sha256": "8b5fae60a651424f546d7541ed33865f924f86b9dad9be164dc31c3b0c05270f",
+    "textbook_sha256": "28f3815688fb82e0743650b6cfae7c07ad6d1433ee644ef0818f044954d71d32",
+    "questions_sha256": "9a196b619ac8ba534fde92447635720778013274347979b2432f72d1a44337be",
     "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
   },
   "result": {
@@ -56,15 +56,28 @@
       "ambiguous": false,
       "evidence": [
         {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "External stageは外部storageを指す"
-        },
-        {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "Stage privilegeはinternalとexternalで異なる"
+          "file": "textbook/domain-3/03-connectors-integrations.md",
+          "heading": "Storage integration — cloud storageの資格情報をobjectへ切り出す"
         }
       ],
-      "notes": "本文は資格情報をSQL文へ書かずstorage integrationを参照すると述べ、external stageのprivilegeが USAGE であることも示している。"
+      "notes": "本文はstorage integrationがcloud providerの資格情報をSQL文から切り離すと述べ、1つのintegrationを複数のexternal stageで共有できることも示している。"
+    },
+    {
+      "id": "M1-Q26",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "PUTとGETはlocalとinternal stageの間だけ"
+        }
+      ],
+      "notes": "本文は PUT も GET も Snowsight の worksheet から実行できないと明記し、SnowsightのUIに別のupload機能があることも述べている。"
     },
     {
       "id": "M1-Q27",
@@ -81,7 +94,7 @@
           "heading": "同じファイルが二重にロードされない仕組み"
         }
       ],
-      "notes": "FORCE = TRUE はload metadataを無視して全ファイルをロードし、重複データが生じ得ると本文に明記されている。"
+      "notes": "FORCE = TRUE はload metadataを無視して全ファイルをロードし、重複データが生じ得ると本文にある。"
     },
     {
       "id": "M1-Q28",
@@ -98,7 +111,7 @@
           "heading": "ON_ERRORでロード継続の方針を決める"
         }
       ],
-      "notes": "SKIP_FILE はerror行を含むファイルをまるごとスキップすると本文の表に記載がある。"
+      "notes": "本文の表に SKIP_FILE がerror行を含むファイルをまるごとスキップすると記載がある。"
     },
     {
       "id": "M1-Q29",
@@ -116,7 +129,7 @@
           "heading": "COPY INTO <location> でアンロードする"
         }
       ],
-      "notes": "SINGLE の既定は FALSE で複数ファイルへ分割され、HEADER の既定は FALSE と本文の表にある。"
+      "notes": "SINGLE の既定 FALSE で複数ファイルへ分割され、HEADER の既定 FALSE で見出しが付かないと表にある。"
     },
     {
       "id": "M1-Q30",
@@ -133,7 +146,7 @@
           "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
         }
       ],
-      "notes": "AUTO_INGEST = TRUE のpipeがevent notificationを起点にserverless computeでロードすると本文にある。"
+      "notes": "Snowpipeがserverless computeを使い、ファイル到着後まもなくロードすると本文にある。"
     },
     {
       "id": "M1-Q31",
@@ -150,7 +163,7 @@
           "heading": "Offsetが進むのはDMLで消費したときだけ"
         }
       ],
-      "notes": "本文は Stream を SELECT しただけでは offset が進まないと明記している。"
+      "notes": "本文は Stream を SELECT しただけでは offset が進まないと明記し、DMLでの消費例も示している。"
     },
     {
       "id": "M1-Q32",
@@ -166,13 +179,9 @@
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Target lagは鮮度の目標を表す"
-        },
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Incremental refreshとfull refresh"
         }
       ],
-      "notes": "TARGET_LAG は鮮度目標であり最小60秒と本文にある。REFRESH_MODE = AUTO は作成時に解決され以後固定であることも記載されている。"
+      "notes": "TARGET_LAG は鮮度目標であり最小60秒と本文にある。REFRESH_MODE = AUTO は作成時に解決され以後固定とも記載されている。"
     },
     {
       "id": "M1-Q33",
@@ -208,7 +217,7 @@
           "heading": "必要なobjectは3つ"
         }
       ],
-      "notes": "secret、API integration（git_https_api）、Git repository object の3つが必要と本文に列挙されている。external stage と storage integration はcloud storage向けであることも示されている。"
+      "notes": "secret、git_https_api の API integration、Git repository object の3つが必要と本文に列挙されている。"
     }
   ]
 }

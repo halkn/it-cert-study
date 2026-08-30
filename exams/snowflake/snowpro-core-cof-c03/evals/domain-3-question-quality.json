@@ -29,7 +29,7 @@
   },
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "8b5fae60a651424f546d7541ed33865f924f86b9dad9be164dc31c3b0c05270f",
+    "questions_sha256": "9a196b619ac8ba534fde92447635720778013274347979b2432f72d1a44337be",
     "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
   },
   "result": {
@@ -49,7 +49,16 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "storage integrationで認証情報を安全に管理し、external stageを通じてroleの権限制御が可能。複数roleの共有用途に最適。"
+      "notes": "storage integrationで資格情報を一元管理し、external stageから参照する構成。SQL文に認証情報を残さず、USAGE権限の付与で複数roleへ共有できる。"
+    },
+    {
+      "id": "M1-Q26",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "PUTはSnowSQLなどのclient機能でworksheetから実行できない。SnowsightのUIのアップロード機能かclientを使う必要がある。"
     },
     {
       "id": "M1-Q27",
@@ -58,7 +67,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "FORCE = TRUEを指定すると、既ロード済みファイルでも強制的に再度ロードされる。既定ではSnowflakeが既ロードファイルを追跡するため、FORCEが無い限り重複ロードされない。"
+      "notes": "FORCE = TRUEはロード済みファイルを強制的に再ロードする。既定ではCOPY INTOがロード済みファイルをスキップするため、このオプションで重複が発生する。"
     },
     {
       "id": "M1-Q28",
@@ -67,7 +76,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "ON_ERROR = SKIP_FILEはファイル単位で失敗を処理する唯一のオプション。エラー行のあるファイルをスキップし、残りファイルは続行する要件に正確に対応。"
+      "notes": "ON_ERROR = SKIP_FILEはerrorのあるファイルをスキップし、残りのファイルのロードを継続させる。要件に適合。"
     },
     {
       "id": "M1-Q29",
@@ -77,7 +86,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SINGLE = TRUEで1つのファイルに出力、HEADER = TRUEで列見出しを付ける。この2つがquery結果のCSVエクスポートに必須。"
+      "notes": "SINGLE = TRUEで1ファイルに統合、HEADER = TRUEで列見出しを含める。OVERWRITEとMATCH_BY_COLUMN_NAMEはこの要件に不要。"
     },
     {
       "id": "M1-Q30",
@@ -86,7 +95,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Snowpipeはevent notificationでファイル到着を検知し、warehouseを常時稼働させずに自動ロード。数分おきのファイル到着という要件に合致。"
+      "notes": "AUTO_INGEST = TRUEのpipeとcloud event notificationの組合せが、warehouseの常時起動なしでファイル到着直後にロードする構成。"
     },
     {
       "id": "M1-Q31",
@@ -95,7 +104,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "streamをSELECTで参照しただけでは消費されない。taskで実際にDML（INSERT等）を実行する必要がある。消費されないと同じ変更が返り続ける。"
+      "notes": "SELECTではstreamは消費されない。DML文で初めてoffsetが進むため、同じ変更が繰り返し処理されて見える。"
     },
     {
       "id": "M1-Q32",
@@ -103,9 +112,9 @@
         "A",
         "C"
       ],
-      "confidence": "high",
+      "confidence": "medium",
       "ambiguous": false,
-      "notes": "TARGET_LAGはbase dataに対する鮮度目標を指定する（A正解）。最小TARGET_LAGは60秒（C正解）。Bは運用中に自動で切り替わらないため誤り。Dも誤り。"
+      "notes": "AのTARGET_LAGはbase dataに対する遅れの目標で確実に正しい。Cの最小60秒も仕様どおり。BのREFRESH_MODE AUTOの自動切り替えとDは誤り。"
     },
     {
       "id": "M1-Q33",
@@ -114,7 +123,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "External functionはSQLから外部API（住所正規化など）を呼び出す機能。API integrationで呼び出し先を許可する。"
+      "notes": "SQLから外部APIを呼び出すには、API integrationで呼び出し先を許可し、external functionでSQL関数として公開する構成を使う。"
     },
     {
       "id": "M1-Q34",
@@ -125,7 +134,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "GitHub private repositoryのSQL実行には、認証用secret（A）、Git API integration（B）、ORIGIN指定のGit repository object（C）が必要。storage integrationはcloud storage向けで不要。"
+      "notes": "GitHub private repositoryへのアクセスにはsecret（A）、git_https_apiのAPI integration（B）、HTTPSのORIGINを指定したGit repository object（C）が必要。external stageとstorage integrationはcloud storage向けで不要。"
     }
   ]
 }

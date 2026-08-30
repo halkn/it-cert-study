@@ -86,11 +86,11 @@ FILE_FORMAT = (FORMAT_NAME = my_csv_format);
 | 観点 | Bulk load（`COPY INTO`） | Snowpipe |
 |---|---|---|
 | Compute | User-specified warehouseが必要 | Snowflakeが提供するcompute（serverless） |
-| 課金 | Warehouseがactiveだった時間 | ロード時にSnowpipe warehouseで使われたcompute資源 |
+| 課金 | Warehouseがactiveだった時間 | ロードしたデータ量（GB）あたりの固定credit額 |
 | ロード順序 | 文単位で明示的に制御 | 古いファイルを先に読む傾向はあるが、stageされた順序でロードされる保証はない |
 | 重複回避のmetadata | Target tableのload historyで64日 | Pipeのmetadataで14日 |
 
-「serverlessだから無料」ではありません。Warehouseを自分で用意・起動しなくてよいだけで、使ったcompute資源に対して課金されます。現行のSnowpipe課金は、ロードしたデータ量あたりのcredit額で計算されます。使用量は`PIPE_USAGE_HISTORY`で確認します。
+「serverlessだから無料」ではありません。Warehouseを自分で用意・起動しなくてよいだけで、取り込みには課金されます。現行のSnowpipe課金は、ロードしたデータ量1 GBあたりの固定credit額です。compute資源をper-second／per-coreで測り、1,000ファイルあたりの手数料を加える方式は旧モデルとされています。使用量は`PIPE_USAGE_HISTORY`の`BYTES_BILLED`などで確認します。
 
 もう一点、Snowpipeが使う内部のcomputeにはResource Monitorが効きません。Resource Monitorはuser-managed warehouseを対象とする機能だからです（[2.3](../domain-2/03-monitoring-cost.md#resource-monitors)）。
 
