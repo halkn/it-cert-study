@@ -32,6 +32,9 @@
 - [2.1 セキュリティモデルと原則を説明する](textbook/domain-2/01-security-model.md)
 - [2.2 データガバナンス機能と用途を定義する](textbook/domain-2/02-data-governance.md)
 - [2.3 監視とコスト管理を説明する](textbook/domain-2/03-monitoring-cost.md)
+- [3.1 データをロード／アンロードする](textbook/domain-3/01-loading-unloading.md)
+- [3.2 自動データ取り込みを実行する](textbook/domain-3/02-automated-ingestion.md)
+- [3.3 ConnectorとIntegrationを識別する](textbook/domain-3/03-connectors-integrations.md)
 
 ## 教材完成後の学習順序
 

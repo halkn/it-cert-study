@@ -70,3 +70,36 @@
 | Data lineage | Sourceからtargetへのdata movementまたはobject dependencyの関係 | 2.2 | `docs-data-lineage` |
 | Resource Monitor | Warehouse creditをquotaと比較して通知／停止するobject | 2.3 | `docs-resource-monitors` |
 | WAREHOUSE_METERING_HISTORY | Warehouse別のhistorical credit usageを提供するAccount Usage view | 2.3 | `docs-warehouse-metering-history` |
+
+## Domain 3 — Objectives 3.1〜3.3
+
+| 用語 | 定義 | Objective | Source ID |
+|---|---|---|---|
+| Internal stage | Snowflakeが管理するstorage上のstage。user／table／named internalの3種 | 3.1 | `docs-data-load-local-create-stage` |
+| External stage | S3、Google Cloud Storage、Azure上の場所を指すstage | 3.1 | `docs-create-stage` |
+| SNOWFLAKE_SSE | Internal stageでserver-side encryptionのみを使うencryption type | 3.1 | `docs-create-stage` |
+| Directory table | Stage上のファイルのmetadata catalogを提供する暗黙のobject | 3.1 | `docs-data-load-dirtables` |
+| File format | ファイルのtypeとparse規則をまとめたobjectまたはinline指定 | 3.1 | `docs-create-file-format` |
+| Load metadata | Tableごとにロード済みファイルを記録し、重複ロードを防ぐmetadata | 3.1 | `docs-copy-into-table` |
+| ON_ERROR | Error行を含むファイルの扱いを決めるcopy option | 3.1 | `docs-copy-into-table` |
+| VALIDATION_MODE | データをロードせずファイルを検証するcopy option | 3.1 | `docs-copy-into-table` |
+| COPY_HISTORY | `COPY INTO`とSnowpipeの両方のロード履歴を返すAccount Usage view | 3.1 | `docs-copy-history` |
+| Pipe | `COPY INTO <table>`文を保持し、Snowpipeのロードを定義するobject | 3.2 | `docs-create-pipe` |
+| Auto-ingest | Cloud storageのevent notificationを起点にpipeへロードを依頼する方式 | 3.2 | `docs-snowpipe-auto` |
+| Snowpipe Streaming | ファイルを介さず行を直接tableへ書き込む取り込みAPI | 3.2 | `docs-snowpipe-streaming-overview` |
+| Stream | Objectの変更をoffsetで追跡し、変更レコードを返すobject | 3.2 | `docs-streams-intro` |
+| Offset | Streamがどこまでを消費済みとみなすかを示すtransaction versionの位置 | 3.2 | `docs-streams-intro` |
+| METADATA$ISUPDATE | 変更レコードがUPDATEの一部かを示すstreamのmetadata列 | 3.2 | `docs-streams` |
+| Task | SQLをscheduleまたは先行taskの完了で実行するobject | 3.2 | `docs-create-task` |
+| Serverless task | Warehouseを指定せず、Snowflakeのcompute資源で実行するtask | 3.2 | `docs-tasks-intro` |
+| Task graph | Root taskと後続taskで構成されるDAG | 3.2 | `docs-tasks-graphs` |
+| TARGET_LAG | Dynamic Tableがbase dataに対して目標とする鮮度 | 3.2 | `docs-dynamic-tables` |
+| Openflow | Apache NiFi上に構築された、外部systemとSnowflakeを繋ぐ統合service | 3.2 | `docs-openflow-about` |
+| Driver | Applicationから接続しSQLを実行するclient library | 3.3 | `docs-drivers-overview` |
+| Snowflake Python API | SQLを書かずSnowflakeのresourceを操作する`snowflake.core` package | 3.3 | `docs-python-api-overview` |
+| RECORD_CONTENT | Kafka connectorが既定で作るmessage本体のVARIANT列 | 3.3 | `docs-kafka-connector-overview` |
+| Query pushdown | Sparkのlogical planの一部をSnowflake側で処理させる仕組み | 3.3 | `docs-spark-connector-overview` |
+| Storage integration | Cloud storageの資格情報を保持するaccount-level object | 3.3 | `docs-storage-integration-ddl` |
+| API integration | 外部HTTPS proxy serviceの呼び出しを許可するaccount-level object | 3.3 | `docs-api-integration-ddl` |
+| Git repository | Remote Git repositoryのcloneをSnowflake内に持つschema-level object | 3.3 | `docs-git-repository-ddl` |
+| External access integration | UDF／procedure handlerからの外部通信を許可するintegration | 3.3 | `docs-external-access-integration-ddl` |

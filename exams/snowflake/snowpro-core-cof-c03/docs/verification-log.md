@@ -17,3 +17,7 @@
 | 2026-08-16 | Objective 2.2 | Masking／row access／tag／differential privacy、Trust Center、hierarchical key／Tri-Secret Secure、alert／notification、replication／failover、lineageの公式docsを確認。policy図、本文、章末9問、関連Domain 5問、関連模擬7問へ対応。EditionとPreview／GA条件を本文・source notesへ記録。 |
 | 2026-08-16 | Objective 2.3 | Resource Monitor、warehouse credit、ACCOUNT_USAGE／WAREHOUSE_METERING_HISTORYの公式docsを確認。計算例、SQL、章末3問、関連Domain 2問、模擬1問へ対応。Latencyとmetered／billed creditの境界を確認。 |
 | 2026-08-17 | Domain 2 初学者レビュー | 図への導線とgrant方向、account identifierの用途別形式、masking／row access policyの実行手順を公式docsで再確認。42問の正解肢へ個別理由を追加し、Domain／模擬問題のdistractorを要件判断型へ修正。 |
+| 2026-08-30 | Objective 3.1 | stage種別／privilege、internal stageのencryption、directory table、file format、COPY INTOのcopy option、ON_ERROR／VALIDATION_MODE／VALIDATE()、COPY_HISTORY／LOAD_HISTORYの公式docsを確認。stage図、本文、章末12問、Domain 5問、模擬6問へ対応。 |
+| 2026-08-30 | Objective 3.2 | Snowpipe（auto-ingest／REST、課金、14日metadata）、Snowpipe Streaming、Stream（offset・METADATA$列・stale）、Task（RESUME・serverless・task graph上限）、Dynamic Table（TARGET_LAG・REFRESH_MODE）、Openflowの公式docsを確認。取り込み選定図、本文、章末16問、Domain 5問、模擬3問へ対応。OpenflowはGeneral Availabilityとregion可用性を確認のうえ本文へ反映。 |
+| 2026-08-30 | Objective 3.3 | driver一覧、Snowflake Python API、Kafka／Spark connector、storage／API／security／notification／external access integration、Git integrationの公式docsを確認。integration図、本文、章末10問、Domain 2問、模擬3問へ対応。 |
+| 2026-08-30 | Domain 3 ブラインド評価 | claude-haiku-4-5-20251001で問題品質受験とtextbook単独Coverage監査を実施。いずれも9問中9問正答、textbook根拠十分率100%、曖昧問題0件。初回に曖昧と記録されたM1-Q32の選択肢を差し替えて再実行し、レポートを`evals/`へ保存。 |

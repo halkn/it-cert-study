@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-question-quality-haiku-2026-08-30",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-08-30",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    3
+  ],
+  "model": {
+    "id": "claude-haiku-4-5-20251001",
+    "reasoning_effort": "not configurable for sub-agents; default effort used",
+    "selection_basis": "lowest-capability Claude model available as an independent sub-agent"
+  },
+  "source_revision": {
+    "git_commit": "3539465a5b1e1fca0bbe5ebd9584c4f98f2dcda8",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "9a196b619ac8ba534fde92447635720778013274347979b2432f72d1a44337be",
+    "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
+  },
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "3": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "questions": [
+    {
+      "id": "M1-Q25",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "storage integrationで資格情報を一元管理し、external stageから参照する構成。SQL文に認証情報を残さず、USAGE権限の付与で複数roleへ共有できる。"
+    },
+    {
+      "id": "M1-Q26",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "PUTはSnowSQLなどのclient機能でworksheetから実行できない。SnowsightのUIのアップロード機能かclientを使う必要がある。"
+    },
+    {
+      "id": "M1-Q27",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "FORCE = TRUEはロード済みファイルを強制的に再ロードする。既定ではCOPY INTOがロード済みファイルをスキップするため、このオプションで重複が発生する。"
+    },
+    {
+      "id": "M1-Q28",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "ON_ERROR = SKIP_FILEはerrorのあるファイルをスキップし、残りのファイルのロードを継続させる。要件に適合。"
+    },
+    {
+      "id": "M1-Q29",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "SINGLE = TRUEで1ファイルに統合、HEADER = TRUEで列見出しを含める。OVERWRITEとMATCH_BY_COLUMN_NAMEはこの要件に不要。"
+    },
+    {
+      "id": "M1-Q30",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "AUTO_INGEST = TRUEのpipeとcloud event notificationの組合せが、warehouseの常時起動なしでファイル到着直後にロードする構成。"
+    },
+    {
+      "id": "M1-Q31",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "SELECTではstreamは消費されない。DML文で初めてoffsetが進むため、同じ変更が繰り返し処理されて見える。"
+    },
+    {
+      "id": "M1-Q32",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "AのTARGET_LAGはbase dataに対する遅れの目標で確実に正しい。Cの最小60秒も仕様どおり。BのREFRESH_MODE AUTOの自動切り替えとDは誤り。"
+    },
+    {
+      "id": "M1-Q33",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "SQLから外部APIを呼び出すには、API integrationで呼び出し先を許可し、external functionでSQL関数として公開する構成を使う。"
+    },
+    {
+      "id": "M1-Q34",
+      "selected_option_ids": [
+        "A",
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "GitHub private repositoryへのアクセスにはsecret（A）、git_https_apiのAPI integration（B）、HTTPSのORIGINを指定したGit repository object（C）が必要。external stageとstorage integrationはcloud storage向けで不要。"
+    }
+  ]
+}
