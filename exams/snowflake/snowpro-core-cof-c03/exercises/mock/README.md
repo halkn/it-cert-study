@@ -38,3 +38,22 @@ ID は `M<set>-Q<number>`（例: `M1-Q01`）を使用し、各セットの出題
 - [M1-Q32: 宣言的なpipelineの選択](m1-q32.md)
 - [M1-Q33: 外部API呼び出しの構成](m1-q33.md)
 - [M1-Q34: Git管理のSQLを実行する構成](m1-q34.md)
+
+## Set 1 — Domain 4
+
+- [M1-Q35: BIの待機だけが悪化](m1-q35.md)
+- [M1-Q36: 集約の大量spill](m1-q36.md)
+- [M1-Q37: 配賦と請求の差](m1-q37.md)
+- [M1-Q38: 狭いfilterとJOIN増大](m1-q38.md)
+- [M1-Q39: まれな大規模scan](m1-q39.md)
+- [M1-Q40: 顧客IDの少数行検索](m1-q40.md)
+- [M1-Q41: Standardの日付範囲検索](m1-q41.md)
+- [M1-Q42: 安定した単一tableの反復集約](m1-q42.md)
+- [M1-Q43: suspend後の結果再利用](m1-q43.md)
+- [M1-Q44: COUNTとrow access policy](m1-q44.md)
+- [M1-Q45: cacheを揃えた性能比較](m1-q45.md)
+- [M1-Q46: JSON明細の数量集計](m1-q46.md)
+- [M1-Q47: PDF一覧と本文の抽出](m1-q47.md)
+- [M1-Q48: 明細を残した顧客合計](m1-q48.md)
+- [M1-Q49: 顧客ごとの最新有効record](m1-q49.md)
+- [M1-Q50: 重複を残す累積計算](m1-q50.md)

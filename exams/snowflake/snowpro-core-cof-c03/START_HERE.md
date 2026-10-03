@@ -36,6 +36,8 @@
 - [3.2 自動データ取り込みを実行する](textbook/domain-3/02-automated-ingestion.md)
 - [3.3 ConnectorとIntegrationを識別する](textbook/domain-3/03-connectors-integrations.md)
 
+続きの[Domain 4](textbook/domain-4/README.md)には性能評価・最適化・cache・データ変換の本文、図、問題があります。現行Study Guideとの再照合待ちで`review`のため、学習完了の判定にはまだ使えません。
+
 ## 教材完成後の学習順序
 
 1. [Syllabus](docs/syllabus.md)で試験全体と用語を眺める。

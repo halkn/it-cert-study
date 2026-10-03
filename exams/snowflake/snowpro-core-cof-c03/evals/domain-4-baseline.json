@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-4-baseline-2026-10-03",
+  "evaluation_type": "textbook-only",
+  "evaluated_on": "2026-10-03",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    4
+  ],
+  "model": {
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model; independent agent with no conversation history"
+  },
+  "source_revision": {
+    "git_commit": "22f5580c4e85eae574eca8cd8548fb6eacddc786",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": [
+      "textbook/domain-4/*.md"
+    ]
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "questions": [
+    {
+      "id": "M1-Q35",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "queueは混雑・起動待ち・lockを区別する"
+        }
+      ],
+      "notes": "overload queueが増える同時利用にはscale out。Bのsizeは単一queryの実行・メモリー向け、CのQASは並列化可能な処理部分の高速化、DのAUTO_SUSPENDはprovisioning待ちに関係し症状に合わない。",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q36",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "spillは中間データがメモリーに収まらない兆候"
+        }
+      ],
+      "notes": "AとDはメモリー増加と入力削減。Bのcluster追加は単一queryのメモリーを合算・分割しない。Cの結果再利用設定は退避抑制の対策ではない。",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q37",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "配賦creditはwarehouse請求全体ではない"
+        }
+      ],
+      "notes": "Cはidleを含まない実行配賦とmeteredとの差を説明。AとDの等秒数・idle均等配賦は資源消費基準と異なる。BのQASは別列。",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q38",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "pruningは要件に対して読み取り範囲が狭いかを評価する"
+        },
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "exploding joinは入力と出力の行数を比べる"
+        }
+      ],
+      "notes": "Bはfilter・配置、Cは結合条件・key一意性・対応行数を確認。Aのprovisioning待ち、DのsizeやAUTO_SUSPENDだけではscanとJOIN増大を診断できない。",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q39",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "QASはeligibleな処理の一部をserverless computeへ渡す"
+        },
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "対象と費用を確認して設定する"
+        }
+      ],
+      "notes": "QASは並列化可能な大きなscanに追加computeを使い、eligible判定・見積りとscale factor 2を確認。Bは配置変更、Cは結果保存。Dの0は課金停止でなく上限なし。",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q40",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "Search Optimizationは巨大tableから少数行を探す"
+        }
+      ],
+      "notes": "Dのsearch access pathは等価検索の候補partitionを減らす。Aは頻繁な範囲filter向け配置、Bの通常viewは定義保存のみ、Cのscale outはpartition候補を減らさない。",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q41",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "改善する対象で4つの手法を分ける"
+        },
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "clustering keyは頻繁なfilterに合わせて配置を整える"
+        }
+      ],
+      "notes": "Cは日付範囲の値域重なりを減らす配置でStandardでも利用可能。Aは集約保存、Bはcompute追加、DはEnterprise以上のSearch Optimizationで要件と異なる。",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q42",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "materialized viewは繰り返す計算結果を保存する"
+        }
+      ],
+      "notes": "Bは結果保存・base table変更に合わせた自動維持。Aのcacheは同一SQL再利用条件依存、Cの通常viewは定義のみ、Dの配置は集約結果を保存しない。",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q43",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/03-caching.md",
+          "heading": "何を再利用するのかを分ける"
+        },
+        {
+          "file": "textbook/domain-4/03-caching.md",
+          "heading": "warehouseのlocalにあるtable dataを読む"
+        }
+      ],
+      "notes": "Aはsuspendでlocal破棄、Bは保存結果が別管理。Cはlocal再構築を結果再利用の必須条件としているが異なる。Dは同じwarehouse名でもresume後coldである説明に反する。",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q44",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/03-caching.md",
+          "heading": "metadataで読み取りを省く"
+        }
+      ],
+      "notes": "Dはrow access policyの可視行判定にscanが必要との説明。Aはmetadataのみを期待、Bはpolicyが影響しないとするため反する。CはCOUNT形式の変更でpolicy判定を省ける根拠がない。",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q45",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/03-caching.md",
+          "heading": "cacheを考慮した比較の手順"
+        }
+      ],
+      "notes": "Cは結果再利用無効・同SQL/data/sizeでcoldとwarmを分ける。AとBは保存結果再利用を含むため比較できない。DはUSE_CACHED_RESULT=FALSEがwarehouse cache等も空にするとの誤り。",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q46",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "JSONのpathで値を取り出し、ARRAYを行へ展開する"
+        },
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "集約は出力の粒度とNULLの扱いを決める"
+        }
+      ],
+      "notes": "BはFLATTENで展開しVALUEのqtyをcastしてSUM。Aはitems[0]だけで要素を落とす。Cは要素数、Dはqty非NULL件数で数量の合計でない。",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q47",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "非構造化fileはmetadataと内容を区別する"
+        }
+      ],
+      "notes": "Aはdirectory tableがmetadata一覧を提供、Bは内容抽出に別handler処理が必要。CはPDFのkeyをdirectoryが得る誤り、DはFILE_URLを金額内容とみなす誤り。",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q48",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "window functionは各行を残して関連する行を計算する"
+        }
+      ],
+      "notes": "Dは明細を残して顧客ごとの全合計。SUMはNULL除外。AはGROUP BYで縮約、Bは顧客partitionなしの全体合計、Cは現在行までの累積で顧客全体合計でない。",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q49",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "QUALIFYで顧客ごとの1件を取り出す"
+        },
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "ROWSとRANGE、順位関数を使い分ける"
+        }
+      ],
+      "notes": "CはWHEREで有効recordへ先に絞り、一意idで順序を固定したROW_NUMBERをQUALIFY。AのRANKは同率複数1位、BはMAX時刻のみ、DはWHEREでwindow条件を置けない。",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    },
+    {
+      "id": "M1-Q50",
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "結果の意味を保ってscanと中間データを減らす"
+        },
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "ROWSとRANGE、順位関数を使い分ける"
+        }
+      ],
+      "notes": "BはUNION ALLで重複保持、Cは先頭から現在までのROWS累積。Aは現在から末尾frame、DはUNIONの重複除去で要件に反する。",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "ambiguous": false,
+      "correct": true
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "4": 100.0
+    },
+    "textbook_evidence_percent": 100.0,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "content_hashes": {
+    "textbook_sha256": "11edd53ae1227de03b79dfef8add4fbcb41b3d1e57bb41afa5500b604fdfd6cd",
+    "questions_sha256": "0b3e72bc19e8f5494bc938344fd8ef5bf986e030d1e604586f52ef52882dfbcf",
+    "coverage_matrix_sha256": "a874e7958b7bab78b968d4912cd1f373239d463a54cd1b30377df77777c01e48"
+  }
+}

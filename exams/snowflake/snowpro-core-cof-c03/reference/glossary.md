@@ -103,3 +103,24 @@
 | API integration | 外部HTTPS proxy serviceの呼び出しを許可するaccount-level object | 3.3 | `docs-api-integration-ddl` |
 | Git repository | Remote Git repositoryのcloneをSnowflake内に持つschema-level object | 3.3 | `docs-git-repository-ddl` |
 | External access integration | UDF／procedure handlerからの外部通信を許可するintegration | 3.3 | `docs-external-access-integration-ddl` |
+
+## Domain 4 — Objectives 4.1〜4.4
+
+| 用語 | 定義 | Objective | Source ID |
+|---|---|---|---|
+| Query Profile | 処理ノード、行数、scan、spill等からクエリの動作を調べる実行情報 | 4.1 | `docs-query-profile` |
+| Query Insights | 検出した性能上の条件と調査・改善の提案 | 4.1 | `docs-query-insights` |
+| spill | メモリーに収まらない中間データのlocal／remote storageへの退避 | 4.1 | `docs-memory-spillage` |
+| exploding join | 入力に対してJOIN後の行数が大きく増える状態 | 4.1 | `docs-query-insights` |
+| query attribution | 資源消費に基づくクエリ実行へのcompute creditの配賦。idleは含まない | 4.1 | `docs-query-attribution-history` |
+| selectivity | filterが対象行を絞り込む程度 | 4.2 | `docs-performance-storage` |
+| cardinality | 列または式の異なる値の数 | 4.2 | `docs-clustering-keys` |
+| Query Acceleration Service | eligibleな処理の一部をshared serverless computeへ渡すサービス | 4.2 | `docs-query-acceleration` |
+| search access path | 値とmicro-partitionを結び付ける永続的な検索構造 | 4.2 | `docs-search-optimization` |
+| materialized view | SELECTの結果を保存し、Snowflakeが維持するview | 4.2 | `docs-materialized-views` |
+| persisted query result | 実行後に一定期間保存されるクエリ結果 | 4.3 | `docs-persisted-results` |
+| warehouse cache | 稼働中warehouseのlocalに保持するtable data | 4.3 | `docs-warehouse-cache` |
+| USE_CACHED_RESULT | 保存結果の再利用を制御するsession parameter | 4.3 | `docs-parameters` |
+| FLATTEN | ARRAYやOBJECT等の複合値を複数行へ展開するtable function | 4.4 | `docs-flatten` |
+| window frame | partition内で現在行の計算対象とする範囲 | 4.4 | `docs-window-functions` |
+| QUALIFY | window function計算後の値で行を絞る句 | 4.4 | `docs-qualify` |

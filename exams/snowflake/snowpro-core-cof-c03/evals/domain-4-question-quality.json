@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-4-question-quality-2026-10-03",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-10-03",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    4
+  ],
+  "model": {
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model; independent agent with no conversation history"
+  },
+  "source_revision": {
+    "git_commit": "22f5580c4e85eae574eca8cd8548fb6eacddc786",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "questions": [
+    {
+      "id": "M1-Q35",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Overload待機と同時利用者への追従にはmulti-clusterのscale outが合う。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q36",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "単独実行時のspillはメモリー増加と入力削減で対処する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q37",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "実行へのcompute配賦にidle時間は含まれない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q38",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "scan範囲はfilterとpartition配置、行数増大はJOIN条件とkeyの重複を調べる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q39",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "要件はQASによる追加compute。scale factorの評価が直接的。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q40",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "一意性の高い等価検索で候補を減らすにはSearch Optimizationが適する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q41",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Standardで日付範囲scanを改善する配置手段としてclusteringが合う。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q42",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "反復する単一table集約の結果を自動維持する用途に合う。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q43",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Suspendでlocal cacheは失われるが、保存結果の再利用可否には直結しない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q44",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "row access policyにより可視行の判定が必要になる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q45",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "結果再利用を除き、local cacheのcold/warm条件も分ける。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q46",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "配列を展開して各要素のqtyを数値化し合計する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q47",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "directory tableは一覧metadataを提供し、PDF本文の抽出は別の内容処理が要る。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q48",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "PARTITION BY customerの全partition集計なら明細を保てる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q49",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "一意idでtie-breakし、WHEREで先に有効行を絞ってQUALIFYする。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q50",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "重複を保持するUNION ALLと、先行行からの累積ROWS frameを選ぶ。",
+      "correct": true
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "4": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "0b3e72bc19e8f5494bc938344fd8ef5bf986e030d1e604586f52ef52882dfbcf",
+    "coverage_matrix_sha256": "a874e7958b7bab78b968d4912cd1f373239d463a54cd1b30377df77777c01e48"
+  }
+}

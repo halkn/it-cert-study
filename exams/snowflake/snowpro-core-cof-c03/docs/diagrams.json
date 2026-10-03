@@ -103,33 +103,56 @@
     },
     {
       "id": "d4-query-bottlenecks",
-      "objective_ids": ["4.1", "4.2"],
+      "objective_ids": [
+        "4.1",
+        "4.2"
+      ],
       "learning_goal": "Query Profile の症状から適切な最適化手段へ進める",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "source_ids": [
+        "docs-query-profile",
+        "docs-query-history",
+        "docs-query-insights",
+        "docs-memory-spillage",
+        "docs-reducing-queues"
+      ],
+      "format": "mermaid",
+      "file": "diagrams/domain-4/query-bottlenecks.md",
+      "status": "review",
+      "last_verified": "2026-10-03"
     },
     {
       "id": "d4-optimization-selection",
-      "objective_ids": ["4.2"],
+      "objective_ids": [
+        "4.2"
+      ],
       "learning_goal": "clustering、search optimization、materialized view、query acceleration を比較できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "source_ids": [
+        "docs-performance-options",
+        "docs-performance-storage",
+        "docs-query-acceleration",
+        "docs-materialized-views"
+      ],
+      "format": "mermaid",
+      "file": "diagrams/domain-4/optimization-selection.md",
+      "status": "review",
+      "last_verified": "2026-10-03"
     },
     {
       "id": "d4-cache-layers",
-      "objective_ids": ["4.3"],
+      "objective_ids": [
+        "4.3"
+      ],
       "learning_goal": "result、metadata、warehouse cache の場所と再利用条件を区別できる",
-      "source_ids": [],
+      "source_ids": [
+        "docs-persisted-results",
+        "docs-warehouse-cache",
+        "docs-micro-partitions",
+        "docs-count"
+      ],
       "format": "mermaid",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "file": "diagrams/domain-4/cache-layers.md",
+      "status": "review",
+      "last_verified": "2026-10-03"
     },
     {
       "id": "d5-data-protection-lifecycle",
@@ -150,6 +173,22 @@
       "file": null,
       "status": "planned",
       "last_verified": null
+    },
+    {
+      "id": "d4-transformation-grain",
+      "learning_goal": "集約とwindow functionの出力粒度およびQUALIFYの処理段階を区別できる",
+      "objective_ids": [
+        "4.4"
+      ],
+      "file": "diagrams/domain-4/transformation-grain.md",
+      "source_ids": [
+        "docs-aggregate-functions",
+        "docs-window-functions",
+        "docs-qualify"
+      ],
+      "format": "mermaid",
+      "status": "review",
+      "last_verified": "2026-10-03"
     }
   ]
 }
