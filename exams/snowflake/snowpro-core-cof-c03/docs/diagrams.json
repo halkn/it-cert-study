@@ -189,6 +189,7 @@
       "format": "mermaid",
       "status": "complete",
       "last_verified": "2026-10-03"
-    }
+    },
+    {"id":"d2-cost-management-selection","objective_ids":["2.3"],"learning_goal":"費用帰属の分類、Budgetの予測通知、Resource Monitorの停止を要件から選べる","source_ids":["docs-cost-attributing","docs-budgets","docs-resource-monitors","docs-budget-custom-actions"],"format":"mermaid","file":"diagrams/domain-2/cost-management-selection.md","status":"complete","last_verified":"2026-10-03"}
   ]
 }

@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-domain-2-question-quality-2026-10-03",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-10-03",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    2
+  ],
+  "model": {
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "利用可能な汎用モデルの最低性能モデル。独立した新規エージェントへ会話履歴を渡さず実施。"
+  },
+  "source_revision": {
+    "git_commit": "746152c15755b7876f45cf724bf4186a003a68b0",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "questions": [
+    {
+      "id": "M1-Q14",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Managed access schemaによりgrant判断をschema ownerへ集約し、security role側がownerを担う。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q15",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "人間のSSO/MFA、serviceのkey pair、interactive appのOAuthを分離する。AとFはserviceに人間のpromptを持ち込む。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q16",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Secondary rolesで両database権限を使いつつprimary roleを新規objectのownerにできる。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q17",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "分類tag、tag-based masking、lineageが要件に対応。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q18",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "末尾4桁の表示制御はmasking、差分プライバシーとbudgetはprivacy policyと解釈。Aggregation policyは利用者を集計に制限する目的と紛らわしく、症例文の『集計』だけだと選択の揺れがありうる。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q19",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "継続finding検出はscanner、PagerDuty通知はnotification integration、UDF内部処理観測はlogging/tracingとevent table。Bはalert履歴がsourceという点が不自然。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q20",
+      "selected_option_ids": [
+        "B",
+        "D",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "別regionの書込可能primaryへの切替はfailover group、refreshとpromotion手順、org/account指定のidentifier。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q21",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "通知、即時suspend、warehouse metering履歴でのusage分析。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q22",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "CMK連携、Business Critical以上、CMK運用回復策、periodic rekey要件。Fは回復手順不要と断定しており不適切。Dは正答として必要だが、設問はCMKとrekeyのavailability/recoveryのどの側面を指すか少し広い。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q23",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "新規データ用alert、condition/action、webhook integration。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q24",
+      "selected_option_ids": [
+        "B",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "USERADMINがuser/role、SECURITYADMINがgrant、SYSADMINがwarehouse/objectを管理する責務分担。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q51",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "同一user/warehouse内で部門ごとのquery compute帰属にはquery tagとQUERY_ATTRIBUTION_HISTORYが適切。idleは別配賦方針という前提。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q52",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "Tag/valueで対象を動的にまとめるcustom budgetと月次limit/forecast通知。『credit超過の見込み』はforecastと読み取れる。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q53",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "設問で不足privilegeをTagへbudget対象として適用する権限と限定しているためAPPLYBUDGET。用語が固有で知識なしでは推測困難な点はある。",
+      "correct": true,
+      "evidence": []
+    },
+    {
+      "id": "M1-Q54",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Forecastは実績limit超過を意味せず、budget通知自体はwarehouse停止を行わない。Credit limitは請求額上限保証ではない。Dは予測通知からresource monitorの停止を誤って推論している。",
+      "correct": true,
+      "evidence": []
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "2": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "notes": "初回評価の指摘を修正後、新規独立2エージェントで全15問を解答・確定し、親がregistryで採点。回答確定後の変更はreviewからcompleteへの状態表示とDomain READMEの進捗・評価リンクのみで、本文の技術説明と問題文は変更していない。最終表示を含むcontent hashを保存。モデルの任意の品質指摘は各notesに保持。",
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "3a334d1d65b989cc375ad7030282b6725fbafb9a5865e12ce592b1fd1c1513ad",
+    "coverage_matrix_sha256": "d7822df8bcf3608961434775e3986f73bba0564da3b97808b9c8cfdb5220c6ab"
+  }
+}

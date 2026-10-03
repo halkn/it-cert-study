@@ -1,9 +1,7 @@
 # 2.3 監視とコスト管理を説明する
 
-> Status: draft
-> Last verified: 2026-08-16
-
-日本語版Study Guideのコストセンタータグ付け・予算は未執筆です。既存3 Topicの本文・演習は利用できますが、この章だけでObjective 2.3の学習完了とは扱いません。
+> Status: complete
+> Last verified: 2026-10-03
 
 ## この章で学ぶこと
 
@@ -14,6 +12,8 @@
 - Resizeとauto-suspendの課金境界を説明する
 - `SNOWFLAKE.ACCOUNT_USAGE`からhistorical usageとmetadataを調べる
 - 現在状態を見る`SHOW`／Information Schemaと、履歴分析を使い分ける
+- 専用warehouse、共有warehouse、共有applicationごとに費用の帰属方法を選ぶ
+- Budgetの月次予測通知とResource Monitorの停止actionを使い分ける
 
 ## 前提知識
 
@@ -33,6 +33,11 @@
 | ACCOUNT_USAGE | Account内のhistorical usageとobject metadataを提供するread-only schema |
 | latency | Event発生からviewへ反映されるまでの遅延 |
 | retention | Historical recordを参照できる期間 |
+| コストセンター（cost center） | 費用を帰属させる部門・プロジェクトなどの単位 |
+| オブジェクトタグ（object tag） | Objectへ分類名と文字列値を関連付けるmetadata |
+| クエリタグ（QUERY_TAG） | 個々のqueryを識別・分類するsession parameter |
+| 予算（Budget） | Accountまたは対象object群のcredit使用量を月次limitと比較し、超過予測を通知する機能 |
+| APPLYBUDGET | Objectやtagをcustom budgetへ追加・削除するためのprivilege |
 
 ## 試験範囲との対応
 
@@ -41,15 +46,19 @@
 | Resource Monitorによるcost／warehouse monitoring | [quotaとtriggerでwarehouseを制御する](#resource-monitors) | `docs-resource-monitors` |
 | Virtual Warehouseのcredit使用量計算 | [rate × cluster × timeで概算する](#warehouse-credit-usage) | `docs-warehouses-overview`, `docs-warehouse-considerations` |
 | ACCOUNT_USAGE schema | [履歴とmetadataをSQLで分析する](#account-usage) | `docs-account-usage`, `docs-warehouse-metering-history` |
+| コストセンタータグ付け | [部門へ費用を帰属させる](#cost-center-tagging) | `docs-cost-attributing`, `docs-object-tagging-work` |
+| 予算 | [月次credit超過を予測する](#budgets) | `docs-budgets`, `docs-custom-budgets` |
 
 公式ObjectiveとTopicは[COF-C03 Syllabus](../../docs/syllabus.md#23-監視とコスト管理を説明する)から公式Study Guideへ辿って確認できます。
 
 ## 予防・測定・請求を分ける
 
-Cost管理では三つの役割を混同しないようにします。
+Cost管理では分類、測定、予測、停止、請求を分けます。
 
 - Resource Monitorはuser-managed warehouseのcredit usageをquotaと比較し、通知や停止を行います。
+- Tagは費用を部門などへ帰属させる分類情報です。
 - Account Usage viewは実績を集計・分析します。
+- Budgetは対象のcredit使用量を集め、月末までの超過を予測して通知します。
 - Currencyでの請求額はmetered creditだけでなく契約単価、cloud services adjustment、serverless、storageなども関係します。
 
 <a id="resource-monitors"></a>
@@ -201,7 +210,9 @@ ORDER BY usage_day, compute_credits DESC;
 | 要件 | 選ぶ機能／情報 |
 |---|---|
 | 75%でwarningし100%でwarehouse停止 | Resource Monitor trigger |
-| 全serverless serviceを含むcurrency budget | Budget／usage viewと契約単価。Resource Monitorだけではない |
+| Serverlessを含む月次creditの超過予測を通知 | Account budget、または対応objectを選ぶcustom budget |
+| 部門別にcomputeを帰属・集計 | Object tag／QUERY_TAGとusage view |
+| Currencyの請求額を分析 | Billed usageと契約単価、storageなどの費用。Budgetのlimitはcredit |
 | Warehouse別の過去1か月creditを集計 | `WAREHOUSE_METERING_HISTORY` |
 | 現在のresource monitor割当を確認 | `SHOW RESOURCE MONITORS` |
 | 複数accountのusageを横断 | `ORGANIZATION_USAGE` |
@@ -224,22 +235,99 @@ ORDER BY usage_day, compute_credits DESC;
 - `CREDITS_ATTRIBUTED_COMPUTE_QUERIES`にはwarehouse idle timeが含まれない。
 
 <a id="cost-center-tagging"></a>
+## コストセンタータグ付け — 部門へ費用を帰属させる
 
-## コストセンタータグ付け（未執筆）
+Account全体のcreditだけでは、どの部門のworkloadを改善すべきか分かりません。費用を負担する部門やprojectをコストセンター（cost center）として定義し、resourceやuserへ分類情報を付けて使用履歴と対応させます。これがcost attributionです。部門へ利用量を見せるshowbackや、部門へ費用を配賦するchargebackに使います。
 
-本文・演習は[Issue #8](https://github.com/halkn/it-cert-study/issues/8)で補完します。
+Object tagはschema内に定義するobjectで、割当先ごとに文字列の値を持ちます。`cost_center = 'finance'`なら、`cost_center`が分類名、`finance`が帰属先です。Tag自体は使用量を測定せず、warehouseを停止したりSQLの参照権限を与えたりもしません。[2.2のobject tagging](02-data-governance.md#object-tagging)と同じ仕組みを、費用分類へ使っています。
+
+### 専用resourceと共有resourceでは帰属の粒度が異なる
+
+| 使用形態 | 分類する対象 | 使用量の根拠と境界 |
+|---|---|---|
+| 部門専用warehouse | Warehouseへobject tag | `TAG_REFERENCES`と`WAREHOUSE_METERING_HISTORY`をobject IDで結合。Warehouse全体のcomputeを帰属できる |
+| 複数部門のuserが同じwarehouseを使う | Userへobject tag | User名で`QUERY_ATTRIBUTION_HISTORY`と対応させ、userのquery computeを部門別に集計する |
+| 同じapplication userが複数部門のSQLを実行する | Queryごとの`QUERY_TAG` | `QUERY_ATTRIBUTION_HISTORY`のquery tagで分類する。Userやwarehouseの固定tagだけでは部門を区別できない |
+
+Queryへ帰属したcomputeにはwarehouseのidle時間が含まれません。共有warehouseの全使用量を部門へ配賦する場合は、idleをquery使用量の比率で按分するなど、組織としての配賦規則を別に決めます。Query creditの合計をそのままwarehouseの全額とみなしません。
+
+### Tagを付け、使用履歴を部門別に集計する
+
+次は、finance専用の既存warehouseへtagを付ける構成例です。`governance.tags` schemaと`finance_wh`が存在する前提です。Tag作成にはschemaの`CREATE TAG`と親database／schemaの権限、割当にはaccountの`APPLY TAG`、またはtagの`APPLY`と対象warehouseの`OWNERSHIP`が必要です。
+
+```sql
+CREATE TAG governance.tags.cost_center
+  ALLOWED_VALUES 'finance', 'engineering';
+
+ALTER WAREHOUSE finance_wh
+  SET TAG governance.tags.cost_center = 'finance';
+```
+
+履歴を参照できるroleで、当月のwarehouse computeを集計します。Tagのdatabase・schema・名前・object種類を限定してから結合するため、別の分類tagによる二重集計を避けられます。未分類のwarehouseも残します。
+
+```sql
+SELECT
+  COALESCE(t.tag_value, 'untagged') AS cost_center,
+  SUM(w.credits_used_compute) AS compute_credits
+FROM SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY w
+LEFT JOIN SNOWFLAKE.ACCOUNT_USAGE.TAG_REFERENCES t
+  ON w.warehouse_id = t.object_id
+  AND t.domain = 'WAREHOUSE'
+  AND t.tag_database = 'GOVERNANCE'
+  AND t.tag_schema = 'TAGS'
+  AND t.tag_name = 'COST_CENTER'
+WHERE w.start_time >= DATE_TRUNC('month', CURRENT_TIMESTAMP())
+GROUP BY cost_center;
+```
+
+これは現在のtag割当とusageを対応させる集計です。途中で部門を付け替えた場合、過去の帰属を自動復元する履歴台帳としては扱いません。履歴分析には各viewの反映遅延も考慮します。
+
+共有applicationでは、SQLを発行するsessionの`QUERY_TAG`を部門ごとに設定します。これはschema objectであるobject tagとは異なるparameterです。Session内で後続queryへ適用されるため、部門が変わったら変更し、session再利用時に前の値を引き継がないようにします。
+
+```sql
+ALTER SESSION SET QUERY_TAG = 'cost_center=finance';
+```
+
+基本的なtag作成・割当は全Editionで利用できます。自動tag propagationやtag-based maskingはEnterprise Edition以上です。費用分類を行う要件と、policyや自動伝播を使う要件のEdition条件を区別します。
 
 <a id="budgets"></a>
+## 予算 — 月次credit超過を予測する
 
-## 予算（未執筆）
+月途中の実績がlimit未満でも、同じペースが続くと月末に超える場合があります。Budgetはcredit使用量から超過を予測し、対応する時間を確保するために通知します。Spending limitの単位は通貨ではなくcreditで、期間はUTCの暦月です。請求額やstorage料金全体を上限以内へ固定する機能ではありません。
 
-本文・演習は[Issue #8](https://github.com/halkn/it-cert-study/issues/8)で補完します。
+Account budgetはaccountのcredit使用量全体を監視します。Serverlessも対象ですが、対応は`METERING_HISTORY`のservice typeの可用性に依存します。Custom budgetは部門・projectなどの対象群を選び、対応するobjectのcomputeを監視します。Warehouseに加え、pipeのSnowpipe、tableのAutomatic Clustering、serverless taskなどを対象にできます。任意の全object・全費用が対応するとは仮定せず、公式の対応一覧を確認します。
+
+### Custom budgetの対象を選ぶ
+
+対象は個別objectとして追加するか、object tagと値の組で選びます。たとえば`cost_center = 'finance'`をbudgetへ追加すると、その組を持つ対応objectが対象になります。単にtagを作成しただけではbudgetへ追加されません。
+
+Tag経由なら対象objectの増減に追随でき、同じobjectを複数custom budgetへ含められます。個別追加は1 objectにつき1 custom budgetで、別budgetへ追加すると前のbudgetから外れます。同じbudgetに個別指定とtag指定の両方で入っても使用量は一度だけ数えます。
+
+設定では、対象選択、月次credit limit、通知先を揃えます。Snowsightでcustom budgetを作成するには、先にaccount budgetを有効化します。SQLではaccount budgetが無効でもcustom budgetを作成できます。メール通知には検証済みの宛先が必要で、SQL経由ではnotification integrationの設定とSNOWFLAKE applicationへの`USAGE` grantも必要です。[2.2のnotification](02-data-governance.md#notifications)と費用監視を組み合わせます。
+
+### 監視権限と対象追加権限を分ける
+
+Account budgetの管理はSNOWFLAKE applicationの`BUDGET_ADMIN`、閲覧は`BUDGET_VIEWER`で分けます。Custom budgetのinstanceには`ADMIN`と`VIEWER`があります。さらに両budgetで`SNOWFLAKE.USAGE_VIEWER` database roleなどの関連権限が必要で、budgetを見られることだけでは対象を追加できません。
+
+Custom budget作成には`SNOWFLAKE.BUDGET_CREATOR` database role、格納schemaの`CREATE SNOWFLAKE.CORE.BUDGET`、親database／schemaの`USAGE`が必要です。対象の追加・削除にはそのobjectの`APPLYBUDGET`、tagによる選択にはそのtagの`APPLYBUDGET`と親database／schemaの`USAGE`が必要です。Tagをobjectへ付ける`APPLY`と、tagをbudgetへ追加する`APPLYBUDGET`は別の権限です。
+
+### 予測通知は超過直前の強制停止とは異なる
+
+Budgetの基本のlimitは通知に使います。Limit設定だけではwarehouseを停止しません。Warehouseのquota到達時に組み込みの停止actionを実行する要件はResource Monitorに対応します。
+
+現行Budgetには、予測使用量または実績使用量のthresholdでuser-defined stored procedureを呼ぶcustom actionもあります。停止処理を実装することもできますが、owner's rightsのprocedure、関連grant、action設定が必要です。「Budgetでは停止できない」と一括りにせず、標準のlimit通知と追加実装した処理を区別します。
+
+Budgetにはusage反映・refreshの遅延があります。既定refresh intervalは最大6.5時間で、low latency設定では1時間です。Low latency化はbudget自身のcompute費用を増やします。Budget運用にもserverless測定処理とmetadata storageの費用がかかるため、通知と停止を無遅延の厳密な請求上限保証とは扱いません。
+
+[費用の分類・予測・停止の図](../../diagrams/domain-2/cost-management-selection.md)で、同じtagを帰属分析とcustom budgetの対象選択に再利用する流れを確認してください。
 
 ## 確認問題
 
 - [C2-2.3-Q01: Resource Monitor](../../exercises/chapter/c2-2.3-q01.md)
 - [C2-2.3-Q02: Warehouse credit計算](../../exercises/chapter/c2-2.3-q02.md)
 - [C2-2.3-Q03: ACCOUNT_USAGE](../../exercises/chapter/c2-2.3-q03.md)
+- [C2-2.3-Q04: 費用分類の粒度](../../exercises/chapter/c2-2.3-q04.md)
+- [C2-2.3-Q05: 予算の単位と動作](../../exercises/chapter/c2-2.3-q05.md)
 
 ## 章のまとめ
 
@@ -247,6 +335,9 @@ ORDER BY usage_day, compute_credits DESC;
 - Credit計算ではsize rate、active cluster数、各running intervalを分ける。
 - Currency costを求めるにはbilled creditと契約単価が必要である。
 - Account Usageは履歴分析に使い、view固有のlatency／retentionを前提にする。
+- 専用resourceはobject tag、共有applicationのqueryはQUERY_TAGで帰属の粒度を揃える。
+- Budgetは月次creditの超過予測を通知し、標準limitだけでは停止しない。
+- Custom budgetの対象追加にはAPPLYBUDGETが必要で、閲覧権限とは異なる。
 
 ## 次に学ぶこと
 
@@ -259,3 +350,10 @@ ORDER BY usage_day, compute_credits DESC;
 - `docs-warehouse-considerations` — https://docs.snowflake.com/en/user-guide/warehouses-considerations
 - `docs-account-usage` — https://docs.snowflake.com/en/sql-reference/account-usage
 - `docs-warehouse-metering-history` — https://docs.snowflake.com/en/sql-reference/account-usage/warehouse_metering_history
+- `docs-cost-attributing` — https://docs.snowflake.com/en/user-guide/cost-attributing
+- `docs-object-tagging-work` — https://docs.snowflake.com/en/user-guide/object-tagging/work
+- `docs-budgets` — https://docs.snowflake.com/en/user-guide/budgets
+- `docs-custom-budgets` — https://docs.snowflake.com/en/user-guide/budgets/custom-budget
+- `docs-budget-costs` — https://docs.snowflake.com/en/user-guide/budgets/cost
+- `docs-budget-custom-actions` — https://docs.snowflake.com/en/user-guide/budgets/custom-actions
+- `docs-budget-tutorial` — https://docs.snowflake.com/en/user-guide/tutorials/budgets

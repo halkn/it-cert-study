@@ -70,6 +70,12 @@
 | Data lineage | Sourceからtargetへのdata movementまたはobject dependencyの関係 | 2.2 | `docs-data-lineage` |
 | Resource Monitor | Warehouse creditをquotaと比較して通知／停止するobject | 2.3 | `docs-resource-monitors` |
 | WAREHOUSE_METERING_HISTORY | Warehouse別のhistorical credit usageを提供するAccount Usage view | 2.3 | `docs-warehouse-metering-history` |
+| Cost center | 部門・projectなど費用を帰属する単位 | 2.3 | `docs-cost-attributing` |
+| Showback／chargeback | 使用費用を部門へ可視化する／配賦する運用 | 2.3 | `docs-cost-attributing` |
+| QUERY_TAG | Queryの分類情報を持つsession parameter。Object tagとは異なる | 2.3 | `docs-cost-attributing` |
+| Budget | UTC暦月のcredit使用量をlimitと比較し、超過予測を通知する機能 | 2.3 | `docs-budgets` |
+| Custom budget | 対応objectを個別指定またはtagと値で選ぶ予算 | 2.3 | `docs-custom-budgets` |
+| APPLYBUDGET | Object・tagをbudget対象へ追加・削除する権限。Tag割当のAPPLYとは異なる | 2.3 | `docs-budgets`, `docs-custom-budgets` |
 
 ## Domain 3 — Objectives 3.1〜3.3
 
