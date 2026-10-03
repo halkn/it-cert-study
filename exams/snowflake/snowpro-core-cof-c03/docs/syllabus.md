@@ -1,6 +1,6 @@
 # SnowPro Core COF-C03 Syllabus
 
-基準は英語版 Snowflake 公式 *SnowPro Core COF-C03 Exam Study Guide*（2026-07-08 更新）です。以下は公式目標とトピックを教材向けに日本語で再構成したものです。日本語版Study Guideとの同等性は未検証であり、確認状態は `sources.json` に記録します。原文は [公式 Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf) で確認してください。
+基準は英語版 Snowflake 公式 *SnowPro Core COF-C03 Exam Study Guide*（2026-07-08 更新）です。以下は公式目標とトピックを教材向けに日本語で再構成したものです。日本語版Study Guide（2026-02-20更新）のDomain 4は照合済みです。教材全体の同等性は未確認で、日本語版Objective 2.3のコストセンタータグ付けと予算は以下の英語版基準に未登録です。確認状態は `sources.json` と[Verification Log](verification-log.md)に記録します。原文は [公式 Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf) で確認してください。
 
 ## Domain 1 — Snowflake AI Data Cloud の機能とアーキテクチャ（31%）
 

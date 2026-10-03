@@ -7,7 +7,7 @@ SnowPro Core COF-C03 の公式試験範囲を、Snowflake 公式情報だけを�
 Issue #1 に向けた教材全体の設計基盤を整備しています。公式試験目標と配下トピックは登録済みですが、教材本文と演習は順次執筆します。この設計基盤だけでは Issue #1 の完了条件を満たさないため、関連する PR は `Refs #1` とし、全教材が完成するまで Issue を close しません。
 
 この教材は、複数資格を収録する[it-cert-study](../../../README.md)内の独立した試験パッケージです。
-進捗は [Coverage Matrix](docs/coverage-matrix.json) を Source of Truth とし、`planned` を完了とは扱いません。現在はDomain 1からDomain 3までが`complete`です。
+進捗は [Coverage Matrix](docs/coverage-matrix.json) を Source of Truth とし、`planned` を完了とは扱いません。現在はDomain 1からDomain 4までが`complete`です。Domain 4は日本語版Study Guide（2026-02-20更新）の範囲とも照合済みです。教材全体の日本語版との同等性は未確認で、Objective 2.3のTopic差異を[Verification Log](docs/verification-log.md)に記録しています。
 
 ## 読み始める
 

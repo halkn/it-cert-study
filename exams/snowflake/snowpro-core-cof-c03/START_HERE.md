@@ -2,7 +2,7 @@
 
 このリポジトリは Snowflake 初学者が COF-C03 の試験範囲を順番に学ぶための教材です。ただし、試験と本教材はデータベース・SQL・クラウドの完全な入門コースではありません。
 
-教材の試験範囲は英語版COF-C03 Study Guideを基準にしています。日本語版Study Guideとの同等性は未検証であり、各Objectiveの`complete`は英語版の試験範囲に対する完成を示します。
+教材の試験範囲は登録済みの英語版COF-C03 Study Guideを基準にしています。Domain 4は日本語版（2026-02-20更新）の範囲も照合済みです。ただし、日本語版Objective 2.3の「コストセンタータグ付け」「予算」は既存の範囲に未登録で、教材全体の日本語試験への対応は未確認です。各Objectiveの`complete`を教材全体の日本語版対応完了とは扱いません。
 
 ## 最初に確認すること
 
@@ -35,6 +35,11 @@
 - [3.1 データをロード／アンロードする](textbook/domain-3/01-loading-unloading.md)
 - [3.2 自動データ取り込みを実行する](textbook/domain-3/02-automated-ingestion.md)
 - [3.3 ConnectorとIntegrationを識別する](textbook/domain-3/03-connectors-integrations.md)
+
+- [4.1 クエリ性能を評価する](textbook/domain-4/01-evaluate-query-performance.md)
+- [4.2 クエリ性能を最適化する](textbook/domain-4/02-optimize-query-performance.md)
+- [4.3 キャッシュを利用する](textbook/domain-4/03-caching.md)
+- [4.4 データ変換を実行する](textbook/domain-4/04-data-transformation.md)
 
 ## 教材完成後の学習順序
 

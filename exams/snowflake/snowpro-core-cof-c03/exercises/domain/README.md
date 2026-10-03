@@ -41,3 +41,16 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D3-Q07: Dynamic Tableとstream + taskの選定](d3-q07.md)
 - [D3-Q08: Integrationの選定](d3-q08.md)
 - [D3-Q09: 接続部品の使い分け](d3-q09.md)
+
+## Domain 4
+
+- [D4-Q01: 単独は速いBIの混雑](d4-q01.md)
+- [D4-Q02: 時間と費用の観測先](d4-q02.md)
+- [D4-Q03: 検索構造とcomputeの併用](d4-q03.md)
+- [D4-Q04: 配置と保存結果](d4-q04.md)
+- [D4-Q05: 再利用無効でも速い実行](d4-q05.md)
+- [D4-Q06: metadataと結果cache](d4-q06.md)
+- [D4-Q07: 展開後の集計粒度](d4-q07.md)
+- [D4-Q08: 顧客内1件のfilter](d4-q08.md)
+- [D4-Q09: fileとSQLの境界](d4-q09.md)
+- [D4-Q10: 集約とwindowの出力](d4-q10.md)
