@@ -22,7 +22,7 @@
       "review_interval_days": 30,
       "status": "active",
       "verification_level": "certification-page-only",
-      "notes": "2026-10-03にCOF-C03-JPNの公式ページの試験概要とStudy Guide案内を再確認。配布PDFの直接リンク・版・内容は取得できていないため、日本語版との同等性は未検証。"
+      "notes": "2026-10-03にCOF-C03-JPNの公式ページの試験概要とStudy Guide案内を再確認。WebからPDFの直接リンクは取得できなかったが、その後ユーザー提供の日本語版PDFをexam-study-guide-c03-jpn-2026-02-20として本文照合。Domain 4は対応確認済みで、教材全体の同等性は未確認。"
     },
     {
       "id": "exam-study-guide-c03-2026-07-08",
@@ -710,6 +710,19 @@
       "review_interval_days": 30,
       "status": "active",
       "notes": "同順位と欠番なしの順位。"
+    },
+    {
+      "id": "exam-study-guide-c03-jpn-2026-02-20",
+      "title": "SnowPro Core 認定資格試験学習ガイド（日本語版）",
+      "url": "https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/",
+      "kind": "exam-study-guide",
+      "authority": "Snowflake",
+      "published_or_updated_on": "2026-02-20",
+      "checked_on": "2026-10-03",
+      "review_interval_days": 30,
+      "status": "active",
+      "verification_level": "full-content",
+      "notes": "ユーザーが公式サイトから取得したSnowProCoreStudyGuideC03_JPN.pdf（15ページ）をローカルで本文抽出・対象ページ表示して照合。URLは配布案内ページでありPDF直接URLは未確認。SHA-256: 4e052c833509ef526e1d92fd2c26892ff4391b11c183b622b0faf426da44facf。p.5の5分野の配点とp.10のDomain 4全4Objective・14Topicは登録済み範囲と対応。p.8のObjective 2.3には既存英語版基準に未登録のコストセンタータグ付けと予算があり、教材全体の同等性は未確認。更新日は英語版基準の2026-07-08と異なる。原本・抽出文・図は再配布しない。"
     }
   ]
 }

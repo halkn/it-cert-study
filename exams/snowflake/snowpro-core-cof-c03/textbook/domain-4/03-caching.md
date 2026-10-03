@@ -1,6 +1,6 @@
 # 4.3 キャッシュを利用する
 
-> Status: review
+> Status: complete
 > Last verified: 2026-10-03
 
 ## この章で学ぶこと
@@ -30,6 +30,8 @@
 | Query result cache | [保存結果を再利用する](#query-result-cache) | `docs-persisted-results` |
 | Metadata cache | [metadataで読み取りを省く](#metadata-cache) | `docs-micro-partitions`, `docs-count` |
 | Warehouse cache | [localのtable dataを読む](#warehouse-cache) | `docs-warehouse-cache` |
+
+日本語版Study Guide（2026-02-20更新、p.10）の対応範囲も照合済みです。`exam-study-guide-c03-jpn-2026-02-20`を参照してください。
 
 [COF-C03 Syllabus](../../docs/syllabus.md)のObjective 4.3に対応します。
 
@@ -154,3 +156,5 @@ scan量で重み付けした比率です。大量scanと少量scanを単純平�
 - `docs-count` — https://docs.snowflake.com/en/sql-reference/functions/count
 - `docs-warehouse-cache` — https://docs.snowflake.com/en/user-guide/performance-query-warehouse-cache
 - `docs-query-history` — https://docs.snowflake.com/en/sql-reference/account-usage/query_history
+
+- `exam-study-guide-c03-jpn-2026-02-20` — https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/ （ユーザー提供の配布PDFを確認）

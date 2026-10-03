@@ -1,6 +1,6 @@
 # 4.1 クエリ性能を評価する
 
-> Status: review
+> Status: complete
 > Last verified: 2026-10-03
 
 ## この章で学ぶこと
@@ -180,3 +180,5 @@ QUERY_TAGは処理名などを識別するラベルです。設定されたtag�
 - `docs-performance-exploring` — https://docs.snowflake.com/en/user-guide/performance-query-exploring
 - `docs-warehouse-considerations` — https://docs.snowflake.com/en/user-guide/warehouses-considerations
 - `docs-reducing-queues` — https://docs.snowflake.com/en/user-guide/performance-query-warehouse-queue
+
+- `exam-study-guide-c03-jpn-2026-02-20` — https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/ （ユーザー提供の配布PDFを確認）

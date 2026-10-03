@@ -1,6 +1,6 @@
 # 4.4 データ変換を実行する
 
-> Status: review
+> Status: complete
 > Last verified: 2026-10-03
 
 ## この章で学ぶこと
@@ -33,6 +33,8 @@
 | Aggregate function | [粒度とNULL](#aggregate-functions) | `docs-aggregate-functions`, `docs-count` |
 | クエリ最適化のためのSQL | [意味を保つ改善](#sql-query-optimization) | `docs-query-insights`, `docs-joins`, `docs-micro-partitions` |
 | Window function | [行を残す計算](#window-functions) | `docs-window-functions`, `docs-qualify` |
+
+日本語版Study Guide（2026-02-20更新、p.10）の対応範囲も照合済みです。`exam-study-guide-c03-jpn-2026-02-20`を参照してください。
 
 [COF-C03 Syllabus](../../docs/syllabus.md)のObjective 4.4に対応します。
 
@@ -240,3 +242,5 @@ pathとFLATTENで半構造化データを扱い、stageではfile内容とmetada
 - `docs-qualify` — https://docs.snowflake.com/en/sql-reference/constructs/qualify
 - `docs-rank` — https://docs.snowflake.com/en/sql-reference/functions/rank
 - `docs-dense-rank` — https://docs.snowflake.com/en/sql-reference/functions/dense_rank
+
+- `exam-study-guide-c03-jpn-2026-02-20` — https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/ （ユーザー提供の配布PDFを確認）

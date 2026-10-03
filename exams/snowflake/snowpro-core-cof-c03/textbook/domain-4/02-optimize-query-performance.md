@@ -1,6 +1,6 @@
 # 4.2 クエリ性能を最適化する
 
-> Status: review
+> Status: complete
 > Last verified: 2026-10-03
 
 ## この章で学ぶこと
@@ -32,6 +32,8 @@
 | Search Optimization | [少数行を探す](#search-optimization) | `docs-search-optimization`, `docs-performance-storage` |
 | Clustering key | [配置を整える](#clustering-keys) | `docs-clustering-keys`, `docs-performance-storage` |
 | Materialized view | [計算結果を保存](#materialized-views) | `docs-materialized-views`, `docs-performance-storage` |
+
+日本語版Study Guide（2026-02-20更新、p.10）の対応範囲も照合済みです。`exam-study-guide-c03-jpn-2026-02-20`を参照してください。
 
 [COF-C03 Syllabus](../../docs/syllabus.md)のObjective 4.2に対応します。
 
@@ -166,3 +168,5 @@ compute、検索構造、データ配置、保存結果のどれを変えるか�
 - `docs-micro-partitions` — https://docs.snowflake.com/en/user-guide/tables-clustering-micropartitions
 - `docs-materialized-views` — https://docs.snowflake.com/en/user-guide/views-materialized
 - `docs-create-materialized-view` — https://docs.snowflake.com/en/sql-reference/sql/create-materialized-view
+
+- `exam-study-guide-c03-jpn-2026-02-20` — https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/ （ユーザー提供の配布PDFを確認）
