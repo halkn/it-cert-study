@@ -2,6 +2,8 @@
 
 機械可読な本体は [`coverage-matrix.json`](coverage-matrix.json) です。各 objective の `topics` が、公式 Study Guide の箇条書き単位を追跡します。公式ガイド内でさらに例や種類が列挙される場合は `scope` に保持し、欠落検知の対象にします。
 
+試験範囲の正本は日本語版Study Guide（2026-02-20更新）です。[全範囲の照合結果](japanese-blueprint-verification.md)を参照してください。`japanese_guide_verification: verified`は範囲の登録・照合済みを示し、教材の完成を示す各statusや`release_status`とは区別します。
+
 ## 追跡項目
 
 - `objective_id`: Study Guide の番号

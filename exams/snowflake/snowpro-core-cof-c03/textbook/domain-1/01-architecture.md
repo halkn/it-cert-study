@@ -47,7 +47,7 @@
 | Database Storage layer | [Database Storage](#database-storage-layer) | `docs-key-concepts-architecture` |
 | Snowflake Editionの比較 | [Edition](#snowflake-editions) | `docs-snowflake-editions` |
 
-公式のObjectiveとTopicは、[COF-C03 Syllabus](../../docs/syllabus.md#11-アーキテクチャを説明し利用する)から[公式Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf)へ辿って確認できます。
+公式のObjectiveとTopicは、[COF-C03 Syllabus](../../docs/syllabus.md#11-アーキテクチャを説明し利用する)から[公式Study Guide](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)へ辿って確認できます。
 
 ## 3層に分ける理由
 
@@ -350,7 +350,7 @@ SnowflakeではDatabase Storageが永続dataを中央管理し、独立したVir
 
 ## 根拠・関連する公式ドキュメント
 
-- `exam-study-guide-c03-2026-07-08` — [SnowPro Core COF-C03 Exam Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf)
+- `exam-study-guide-c03-jpn-2026-02-20` — [SnowPro Core COF-C03 Exam Study Guide](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)
 - `docs-key-concepts-architecture` — [Snowflake key concepts and architecture](https://docs.snowflake.com/en/user-guide/intro-key-concepts)
 - `docs-snowflake-editions` — [Snowflake editions](https://docs.snowflake.com/en/user-guide/intro-editions)
 - `docs-supported-cloud-platforms` — [Supported cloud platforms](https://docs.snowflake.com/en/user-guide/intro-cloud-platforms)

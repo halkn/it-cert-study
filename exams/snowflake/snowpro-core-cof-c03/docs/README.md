@@ -28,3 +28,4 @@
 - `sources.json`: 公式資料と最終確認日
 - `diagrams.json`: 自作図の目的、根拠、状態
 - `verification-log.md`: Study Guide や変更されやすい仕様の確認履歴
+- [日本語版の試験範囲照合](japanese-blueprint-verification.md): 基準版、全範囲の比較結果、未実装範囲

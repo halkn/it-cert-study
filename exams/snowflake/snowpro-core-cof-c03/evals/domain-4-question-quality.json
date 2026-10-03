@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-4-question-quality-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-4-quality-jpn-2026-10-03",
   "evaluation_type": "question-quality",
   "evaluated_on": "2026-10-03",
   "exam_id": "snowflake-snowpro-core-cof-c03",
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history after question revisions"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
   },
   "source_revision": {
-    "git_commit": "d4f6cfe27eb295271236d3e78c488e77ab33ea1f",
+    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Overload wait indicates concurrency pressure. Multi-cluster scale out adds concurrent capacity while holding cluster size constant; size increase primarily targets query execution capacity.",
+      "notes": "実行時間でなくoverload待ちが増えており、cluster scale outが直接対応する。",
       "correct": true
     },
     {
@@ -47,7 +47,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Spill at an aggregate with negligible queueing points to memory pressure and/or excess input. Larger warehouse and reducing input or batch size address those causes. Adding clusters does not split one query across clusters.",
+      "notes": "spillには単一queryのmemory余裕と処理入力削減が対応する。multi-clusterは単一queryを各clusterへ分割しない。",
       "correct": true
     },
     {
@@ -57,7 +57,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Query attribution does not include idle warehouse time, so attributed compute can be below metered warehouse compute. The distractors assert unsupported equal allocation or misattribute the gap to QAS.",
+      "notes": "query compute attributionはidle時間をqueryへ配賦しないため、metered totalより小さくなり得る。",
       "correct": true
     },
     {
@@ -68,7 +68,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Near-full scan despite a narrow date filter warrants checking date predicates and partition value ranges/layout. Unexpected post-join row growth warrants checking join keys and multiplicity. A and D invoke queue/startup or warehouse-size effects that do not explain these symptoms; technically informed elimination is required.",
+      "notes": "partition pruning不足とJOIN後の行数増加をそれぞれ直接調べる。",
       "correct": true
     },
     {
@@ -78,9 +78,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "The prompt describes occasional eligible scan work that can use additional compute without permanently increasing base warehouse size; evaluate QAS eligibility and estimate with a finite scale factor. The other options target different workload patterns or disable QAS.",
-      "correct": true,
-      "grader_notes": "Dの課金停止という記述は誤り。本文と公式docsでscale factor 0は上限なしであり、QASの無効化ではないことを確認。選択されたAは正しい。"
+      "notes": "QASのeligible判定と見積り、有限scale factorで評価する。",
+      "correct": true
     },
     {
       "id": "M1-Q40",
@@ -89,7 +88,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Search Optimization is suited to selective equality lookups that should reduce candidate partitions. Clustering can be considered for broader access patterns but is less direct here; a normal view and more clusters do not create the requested pruning structure.",
+      "notes": "高選択性の等価lookupで候補partitionを減らす用途にSearch Optimizationが直接的。",
       "correct": true
     },
     {
@@ -99,7 +98,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Frequent date-range filtering with overlapping partition ranges calls for improving table organization via a date-related clustering key. Search Optimization is more targeted to selective lookup predicates; QAS does not improve storage layout.",
+      "notes": "Editionを変えず頻繁なdate range filterの配置・pruningを改善する選択。",
       "correct": true
     },
     {
@@ -109,7 +108,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "A repeatedly computed single-table aggregate that should be stored, maintained with base changes, and shared is a direct materialized-view use case. Result cache is conditional on identical result reuse; a regular view does not store the aggregate.",
+      "notes": "反復する単一table集約を保存しbase更新に応じて維持する要件にmaterialized viewが適する。",
       "correct": true
     },
     {
@@ -120,7 +119,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Suspending a warehouse discards its local data cache, while persisted query result reuse is not ruled out solely by suspension if the stated conditions hold. The remaining options incorrectly make persisted result reuse depend on rebuilding or retaining the local cache.",
+      "notes": "suspendでwarehouse local cacheは破棄されるが、保持中のpersisted query result再利用はsuspendだけでは無効にならない。",
       "correct": true
     },
     {
@@ -130,7 +129,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "A row access policy affects which rows a role may see, so a metadata-only count cannot generally answer without evaluating visible rows. The other options incorrectly claim the policy cannot affect row visibility or can be bypassed by changing COUNT form.",
+      "notes": "row access policy適用下では可視性判定が必要で、metadata-only COUNT最適化を一律には期待できない。",
       "correct": true
     },
     {
@@ -140,7 +139,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Disable persisted result reuse and control SQL, data, warehouse, and load; compare cold and warm local-cache runs separately. D is too strong because disabling persisted results does not guarantee a cold local cache.",
+      "notes": "結果再利用を切り、他条件を揃えた上でcold/warmを分けて測定する。Dはresult cache無効化とlocal cache無効化を混同している。",
       "correct": true
     },
     {
@@ -150,7 +149,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Flattening is needed to process every array element; cast each qty to a numeric type and sum by SKU. Index zero omits elements, while COUNT choices count rows or non-null values rather than quantities.",
+      "notes": "配列要素ごとにFLATTENしqtyを数値化して集計する。",
       "correct": true
     },
     {
@@ -161,7 +160,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "A directory table exposes staged-file metadata; extracting amounts from inside PDFs requires separate content processing such as a handler. C and D conflate file metadata with parsed document fields; technically informed distinction is needed.",
+      "notes": "directory tableはfile metadata一覧であり、PDF内容抽出には別のdocument processingが必要。",
       "correct": true
     },
     {
@@ -171,7 +170,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "An aggregate window partitioned by customer adds each customer's total while preserving detail rows, and SUM ignores NULL inputs. A collapses rows, B computes a table-wide total, and C is a running total rather than the full partition total.",
+      "notes": "partitionなしのSUM windowを各明細行に付けると全体合計になるため、顧客partitionが必要。Dは各顧客内合計を全行に付ける。",
       "correct": true
     },
     {
@@ -181,7 +180,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Filter to valid rows, order by timestamp descending and unique id as a tie-breaker, then use ROW_NUMBER with QUALIFY to select exactly one row per customer. RANK can tie, MAX returns no full record, and window functions cannot be filtered in WHERE at that query level.",
+      "notes": "有効行を対象に一意idでtie-breakするROW_NUMBERとQUALIFYで必ず1件にする。",
       "correct": true
     },
     {
@@ -192,7 +191,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "UNION ALL preserves duplicates, and an unbounded-preceding-to-current-row ROWS frame computes the ordered running total. UNION removes duplicates and the following frame computes a forward-looking total.",
+      "notes": "重複を残すUNION ALLと、先頭から現在行までのROWS frameを指定する。",
       "correct": true
     }
   ],
@@ -207,7 +206,7 @@
   },
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "ffef75b9e1cd62e6fbac837108370496491c1046625b368764abe257e348c319",
-    "coverage_matrix_sha256": "98301d9b383084ad5685170329b530ccb9009b7f4f391484c2e5a8d4f36e5137"
+    "questions_sha256": "636458efff4e11dbc109bd8a29037a9b5fba214d3f8bd4f2bf1fca078d7871af",
+    "coverage_matrix_sha256": "cc7ad05df12fe0458c37e2297af90c7d5f84ebb187736b97f23c22ce27f567d3"
   }
 }

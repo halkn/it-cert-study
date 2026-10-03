@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "sources": [
+    {"id":"docs-terraform-provider","title":"Snowflake Terraform provider","url":"https://docs.snowflake.com/en/user-guide/terraform","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-10-03","review_interval_days":30,"status":"active","notes":"望ましいresource構成の宣言、現在状態との差のplan・反映、warehouse／database／role／grantなどの管理。CLIのSQL・application project操作と比較する根拠。"},
     {
       "id": "exam-certification-c03",
       "title": "SnowPro Core Certification (COF-C03)",
@@ -22,7 +23,7 @@
       "review_interval_days": 30,
       "status": "active",
       "verification_level": "certification-page-only",
-      "notes": "2026-10-03にCOF-C03-JPNの公式ページの試験概要とStudy Guide案内を再確認。WebからPDFの直接リンクは取得できなかったが、その後ユーザー提供の日本語版PDFをexam-study-guide-c03-jpn-2026-02-20として本文照合。Domain 4は対応確認済みで、教材全体の同等性は未確認。"
+      "notes": "2026-10-03に公式ページの試験概要とStudy Guide案内を確認。PDF直接リンクは未取得だが、ユーザー提供の日本語版をexam-study-guide-c03-jpn-2026-02-20として全試験範囲照合し、教材の正本に採用。"
     },
     {
       "id": "exam-study-guide-c03-2026-07-08",
@@ -35,7 +36,7 @@
       "review_interval_days": 30,
       "status": "unavailable",
       "verification_level": "full-content",
-      "notes": "英語版。2026-08-13に全内容を照合した試験domain、weight、objective、topicの基準版。現行版であることは再確認できていない。日本語版との同等性は別途確認する。PDFは再配布しない。2026-10-03の再取得はHTTP 404。前回の全内容照合日は維持し、現行範囲の再照合待ち。"
+      "notes": "英語版。2026-08-13に全内容を照合した試験domain、weight、objective、topicの基準版。現行版であることは再確認できていない。日本語版との同等性は別途確認する。PDFは再配布しない。2026-10-03の再取得はHTTP 404。前回の全内容照合日は維持し、現行範囲の再照合待ち。 日本語受験の指定により、日本語版2026-02-20版へ基準を変更。旧基準として履歴を保持し、英語版の再取得は日本語教材の完成条件にしない。"
     },
     {
       "id": "docs-home",
@@ -164,7 +165,7 @@
       "url": "https://docs.snowflake.com/en/user-guide/vscode-ext",
       "kind": "technical-documentation",
       "authority": "Snowflake",
-      "checked_on": "2026-08-13",
+      "checked_on": "2026-10-03",
       "review_interval_days": 30,
       "status": "active",
       "notes": "VS Codeからの接続、SQL実行、object探索、Snowpark Python stored procedureのauthoring／debuggingの直接根拠。"
@@ -383,7 +384,7 @@
     {"id":"docs-tasks-intro","title":"Introduction to tasks","url":"https://docs.snowflake.com/en/user-guide/tasks-intro","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"serverless taskとuser-managed taskの課金差、EXECUTE TASK／EXECUTE MANAGED TASK権限の直接根拠。"},
     {"id":"docs-create-task","title":"CREATE TASK","url":"https://docs.snowflake.com/en/sql-reference/sql/create-task","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"SCHEDULE／AFTER／WHENの構文、作成直後がsuspendedであることの直接根拠。"},
     {"id":"docs-tasks-graphs","title":"Task graphs","url":"https://docs.snowflake.com/en/user-guide/tasks-graphs","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"task graphの1,000 task上限、親子各100の上限、既定の失敗時suspendの直接根拠。"},
-    {"id":"docs-dt-refresh-modes","title":"Dynamic table refresh modes","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"REFRESH_MODEの値、AUTOが作成時に解決され固定されることの直接根拠。"},
+    {"id":"docs-dt-refresh-modes","title":"Dynamic table refresh modes","url":"https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-10-03","review_interval_days":30,"status":"active","notes":"REFRESH_MODEの値、AUTOが作成時に解決され固定されることの直接根拠。"},
     {"id":"docs-openflow-about","title":"About Snowflake Openflow","url":"https://docs.snowflake.com/en/user-guide/data-integration/openflow/about","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":14,"status":"active","notes":"Apache NiFi基盤、Snowflake Deployment／BYOCの2形態、GA状態とregion可用性の直接根拠。可用性が変わり得るため短期再確認。"},
     {"id":"docs-drivers-overview","title":"Drivers","url":"https://docs.snowflake.com/en/developer-guide/drivers","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"Snowflakeが提供するdriver一覧と役割の直接根拠。"},
     {"id":"docs-jdbc","title":"JDBC Driver","url":"https://docs.snowflake.com/en/developer-guide/jdbc/jdbc","kind":"technical-documentation","authority":"Snowflake","checked_on":"2026-08-30","review_interval_days":30,"status":"active","notes":"JDBC type 4 driverであることと動作要件の直接根拠。"},
@@ -722,7 +723,7 @@
       "review_interval_days": 30,
       "status": "active",
       "verification_level": "full-content",
-      "notes": "ユーザーが公式サイトから取得したSnowProCoreStudyGuideC03_JPN.pdf（15ページ）をローカルで本文抽出・対象ページ表示して照合。URLは配布案内ページでありPDF直接URLは未確認。SHA-256: 4e052c833509ef526e1d92fd2c26892ff4391b11c183b622b0faf426da44facf。p.5の5分野の配点とp.10のDomain 4全4Objective・14Topicは登録済み範囲と対応。p.8のObjective 2.3には既存英語版基準に未登録のコストセンタータグ付けと予算があり、教材全体の同等性は未確認。更新日は英語版基準の2026-07-08と異なる。原本・抽出文・図は再配布しない。"
+      "notes": "ユーザーが公式サイトから取得したSnowProCoreStudyGuideC03_JPN.pdf（15ページ）をローカルで本文抽出・ページ表示して照合。URLは配布案内ページでありPDF直接URLは未確認。SHA-256: 4e052c833509ef526e1d92fd2c26892ff4391b11c183b622b0faf426da44facf。日本語受験用教材の試験範囲の正本。p.5の配点、p.6〜10・12の全19Objective・89Topicと配下scopeを登録。従来の英語版基準の登録との差分はp.8のObjective 2.3のコストセンタータグ付け・予算の2Topicで、未執筆としてplannedに登録。全試験範囲の照合済みと、教材・演習の実装完了を区別する。原本・抽出文・図は再配布しない。"
     }
   ]
 }
