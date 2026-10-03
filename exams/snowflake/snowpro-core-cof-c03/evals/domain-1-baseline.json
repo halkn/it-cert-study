@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-cof-c03-domain-1-baseline-jpn-2026-10-03",
+  "evaluation_type": "textbook-only",
+  "evaluated_on": "2026-10-03",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    1
+  ],
+  "model": {
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history after Terraform comparison was added; Domain 1 only"
+  },
+  "source_revision": {
+    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": [
+      "textbook/domain-1/*.md"
+    ]
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "questions": [
+    {
+      "id": "M1-Q01",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "分離とEditionを使い分ける場面"
+        }
+      ],
+      "notes": "独立warehouseはcomputeを分離し、同じ永続dataを共有する。Aは共有computeのまま、Bはconcurrency対応でもcompute単独workload isolationを明示しない、Cは不要な複製で鮮度要件に反する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q02",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "Snowflake Edition"
+        }
+      ],
+      "notes": "PHIにはBusiness Critical以上とBAA等の条件確認が必要。Editionとwarehouse sizeは別軸であり、Snowpark-optimizedはcompute typeに過ぎない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q03",
+      "selected_option_ids": [
+        "A",
+        "C",
+        "E"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/01-architecture.md",
+          "heading": "利用者が選ぶ3つの軸"
+        }
+      ],
+      "notes": "regionはcloud platform／region、row-level securityはEnterprise以上、compute分離は別warehouseを選ぶ。複製不要でsizeはregion/Edition要件を満たさない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q04",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "Snowflake CLIでterminalから反復可能に操作する"
+        }
+      ],
+      "notes": "CI/CDで反復可能なSQL/application deploymentの中心はSnowflake CLIとversion管理project/file。Snowsightは手動GUI、Terraformはresource構成、VS Codeから各人がprodへ直接deployは統制要件に合わない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q05",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/02-interfaces-and-tools.md",
+          "heading": "3つのtoolで共通するsession context"
+        }
+      ],
+      "notes": "interfaceを変えてもprivilegeは増えず、active roleとprivilegeが実行可否を決める。問題文でwarehouse・database/schema・network条件は揃っているためroleを比較する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q06",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/03-object-hierarchy.md",
+          "heading": "OrganizationとAccountの境界"
+        }
+      ],
+      "notes": "Organizationは複数accountを結び付け、region/cloudをまたぐusage・billing等の横断管理単位。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q07",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/03-object-hierarchy.md",
+          "heading": "Session context、SQL variable、parameterを区別する"
+        }
+      ],
+      "notes": "session parameterはaccount→user→sessionの順に具体値が上書きし、user設定が新規sessionのdefaultになる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q08",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Multi-clusterとScaling policyでconcurrencyを処理する"
+        }
+      ],
+      "notes": "多数queryのqueueにはscale out。response time優先はAuto-scale multi-clusterのStandard policy。Economyはcredit節約優先、Maximizedは常時cluster起動。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q09",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/04-virtual-warehouses.md",
+          "heading": "Workloadから構成を選ぶ"
+        }
+      ],
+      "notes": "ad-hoc/developmentは小さめ・短いauto-suspend。自動再開要件からauto-resume有効。長いsuspendは待機costを抑えず、Snowpark-optimizedの必要性も示されない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q10",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "Data clusteringは値範囲の重なりを減らす"
+        }
+      ],
+      "notes": "selectiveな日付filterでpartition overlapが問題ならclustering keyとしてcolumn/expressionを評価する。size upはpruningを直さず、viewのORDER BYやcluster数も配置の根本原因を直さない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q11",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/05-storage-concepts.md",
+          "heading": "View typeを計算・保存・privacyで選ぶ"
+        }
+      ],
+      "notes": "materialized viewは結果を保存しrepeated expensive queryのscanを減らせ、secure属性も付けられる。storage/maintenance costとsecure性能影響を評価する。standard viewは結果を保存せず、secureでもmaintenance costは消えない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q12",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/06-ai-ml-app-development.md",
+          "heading": "Cortex Search"
+        }
+      ],
+      "notes": "大量のunstructured manual/ticketから関連passageをlow latencyで取得するretrieval機能はCortex Search。Analystはstructured dataのtext-to-SQL、AI function個別実行はcorpus retrieval serviceではなく、Registryはmodel lifecycle。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q13",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-1/06-ai-ml-app-development.md",
+          "heading": "Cortex Analyst"
+        }
+      ],
+      "notes": "structured business metricへの自然言語質問からSQL生成するのはCortex Analystで、semantic model/viewがmetric等をphysical tableへ対応付ける。Searchはunstructured retrieval、forecasting modelは用途が異なる。",
+      "correct": true
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "1": 100.0
+    },
+    "textbook_evidence_percent": 100.0,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "content_hashes": {
+    "textbook_sha256": "86c5ca09f2610dcca8164ef08720a8cbb2b55d6e5529210d19d46f9bd29eac6e",
+    "questions_sha256": "f36a5335a4972ca88ba4ed0049263dc7629520568f971f5a966d833ac2e61ef2",
+    "coverage_matrix_sha256": "c02cdc6d2e9142a091434adc87585f75327647c2dc6a67185b3f936399598efe"
+  },
+  "evaluation_bundle_domains": [
+    1
+  ]
+}

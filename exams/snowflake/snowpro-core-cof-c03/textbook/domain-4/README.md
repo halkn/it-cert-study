@@ -1,6 +1,6 @@
 # Domain 4 — 性能最適化、クエリ、変換
 
-配点21%。全4章の本文、図4点、章末26問、Domain演習10問、模擬16問を整備し、`complete`です。ユーザーが公式サイトから取得した日本語版Study Guide（2026-02-20更新、p.10）の全4Objective・14Topicとの対応を確認しています。英語版PDFの再取得と、教材全体の日本語版との同等性確認は未完了です。
+配点21%。全4章の本文、図4点、章末26問、Domain演習10問、模擬16問を整備し、`complete`です。ユーザーが公式サイトから取得した日本語版Study Guide（2026-02-20更新、p.10）の全4Objective・14Topicとの対応を確認しています。教材全体の基準も日本語版へ切り替えています。Objective 2.3の不足とDomain 5の執筆は残件です。
 
 1. [4.1 クエリ性能評価](01-evaluate-query-performance.md)
 2. [4.2 クエリ性能最適化](02-optimize-query-performance.md)

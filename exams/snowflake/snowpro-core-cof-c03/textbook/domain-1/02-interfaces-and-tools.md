@@ -92,6 +92,8 @@ snow sql --connection cert-study --filename scripts/check.sql
 
 CLIとSnowSQLを名前だけで同一視しません。COF-C03のTopicはSnowflake CLIです。Snowflake CLIはSQL clientに限定されず、developer workloadをproject単位で管理する広いtoolです。
 
+TerraformもGit reviewとCIで利用できますが、役割が異なります。Snowflake Terraform providerはwarehouse、database、role、grantなどの望ましい構成を宣言し、現在状態との差をplanして反映するInfrastructure as Codeのtoolです。resource定義の適用を、任意のSQL処理やStreamlit application codeの実行手順と同一視しません。SQL fileの実行やapplication projectのdeployを反復する中心toolはSnowflake CLI、基盤resourceの構成管理にはTerraformを組み合わせる、と要件を分けて選びます。根拠: `docs-snowflake-cli`, `docs-terraform-provider`。
+
 <a id="ide-integrations"></a>
 ## Visual Studio Code拡張でcodeとSnowflake操作を統合する
 
@@ -179,7 +181,8 @@ Snowsight、Snowflake CLI、VS Code拡張は同じSnowflakeを異なる作業環
 
 ## 根拠・関連する公式ドキュメント
 
-- `exam-study-guide-c03-2026-07-08` — [COF-C03 Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf)
+- `exam-study-guide-c03-jpn-2026-02-20` — [COF-C03 Study Guide](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)
+- `docs-terraform-provider` — [Snowflake Terraform provider](https://docs.snowflake.com/en/user-guide/terraform)
 - `docs-snowsight` — [Snowsight](https://docs.snowflake.com/en/user-guide/ui-snowsight)
 - `docs-snowsight-workspaces` — [Workspaces](https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces-working)
 - `docs-snowflake-cli` — [Snowflake CLI](https://docs.snowflake.com/en/developer-guide/snowflake-cli/index)

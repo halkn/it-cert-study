@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-question-quality-haiku-2026-08-30",
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-quality-jpn-2026-10-03",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-08-30",
+  "evaluated_on": "2026-10-03",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
   ],
   "model": {
-    "id": "claude-haiku-4-5-20251001",
-    "reasoning_effort": "not configurable for sub-agents; default effort used",
-    "selection_basis": "lowest-capability Claude model available as an independent sub-agent"
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
   },
   "source_revision": {
-    "git_commit": "3539465a5b1e1fca0bbe5ebd9584c4f98f2dcda8",
+    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -25,21 +25,8 @@
   "thresholds": {
     "overall_score_percent": 80,
     "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
-  },
-  "content_hashes": {
-    "textbook_sha256": null,
-    "questions_sha256": "9a196b619ac8ba534fde92447635720778013274347979b2432f72d1a44337be",
-    "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
-  },
-  "result": {
-    "overall_score_percent": 100.0,
-    "per_domain_score_percent": {
-      "3": 100.0
-    },
-    "textbook_evidence_percent": null,
-    "ambiguous_question_count": 0,
-    "passed": true
   },
   "questions": [
     {
@@ -49,7 +36,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "storage integrationで資格情報を一元管理し、external stageから参照する構成。SQL文に認証情報を残さず、USAGE権限の付与で複数roleへ共有できる。"
+      "notes": "storage integrationを使うexternal stageとstage USAGE grantで要件を満たす。",
+      "correct": true
     },
     {
       "id": "M1-Q26",
@@ -58,7 +46,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "PUTはSnowSQLなどのclient機能でworksheetから実行できない。SnowsightのUIのアップロード機能かclientを使う必要がある。"
+      "notes": "PUTはworksheetで実行できず、Snowsightのupload UIか対応clientを使う。",
+      "correct": true
     },
     {
       "id": "M1-Q27",
@@ -67,7 +56,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "FORCE = TRUEはロード済みファイルを強制的に再ロードする。既定ではCOPY INTOがロード済みファイルをスキップするため、このオプションで重複が発生する。"
+      "notes": "FORCE=TRUEは既ロードファイルも再ロード対象にする。",
+      "correct": true
     },
     {
       "id": "M1-Q28",
@@ -76,7 +66,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "ON_ERROR = SKIP_FILEはerrorのあるファイルをスキップし、残りのファイルのロードを継続させる。要件に適合。"
+      "notes": "errorのあるfileだけskipして残りを処理する指定。",
+      "correct": true
     },
     {
       "id": "M1-Q29",
@@ -86,7 +77,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SINGLE = TRUEで1ファイルに統合、HEADER = TRUEで列見出しを含める。OVERWRITEとMATCH_BY_COLUMN_NAMEはこの要件に不要。"
+      "notes": "単一fileとheader出力を指定する。",
+      "correct": true
     },
     {
       "id": "M1-Q30",
@@ -95,7 +87,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "AUTO_INGEST = TRUEのpipeとcloud event notificationの組合せが、warehouseの常時起動なしでファイル到着直後にロードする構成。"
+      "notes": "Snowpipe auto-ingestとcloud event notificationが、warehouse常時稼働なしの到着後ロードに合う。",
+      "correct": true
     },
     {
       "id": "M1-Q31",
@@ -104,7 +97,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SELECTではstreamは消費されない。DML文で初めてoffsetが進むため、同じ変更が繰り返し処理されて見える。"
+      "notes": "streamをSELECTで読むだけではoffsetを消費しない。DML内で消費されているか確認する。",
+      "correct": true
     },
     {
       "id": "M1-Q32",
@@ -112,9 +106,12 @@
         "A",
         "C"
       ],
-      "confidence": "medium",
+      "confidence": "low",
       "ambiguous": false,
-      "notes": "AのTARGET_LAGはbase dataに対する遅れの目標で確実に正しい。Cの最小60秒も仕様どおり。BのREFRESH_MODE AUTOの自動切り替えとDは誤り。"
+      "notes": "Aは正しい。BはAUTOがrefreshごとにmodeを切り替えるという記述が不正確に見える。Cの60秒最小値には低確信があり、私の知識では1秒指定が可能だった可能性があるため、2選択必須条件と選択肢の事実関係が両立しないおそれがある。問題品質上、正答数・前提を要確認。",
+      "correct": true,
+      "reported_ambiguous": true,
+      "grader_notes": "モデルの指摘は最小TARGET_LAGが1秒だった可能性という記憶への不確信であり、文面の複数解釈ではない。回答確定後に公式target-lag文書で最小60秒、refresh-modes文書でAUTOは作成時だけ解決し以後固定と確認。選択肢A/Cのみ成立し、曖昧性はないと判定。元の指摘とlow確信度を保持。https://docs.snowflake.com/en/user-guide/dynamic-tables/target-lag / https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes"
     },
     {
       "id": "M1-Q33",
@@ -123,7 +120,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SQLから外部APIを呼び出すには、API integrationで呼び出し先を許可し、external functionでSQL関数として公開する構成を使う。"
+      "notes": "SQLから外部APIを呼ぶ構成はAPI integrationとexternal function。",
+      "correct": true
     },
     {
       "id": "M1-Q34",
@@ -134,7 +132,22 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "GitHub private repositoryへのアクセスにはsecret（A）、git_https_apiのAPI integration（B）、HTTPSのORIGINを指定したGit repository object（C）が必要。external stageとstorage integrationはcloud storage向けで不要。"
+      "notes": "Git repository object、認証secret、Git HTTPS API integrationが必要。",
+      "correct": true
     }
-  ]
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "3": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "a244d01a7c584f8f765a09f84751c5caa430da35b167e7a901c5ed2040c56218",
+    "coverage_matrix_sha256": "97147f604342847b0cabe1cc1c4e93ae532dcebbe1ee9ec85d0b03fb82d39a58"
+  }
 }

@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-textbook-only-haiku-2026-08-30",
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-baseline-jpn-2026-10-03",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-08-30",
+  "evaluated_on": "2026-10-03",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
   ],
   "model": {
-    "id": "claude-haiku-4-5-20251001",
-    "reasoning_effort": "not configurable for sub-agents; default effort used",
-    "selection_basis": "lowest-capability Claude model available as an independent sub-agent"
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
   },
   "source_revision": {
-    "git_commit": "3539465a5b1e1fca0bbe5ebd9584c4f98f2dcda8",
+    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -27,22 +27,8 @@
   "thresholds": {
     "overall_score_percent": 80,
     "per_domain_score_percent": 70,
-    "maximum_ambiguous_questions": 0,
-    "textbook_evidence_percent": 90
-  },
-  "content_hashes": {
-    "textbook_sha256": "28f3815688fb82e0743650b6cfae7c07ad6d1433ee644ef0818f044954d71d32",
-    "questions_sha256": "9a196b619ac8ba534fde92447635720778013274347979b2432f72d1a44337be",
-    "coverage_matrix_sha256": "e34a45d8cb4247c87c5047006edc59fd5596be8a605293ed5ef917d3fad8ac74"
-  },
-  "result": {
-    "overall_score_percent": 100.0,
-    "per_domain_score_percent": {
-      "3": 100.0
-    },
-    "textbook_evidence_percent": 100.0,
-    "ambiguous_question_count": 0,
-    "passed": true
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
   },
   "questions": [
     {
@@ -51,16 +37,17 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
-          "file": "textbook/domain-3/03-connectors-integrations.md",
-          "heading": "Storage integration — cloud storageの資格情報をobjectへ切り出す"
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "External stageは外部storageを指す"
         }
       ],
-      "notes": "本文はstorage integrationがcloud providerの資格情報をSQL文から切り離すと述べ、1つのintegrationを複数のexternal stageで共有できることも示している。"
+      "notes": "外部stageはstorage integrationを参照し、複数role利用はexternal stageのUSAGE grantで行う。User stageはlocal/internal向けかつuser専用、credential直書き非推奨、table stageは外部S3共有用でない。",
+      "correct": true
     },
     {
       "id": "M1-Q26",
@@ -68,16 +55,17 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "PUTとGETはlocalとinternal stageの間だけ"
         }
       ],
-      "notes": "本文は PUT も GET も Snowsight の worksheet から実行できないと明記し、SnowsightのUIに別のupload機能があることも述べている。"
+      "notes": "PUTはworksheetで実行不可。Snowsight UIのupload機能かSnowSQL等clientを使う。GETはdownload方向で、internal stageにstorage integrationは要らない。",
+      "correct": true
     },
     {
       "id": "M1-Q27",
@@ -85,16 +73,17 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "同じファイルが二重にロードされない仕組み"
         }
       ],
-      "notes": "FORCE = TRUE はload metadataを無視して全ファイルをロードし、重複データが生じ得ると本文にある。"
+      "notes": "FORCE=TRUEはload metadataを無視して全ファイルをロードし重複を生み得る。ON_ERROR、PURGE、VALIDATION_MODEは再ロードを強制する選択肢として説明されていない。",
+      "correct": true
     },
     {
       "id": "M1-Q28",
@@ -102,16 +91,17 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "ON_ERRORでロード継続の方針を決める"
         }
       ],
-      "notes": "本文の表に SKIP_FILE がerror行を含むファイルをまるごとスキップすると記載がある。"
+      "notes": "SKIP_FILEはerror行を含むファイル全体を飛ばし他ファイルを続行する。CONTINUEはerror行単位、ABORTはCOPY全体停止、VALIDATION_MODEはロードを行わない。",
+      "correct": true
     },
     {
       "id": "M1-Q29",
@@ -120,16 +110,17 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "COPY INTO <location> でアンロードする"
         }
       ],
-      "notes": "SINGLE の既定 FALSE で複数ファイルへ分割され、HEADER の既定 FALSE で見出しが付かないと表にある。"
+      "notes": "SINGLE=TRUEは1 file、HEADER=TRUEは列名見出しを出力する。OVERWRITEは同名file上書き、MATCH_BY_COLUMN_NAMEは半構造化load用。",
+      "correct": true
     },
     {
       "id": "M1-Q30",
@@ -137,16 +128,17 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
         }
       ],
-      "notes": "Snowpipeがserverless computeを使い、ファイル到着後まもなくロードすると本文にある。"
+      "notes": "File arrival後まもないloadはSnowpipe auto-ingestでevent notificationを使う。Task pollingは時刻起動、Streamingはrow単位client書込、Openflowは外部統合flow。",
+      "correct": true
     },
     {
       "id": "M1-Q31",
@@ -154,16 +146,17 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Offsetが進むのはDMLで消費したときだけ"
         }
       ],
-      "notes": "本文は Stream を SELECT しただけでは offset が進まないと明記し、DMLでの消費例も示している。"
+      "notes": "SELECTだけではstream offsetは進まず同じ変更を繰り返し返す。DMLで消費するとoffsetが進む。taskは動作中という前提、APPEND_ONLYやclusteringはこの症状説明と合わない。",
+      "correct": true
     },
     {
       "id": "M1-Q32",
@@ -172,16 +165,17 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Target lagは鮮度の目標を表す"
         }
       ],
-      "notes": "TARGET_LAG は鮮度目標であり最小60秒と本文にある。REFRESH_MODE = AUTO は作成時に解決され以後固定とも記載されている。"
+      "notes": "TARGET_LAGはbase dataに対する鮮度目標、最小60秒。AUTOは作成時に一度評価して固定され、target lagは固定refresh scheduleではない。",
+      "correct": true
     },
     {
       "id": "M1-Q33",
@@ -189,16 +183,17 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "API integration — 外部HTTPS serviceの呼び出しを許可する"
         }
       ],
-      "notes": "external function がSnowflakeの外で実行される関数であり、呼び出し先を API integration で許可すると本文にある。"
+      "notes": "SQLから外部HTTPS APIを呼ぶにはAPI integrationとexternal functionを組み合わせる。Storage integration/external stageはcloud storage、notificationは通知、security integrationは認証用途。",
+      "correct": true
     },
     {
       "id": "M1-Q34",
@@ -208,16 +203,31 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "必要なobjectは3つ"
         }
       ],
-      "notes": "secret、git_https_api の API integration、Git repository object の3つが必要と本文に列挙されている。"
+      "notes": "Git repositoryはsecret、git_https_api API integration、HTTPS ORIGINを持つGit repository objectの3つが必要。external stage/storage integrationはS3等のfile access用。",
+      "correct": true
     }
-  ]
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "3": 100.0
+    },
+    "textbook_evidence_percent": 100.0,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "content_hashes": {
+    "textbook_sha256": "28f3815688fb82e0743650b6cfae7c07ad6d1433ee644ef0818f044954d71d32",
+    "questions_sha256": "a244d01a7c584f8f765a09f84751c5caa430da35b167e7a901c5ed2040c56218",
+    "coverage_matrix_sha256": "97147f604342847b0cabe1cc1c4e93ae532dcebbe1ee9ec85d0b03fb82d39a58"
+  }
 }

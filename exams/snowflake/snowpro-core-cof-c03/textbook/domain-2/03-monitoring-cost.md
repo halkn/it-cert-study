@@ -1,7 +1,9 @@
 # 2.3 監視とコスト管理を説明する
 
-> Status: complete
+> Status: draft
 > Last verified: 2026-08-16
+
+日本語版Study Guideのコストセンタータグ付け・予算は未執筆です。既存3 Topicの本文・演習は利用できますが、この章だけでObjective 2.3の学習完了とは扱いません。
 
 ## この章で学ぶこと
 
@@ -220,6 +222,18 @@ ORDER BY usage_day, compute_credits DESC;
 - `CREDITS_USED`とinvoice上のbilled creditsが常に同じとは限らない。
 - Account Usage viewごとのlatencyとretentionを同一と仮定しない。
 - `CREDITS_ATTRIBUTED_COMPUTE_QUERIES`にはwarehouse idle timeが含まれない。
+
+<a id="cost-center-tagging"></a>
+
+## コストセンタータグ付け（未執筆）
+
+本文・演習は[Issue #8](https://github.com/halkn/it-cert-study/issues/8)で補完します。
+
+<a id="budgets"></a>
+
+## 予算（未執筆）
+
+本文・演習は[Issue #8](https://github.com/halkn/it-cert-study/issues/8)で補完します。
 
 ## 確認問題
 

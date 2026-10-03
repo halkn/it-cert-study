@@ -1,6 +1,6 @@
 # SnowPro Core COF-C03 Syllabus
 
-基準は英語版 Snowflake 公式 *SnowPro Core COF-C03 Exam Study Guide*（2026-07-08 更新）です。以下は公式目標とトピックを教材向けに日本語で再構成したものです。日本語版Study Guide（2026-02-20更新）のDomain 4は照合済みです。教材全体の同等性は未確認で、日本語版Objective 2.3のコストセンタータグ付けと予算は以下の英語版基準に未登録です。確認状態は `sources.json` と[Verification Log](verification-log.md)に記録します。原文は [公式 Study Guide](https://publish-p93462-e887935.adobeaemcloud.com/content/dam/snowpro-sg/SnowProCoreStudyGuideC03.pdf) で確認してください。
+基準はユーザーが公式サイトから取得した日本語版 *SnowPro Core 認定資格試験学習ガイド*（2026-02-20更新）です。5 Domainの配点、全19 Objective・89 Topicと配下scopeを照合し、以下を教材向けに再構成しています。試験範囲の照合完了は、本文・演習の完成を意味しません。Objective 2.3のコストセンタータグ付けと予算は未執筆です。配布案内は[公式日本語認定ページ](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)、版と照合履歴は `sources.json` と[Verification Log](verification-log.md)を参照してください。
 
 ## Domain 1 — Snowflake AI Data Cloud の機能とアーキテクチャ（31%）
 
@@ -70,6 +70,8 @@ Notebooksの既定warehouseは、global GAまでは出題対象外です。GA後
 - Resource Monitorによるcost／warehouse monitoring
 - Virtual Warehouseのcredit使用量計算
 - ACCOUNT_USAGE schema
+- コストセンタータグ付け
+- 予算
 
 ## Domain 3 — データのロード、アンロード、接続（18%）
 
