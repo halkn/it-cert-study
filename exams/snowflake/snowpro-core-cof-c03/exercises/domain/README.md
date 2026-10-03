@@ -58,3 +58,14 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D4-Q08: 顧客内1件のfilter](d4-q08.md)
 - [D4-Q09: fileとSQLの境界](d4-q09.md)
 - [D4-Q10: 集約とwindowの出力](d4-q10.md)
+
+## Domain 5
+
+- [D5-Q01: 保護手段の使い分け](d5-q01.md)
+- [D5-Q02: 共有とregion障害](d5-q02.md)
+- [D5-Q03: 取込み後のアクセス分配](d5-q03.md)
+- [D5-Q04: Readerと通常consumer](d5-q04.md)
+- [D5-Q05: 公開と再共有の条件](d5-q05.md)
+- [D5-Q06: 共同分析と公開先](d5-q06.md)
+- [D5-Q07: 公開・料金・配送](d5-q07.md)
+- [D5-Q08: Appの権限境界](d5-q08.md)

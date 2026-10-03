@@ -130,3 +130,26 @@
 | FLATTEN | ARRAYやOBJECT等の複合値を複数行へ展開するtable function | 4.4 | `docs-flatten` |
 | window frame | partition内で現在行の計算対象とする範囲 | 4.4 | `docs-window-functions` |
 | QUALIFY | window function計算後の値で行を絞る句 | 4.4 | `docs-qualify` |
+
+## Domain 5 — Objectives 5.1〜5.3
+
+| 用語 | 定義 | Objective | Source ID |
+|---|---|---|---|
+| Time Travel | 保持期間内の過去状態を利用者が検索・clone・復元する機能 | 5.1 | `docs-time-travel` |
+| Fail-safe | Time Travel終了後にSnowflakeがbest effortで復旧を試みる7日の期間 | 5.1 | `docs-fail-safe` |
+| zero-copy clone | 標準tableの初期partitionを共有する、作成後の変更が独立した複製 | 5.1 | `docs-clone-storage` |
+| replication group | 複製対象・複製先・refresh予定をまとめるobject | 5.1 | `docs-replication-bcdr` |
+| failover group | Replicationに加えsecondaryからprimaryへの切替を可能にするobject | 5.1 | `docs-replication-bcdr` |
+| provider／consumer | データを公開するaccount／そのデータを利用するaccount | 5.2 | `docs-secure-sharing` |
+| imported database | Shareからconsumerが作る読取り専用database | 5.2 | `docs-sharing-consumer` |
+| IMPORTED PRIVILEGES | Database roleで区分しない共有objectへのアクセスをconsumer内のroleへ付与する権限 | 5.2 | `docs-sharing-consumer` |
+| reader account | Providerが管理・creditを負担する、契約のない取引先向けのaccount | 5.2 | `docs-reader-accounts` |
+| direct share | 同一regionの特定accountへ直接公開するshare | 5.2 | `docs-sharing-provider` |
+| resharing | 許可されたincoming dataを自分のsecure view経由で下流へ共有すること | 5.2 | `docs-resharer` |
+| Data Clean Room | 提供データと許可分析・出力の制約を組み合わせる共同分析環境 | 5.2 | `docs-cleanrooms-overview` |
+| Marketplace | Listingを発見・取得・公開する場 | 5.3 | `docs-marketplace` |
+| Listing | Data productに説明・公開対象・利用条件等を付ける公開単位 | 5.3 | `docs-listings` |
+| private／public listing | 指定consumerへの限定公開／Marketplaceでの公開 | 5.3 | `docs-listings` |
+| Cross-Cloud Auto-Fulfillment | 別regionのSSAへListingの製品を配送・refreshする機能 | 5.3 | `docs-auto-fulfillment` |
+| application package | Providerがcode・データ・manifest・setup script等をまとめるobject | 5.3 | `docs-native-app-framework` |
+| Native App | Consumer accountへinstallされるapplication object | 5.3 | `docs-native-app-framework` |

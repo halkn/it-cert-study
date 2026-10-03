@@ -6,7 +6,7 @@
     "study_guide_language": "ja",
     "study_guide_updated_on": "2026-02-20",
     "japanese_guide_verification": "verified",
-    "release_status": "planned",
+    "release_status": "review",
     "verified_on": "2026-10-03"
   },
   "domains": [
@@ -125,24 +125,407 @@
       {"topic_id":"4.4.sql-query-optimization","title_ja":"クエリ最適化のためのSQL","scope":[],"chapter_anchor":"sql-query-optimization","status":"complete","last_verified":"2026-10-03","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-query-insights","docs-joins","docs-micro-partitions","docs-set-operators"],"diagram_ids":[],"question_ids":{"chapter":["C4-4.4-Q05","C4-4.4-Q06"],"domain":["D4-Q08","D4-Q09"],"mock":["M1-Q49","M1-Q50"]}},
       {"topic_id":"4.4.window-functions","title_ja":"Window function","scope":[],"chapter_anchor":"window-functions","status":"complete","last_verified":"2026-10-03","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-window-functions","docs-window-syntax","docs-qualify","docs-rank","docs-dense-rank"],"diagram_ids":["d4-transformation-grain"],"question_ids":{"chapter":["C4-4.4-Q07","C4-4.4-Q08"],"domain":["D4-Q08","D4-Q10"],"mock":["M1-Q48","M1-Q49","M1-Q50"]}}
     ]},
-    {"objective_id":"5.1","domain":5,"title_ja":"コラボレーションとデータ保護を説明する","chapter":"textbook/domain-5/01-collaboration-protection.md","status":"planned","last_verified":null,"topics":[
-      {"topic_id":"5.1.replication-failover","title_ja":"Data replication／failover","scope":[],"chapter_anchor":"replication-failover","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.1.secure-sharing-features","title_ja":"Secure data sharing feature","scope":[],"chapter_anchor":"secure-sharing-features","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.1.cloning","title_ja":"Cloning","scope":[],"chapter_anchor":"cloning","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.1.time-travel","title_ja":"Time Travel","scope":[],"chapter_anchor":"time-travel","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.1.fail-safe","title_ja":"Fail-safe","scope":[],"chapter_anchor":"fail-safe","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]}
-    ]},
-    {"objective_id":"5.2","domain":5,"title_ja":"データ共有機能を説明する","chapter":"textbook/domain-5/02-data-sharing.md","status":"planned","last_verified":null,"topics":[
-      {"topic_id":"5.2.accounts","title_ja":"共有に関わるAccount","scope":["provider","consumer","reader account"],"chapter_anchor":"accounts","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.2.secure-data-sharing","title_ja":"Secure Data Sharing","scope":[],"chapter_anchor":"secure-data-sharing","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.2.sharing-resharing","title_ja":"Sharing／resharing","scope":[],"chapter_anchor":"sharing-resharing","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.2.direct-shares","title_ja":"Direct share","scope":[],"chapter_anchor":"direct-shares","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.2.data-clean-rooms","title_ja":"Data Clean Room","scope":[],"chapter_anchor":"data-clean-rooms","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]}
-    ]},
-    {"objective_id":"5.3","domain":5,"title_ja":"Marketplace と Listing で共有する","chapter":"textbook/domain-5/03-marketplace-listings.md","status":"planned","last_verified":null,"topics":[
-      {"topic_id":"5.3.marketplace","title_ja":"Snowflake Marketplace","scope":[],"chapter_anchor":"marketplace","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.3.listings","title_ja":"Listing","scope":["private","public"],"chapter_anchor":"listings","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]},
-      {"topic_id":"5.3.native-apps","title_ja":"Native App","scope":[],"chapter_anchor":"native-apps","status":"planned","source_ids":["exam-study-guide-c03-jpn-2026-02-20"]}
-    ]}
+    {
+      "objective_id": "5.1",
+      "domain": 5,
+      "title_ja": "コラボレーションとデータ保護を説明する",
+      "chapter": "textbook/domain-5/01-collaboration-protection.md",
+      "status": "complete",
+      "last_verified": "2026-10-03",
+      "topics": [
+        {
+          "topic_id": "5.1.replication-failover",
+          "title_ja": "Data replication／failover",
+          "scope": [],
+          "chapter_anchor": "replication-failover",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-replication-bcdr"
+          ],
+          "diagram_ids": [
+            "d5-data-protection-lifecycle"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.1-Q01"
+            ],
+            "domain": [
+              "D5-Q02"
+            ],
+            "mock": [
+              "M1-Q55"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.1.secure-sharing-features",
+          "title_ja": "Secure data sharing feature",
+          "scope": [],
+          "chapter_anchor": "secure-sharing-features",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-secure-sharing",
+            "docs-sharing-secure-objects"
+          ],
+          "diagram_ids": [
+            "d5-data-protection-lifecycle"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.1-Q02"
+            ],
+            "domain": [
+              "D5-Q02"
+            ],
+            "mock": [
+              "M1-Q56"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.1.cloning",
+          "title_ja": "Cloning",
+          "scope": [],
+          "chapter_anchor": "cloning",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-clone-storage",
+            "docs-clone-command",
+            "docs-clone-considerations"
+          ],
+          "diagram_ids": [
+            "d5-data-protection-lifecycle"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.1-Q03"
+            ],
+            "domain": [
+              "D5-Q01"
+            ],
+            "mock": [
+              "M1-Q57"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.1.time-travel",
+          "title_ja": "Time Travel",
+          "scope": [],
+          "chapter_anchor": "time-travel",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-time-travel",
+            "docs-temp-transient-tables",
+            "docs-clone-command"
+          ],
+          "diagram_ids": [
+            "d5-data-protection-lifecycle"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.1-Q04"
+            ],
+            "domain": [
+              "D5-Q01"
+            ],
+            "mock": [
+              "M1-Q58",
+              "M1-Q59"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.1.fail-safe",
+          "title_ja": "Fail-safe",
+          "scope": [],
+          "chapter_anchor": "fail-safe",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-fail-safe",
+            "docs-temp-transient-tables"
+          ],
+          "diagram_ids": [
+            "d5-data-protection-lifecycle"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.1-Q05"
+            ],
+            "domain": [
+              "D5-Q01"
+            ],
+            "mock": [
+              "M1-Q59"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "objective_id": "5.2",
+      "domain": 5,
+      "title_ja": "データ共有機能を説明する",
+      "chapter": "textbook/domain-5/02-data-sharing.md",
+      "status": "complete",
+      "last_verified": "2026-10-03",
+      "topics": [
+        {
+          "topic_id": "5.2.accounts",
+          "title_ja": "共有に関わるAccount",
+          "scope": [
+            "provider",
+            "consumer",
+            "reader account"
+          ],
+          "chapter_anchor": "accounts",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-secure-sharing",
+            "docs-reader-accounts"
+          ],
+          "diagram_ids": [
+            "d5-sharing-model"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.2-Q01"
+            ],
+            "domain": [
+              "D5-Q03",
+              "D5-Q04"
+            ],
+            "mock": [
+              "M1-Q60"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.2.secure-data-sharing",
+          "title_ja": "Secure Data Sharing",
+          "scope": [],
+          "chapter_anchor": "secure-data-sharing",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-sharing-provider",
+            "docs-sharing-consumer",
+            "docs-grant-share"
+          ],
+          "diagram_ids": [
+            "d5-sharing-model"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.2-Q02"
+            ],
+            "domain": [
+              "D5-Q03",
+              "D5-Q04",
+              "D5-Q08"
+            ],
+            "mock": [
+              "M1-Q61",
+              "M1-Q63"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.2.sharing-resharing",
+          "title_ja": "Sharing／resharing",
+          "scope": [],
+          "chapter_anchor": "sharing-resharing",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-resharing",
+            "docs-resharer",
+            "docs-sharing-consumer",
+            "docs-resharing-default-change"
+          ],
+          "diagram_ids": [
+            "d5-sharing-model"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.2-Q03"
+            ],
+            "domain": [
+              "D5-Q05"
+            ],
+            "mock": [
+              "M1-Q62"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.2.direct-shares",
+          "title_ja": "Direct share",
+          "scope": [],
+          "chapter_anchor": "direct-shares",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-sharing-provider",
+            "docs-sharing-consumer",
+            "docs-grant-share"
+          ],
+          "diagram_ids": [
+            "d5-sharing-model"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.2-Q04"
+            ],
+            "domain": [
+              "D5-Q03",
+              "D5-Q07"
+            ],
+            "mock": [
+              "M1-Q63"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.2.data-clean-rooms",
+          "title_ja": "Data Clean Room",
+          "scope": [],
+          "chapter_anchor": "data-clean-rooms",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-cleanrooms-overview",
+            "docs-cleanrooms-legacy-policies"
+          ],
+          "diagram_ids": [
+            "d5-sharing-model"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.2-Q05"
+            ],
+            "domain": [
+              "D5-Q06"
+            ],
+            "mock": [
+              "M1-Q64"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "objective_id": "5.3",
+      "domain": 5,
+      "title_ja": "Marketplace と Listing で共有する",
+      "chapter": "textbook/domain-5/03-marketplace-listings.md",
+      "status": "complete",
+      "last_verified": "2026-10-03",
+      "topics": [
+        {
+          "topic_id": "5.3.marketplace",
+          "title_ja": "Snowflake Marketplace",
+          "scope": [],
+          "chapter_anchor": "marketplace",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-marketplace"
+          ],
+          "diagram_ids": [
+            "d5-listing-delivery"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.3-Q01"
+            ],
+            "domain": [
+              "D5-Q06"
+            ],
+            "mock": [
+              "M1-Q65"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.3.listings",
+          "title_ja": "Listing",
+          "scope": [
+            "private",
+            "public"
+          ],
+          "chapter_anchor": "listings",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-listings",
+            "docs-auto-fulfillment"
+          ],
+          "diagram_ids": [
+            "d5-listing-delivery"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.3-Q02"
+            ],
+            "domain": [
+              "D5-Q05",
+              "D5-Q06",
+              "D5-Q07"
+            ],
+            "mock": [
+              "M1-Q66"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        },
+        {
+          "topic_id": "5.3.native-apps",
+          "title_ja": "Native App",
+          "scope": [],
+          "chapter_anchor": "native-apps",
+          "status": "complete",
+          "source_ids": [
+            "exam-study-guide-c03-jpn-2026-02-20",
+            "docs-native-app-framework",
+            "docs-native-app-access",
+            "docs-native-app-roles",
+            "docs-native-app-responsibility"
+          ],
+          "diagram_ids": [
+            "d5-listing-delivery"
+          ],
+          "question_ids": {
+            "chapter": [
+              "C5-5.3-Q03"
+            ],
+            "domain": [
+              "D5-Q08"
+            ],
+            "mock": [
+              "M1-Q67"
+            ]
+          },
+          "last_verified": "2026-10-03"
+        }
+      ]
+    }
   ]
 }
