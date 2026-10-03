@@ -2,7 +2,7 @@
 
 このリポジトリは Snowflake 初学者が COF-C03 の試験範囲を順番に学ぶための教材です。ただし、試験と本教材はデータベース・SQL・クラウドの完全な入門コースではありません。
 
-日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録と照合は完了していますが、Objective 2.3の「コストセンタータグ付け」「予算」とDomain 5は未執筆です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
+日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録と照合は完了していますが、Domain 1〜4は完成し、Domain 5は未執筆です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
 
 ## 最初に確認すること
 
@@ -31,6 +31,7 @@
 - [1.6 AI/MLとアプリケーション開発機能を説明する](textbook/domain-1/06-ai-ml-app-development.md)
 - [2.1 セキュリティモデルと原則を説明する](textbook/domain-2/01-security-model.md)
 - [2.2 データガバナンス機能と用途を定義する](textbook/domain-2/02-data-governance.md)
+- [2.3 監視とコスト管理を説明する](textbook/domain-2/03-monitoring-cost.md)
 - [3.1 データをロード／アンロードする](textbook/domain-3/01-loading-unloading.md)
 - [3.2 自動データ取り込みを実行する](textbook/domain-3/02-automated-ingestion.md)
 - [3.3 ConnectorとIntegrationを識別する](textbook/domain-3/03-connectors-integrations.md)
@@ -39,8 +40,6 @@
 - [4.2 クエリ性能を最適化する](textbook/domain-4/02-optimize-query-performance.md)
 - [4.3 キャッシュを利用する](textbook/domain-4/03-caching.md)
 - [4.4 データ変換を実行する](textbook/domain-4/04-data-transformation.md)
-
-[2.3 監視とコスト管理](textbook/domain-2/03-monitoring-cost.md)は既存3 Topicを学習できますが、タグ付け・予算の補完が必要なため章全体は`draft`です。
 
 ## 教材完成後の学習順序
 

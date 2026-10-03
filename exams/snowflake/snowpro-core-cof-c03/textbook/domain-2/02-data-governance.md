@@ -131,7 +131,7 @@ Tagは分類metadataです。単独で値をmaskしません。Tag-based masking
 
 Tagはdatabase、schema、table、column、warehouseなど複数object typeへ利用でき、discovery、policy適用、cost attributionに再利用できます。Allowed valuesを設定すると表記ゆれを抑えられます。
 
-Object taggingはEnterprise Edition以上です。Tagによる設計を選ぶときはEdition条件も確認します。
+基本的なtag作成・割当は全Editionで利用できます。自動tag propagationとtag-based maskingはEnterprise Edition以上です。分類だけの要件と追加機能の要件を分けてEdition条件を確認します。費用へ分類を使う方法は[2.3のコストセンタータグ付け](03-monitoring-cost.md#cost-center-tagging)で扱います。
 
 <a id="privacy-policies"></a>
 ## Privacy policy — 個人に関する推測riskを制限する
@@ -152,6 +152,8 @@ Trust Centerはaccountをsecurity recommendationに照らして継続評価し�
 - Findingはriskとremediation情報を提供しますが、すべてを自動修正する機能ではありません。
 
 Accessには`SNOWFLAKE.TRUST_CENTER_VIEWER`や`SNOWFLAKE.TRUST_CENTER_ADMIN` application roleを使います。2026年3月にOverview tabがGAとなりましたが、個別scannerやnotificationにはPreview条件がありうるため、導入時は公式ページで状態を再確認します。
+
+FindingをPagerDutyなどへ送るprogrammatic notificationsは、2026-10-03時点でOpen Previewです。Outbound notification integrationを作り、SNOWFLAKE applicationへintegrationの`USAGE`を与え、scannerまたはscanner packageのnotification configurationへintegration名とseverity thresholdを設定します。たとえば`CRITICAL`を指定すると、そのseverity以上のfindingを配送します。Secretを使うwebhookにはapplicationのsecret参照権限なども必要です。Scannerが検出し、notification integrationが配送するので、`ALERT_HISTORY`や`LOGIN_HISTORY`をfindingの代わりに使う設計とは異なります。
 
 <a id="encryption-key-management"></a>
 ## Encryption key management — key hierarchyとCMKの責任を分ける
@@ -369,3 +371,4 @@ DROP ROLE IF EXISTS OBJ22_GLOBAL_PII;
 - `docs-notifications` — https://docs.snowflake.com/en/user-guide/notifications/about-notifications
 - `docs-replication-bcdr` — https://docs.snowflake.com/en/user-guide/replication-intro
 - `docs-data-lineage` — https://docs.snowflake.com/en/user-guide/ui-snowsight-lineage
+- `docs-trust-center-notifications` — https://docs.snowflake.com/en/user-guide/trust-center/notification-integrations

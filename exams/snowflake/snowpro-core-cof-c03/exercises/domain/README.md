@@ -30,6 +30,10 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D2-Q08: Cost guardrailと履歴分析](d2-q08.md)
 - [D2-Q09: Policyの適用単位](d2-q09.md)
 
+- [D2-Q10: 部門専用と共有の費用帰属](d2-q10.md)
+
+- [D2-Q11: 予測通知と停止の組合せ](d2-q11.md)
+
 ## Domain 3
 
 - [D3-Q01: Stage選定と権限の組合せ](d3-q01.md)
