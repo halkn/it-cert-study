@@ -2,7 +2,7 @@
 
 このリポジトリは Snowflake 初学者が COF-C03 の試験範囲を順番に学ぶための教材です。ただし、試験と本教材はデータベース・SQL・クラウドの完全な入門コースではありません。
 
-日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録・照合と、Domain 1〜5の本文・図・3層の演習が完了しています。教材全体はReferenceと模擬セット編成の仕上げを進める`review`です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
+日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録・照合と、Domain 1〜5の本文・図・3層の演習が完了しています。[Reference](reference/README.md)も完成し、教材全体は公式配点を考慮した模擬セット編成と完成条件の確認を進める`review`です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
 
 ## 最初に確認すること
 
@@ -52,7 +52,7 @@
 3. 各章の確認問題を解き、誤答理由まで説明できるか確認する。
 4. Domain演習で複数機能の使い分けを練習する。
 5. 模擬試験を解き、弱いトピックをCoverage Matrixから章へ戻って復習する。
-6. Referenceで比較表・用語・SQLを直前確認する。
+6. [Reference](reference/README.md)で比較表・用語・SQLを直前確認する。
 
 ## 最初の章
 
