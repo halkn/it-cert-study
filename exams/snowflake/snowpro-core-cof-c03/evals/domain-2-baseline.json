@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-domain-2-baseline-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-2-baseline-mock-100-2026-10-04",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     2
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "利用可能な汎用モデルの最低性能モデル。独立した新規エージェントへ会話履歴を渡さず実施。"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "746152c15755b7876f45cf724bf4186a003a68b0",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -38,16 +38,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/01-security-model.md",
           "heading": "DAC — ownerがaccessを委任する"
         }
       ],
-      "notes": "managed access schemaはgrant判断をschema ownerまたはMANAGE GRANTS roleへ集約するためB,D。A regular schemaでは各object ownerのgrant権限を禁止できず、C future grantは将来objectへの設定で中央集約ではない。",
+      "notes": "Managed access schemaでは配下objectのownerではなくschema ownerまたはMANAGE GRANTSを持つroleがgrant判断を集約する。要件はaccount全体のMANAGE GRANTSを使わずschema ownerへ集約することなのでBとD。Regular schemaのままsecurity roleへMANAGE GRANTSを付与するAは要件に反し、future grantのCでは各table ownerのgrant権限を取り除かない。",
       "correct": true
     },
     {
@@ -59,28 +59,16 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/01-security-model.md",
           "heading": "Authentication — 主体に合う認証方式"
-        },
-        {
-          "file": "textbook/domain-2/01-security-model.md",
-          "heading": "Federated authenticationとSSOはIdPへ本人確認を委ねる"
-        },
-        {
-          "file": "textbook/domain-2/01-security-model.md",
-          "heading": "OAuthはapplicationへ限定accessを委任する"
-        },
-        {
-          "file": "textbook/domain-2/01-security-model.md",
-          "heading": "Key-pair authenticationは非対話serviceに適する"
         }
       ],
-      "notes": "BはSAML/OIDC、Dはhuman MFA、Cは非対話service向けkey-pair、Eはapplicationへ限定tokenを渡すOAuth。Aは共有human passwordとMFA promptが非対話ETLに反し、Fはoperatorのinteractive loginを毎回要求する。",
+      "notes": "Humanのcorporate loginにはSAML／OIDC federated authenticationとSSO、strong authenticationにはIdPまたはauthentication policyでのMFA、interactive applicationにはOAuth、非対話ETL serviceにはkey-pair authenticationが対応するためB,C,D,E。共有human passwordとMFA promptのAはserviceにinteractive promptを要求し、Fもbrowser-based SSOとoperator loginを毎回要求するため非対話要件に合わない。",
       "correct": true
     },
     {
@@ -89,20 +77,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/01-security-model.md",
           "heading": "Secondary role — 複数roleの権限をsessionで集約する"
-        },
-        {
-          "file": "textbook/domain-2/01-security-model.md",
-          "heading": "Functional role — 業務機能とobject accessをroleへ分ける"
         }
       ],
-      "notes": "AはFINANCE_ROLEをprimary、DB_A/DB_Bのaccount roleをsecondaryにしてquery権限を集約し、新規object ownerをprimaryにする。Bはowner roleが違い、CはDB_B権限が欠け、Dはdatabase roleを直接activateできない。",
+      "notes": "複数account roleをsecondaryとしてactiveにすれば通常queryはprimary／secondaryのaggregate privilegesで認可され、CREATEと新規object ownershipはprimary roleを基準にする。よってFINANCE_ROLEをprimary、DB_AとDB_Bのaccess roleをsecondaryにするA。BはFINANCE_ROLEをprimaryにせず、CではDB_Bの権限がなく、Dのdatabase roleはsessionで直接activateできない。",
       "correct": true
     },
     {
@@ -113,9 +97,9 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/02-data-governance.md",
@@ -123,14 +107,10 @@
         },
         {
           "file": "textbook/domain-2/02-data-governance.md",
-          "heading": "Data masking — Query結果を行と列で制御する"
-        },
-        {
-          "file": "textbook/domain-2/02-data-governance.md",
           "heading": "Data lineage — upstreamとdownstreamを追跡する"
         }
       ],
-      "notes": "A tagでPII分類、C tag-based maskingで値を隠し、E lineageで派生先を追う。B row policyはrowをfilterしcolumnをmaskしない。D automatic classificationだけではmasking適用も派生先確認も満たさない。",
+      "notes": "PIIの分類にはsensitivity tag、非承認roleへの値の置換にはtag-based masking policy、派生先への影響追跡にはdata lineageを使うためA,C,E。Row access policyは行をfilterし列値のmaskingを行わないためBは要件違い。Automatic ClassificationだけのDは分類を自動化する範囲で、maskingとlineageの要件を満たさない。",
       "correct": true
     },
     {
@@ -140,9 +120,9 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/02-data-governance.md",
@@ -153,7 +133,7 @@
           "heading": "Privacy policy — 個人に関する推測riskを制限する"
         }
       ],
-      "notes": "D masking policyはcolumn値を変え電話番号末尾表示に使う。B privacy policyはdifferential privacyのnoise/privacy budgetで集計からの推測riskを扱う。A aggregation policyは最小group size等でDPではなく、C row policyはrecordをfilterし列値加工もDPも行わない。",
+      "notes": "電話番号の返却値を末尾4桁へ変えるのはcolumn valueを変換するmasking policy (D)。集計のdifferential privacy noiseとprivacy budgetはprivacy policy (B)。Aggregation policyは最小group size、row access policyは返す行を制御するもので、各要件に対応しない。",
       "correct": true
     },
     {
@@ -164,24 +144,20 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/02-data-governance.md",
           "heading": "Trust Center — scannerでsecurity postureを評価する"
         },
         {
-          "file": "textbook/domain-2/02-data-governance.md",
-          "heading": "Notification — messageを外部channelへ配送する"
-        },
-        {
-          "file": "textbook/domain-2/02-data-governance.md",
-          "heading": "Governanceは分類・適用・検証の循環で考える"
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Logging／tracing — handler codeの動作をevent tableへ記録する"
         }
       ],
-      "notes": "A scannerがaccount設定を評価、C notification integrationがPagerDuty等へ配送、E logging/tracingとevent tableがUDF内部処理を記録する。B ALERT_HISTORYはTrust Center finding通知の代替でなく、通知はscanner/packageとintegrationで構成する。D LOGIN_HISTORYはlogin履歴であってmisconfiguration scannerやUDF telemetryではない。",
+      "notes": "Trust Center scannerがaccount設定のsecurity findingを検出し、notification integrationがPagerDuty等へ配送する。UDF handler内部のlog／traceはevent tableへ収集するためA,C,E。本文はTrust Center notificationをalert_historyやlogin_historyで置き換える設計と区別し、alertはcondition/action、login_historyはlogin調査、いずれもTrust Center finding通知やhandler telemetryの代替ではないためB,Dを除外できる。",
       "correct": true
     },
     {
@@ -192,16 +168,20 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/02-data-governance.md",
           "heading": "Data replication／failover — 同期と昇格を分ける"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Account identifier — 接続先accountを一意に示す"
         }
       ],
-      "notes": "B failover groupはsecondaryをwritable primaryへ昇格できる。D定期refreshとpromotion runbookは非同期同期・切替に必要。E org/account name identifierまたはURLが接続先指定に合う。A replication groupは昇格できず、C account名単独は一意指定にならない。",
+      "notes": "別regionへの同期に加えてsecondaryをwritable primaryへpromoteするにはfailover groupが必要で、refresh頻度とpromotion runbookも設計する。Organization/account nameで接続先を指定するにはaccount identifierまたはURLを使うためB,D,E。Replication groupだけのAはpromotion能力がない。Region内で一意なaccount nameだけというCは本文推奨のorganization-account識別子ではない。",
       "correct": true
     },
     {
@@ -212,9 +192,9 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
@@ -225,7 +205,7 @@
           "heading": "ACCOUNT_USAGE — 履歴とmetadataをSQLで分析する"
         }
       ],
-      "notes": "A NOTIFYは早期warning、C SUSPEND_IMMEDIATEはrunning queryをcancelして停止、E WAREHOUSE_METERING_HISTORYはusage履歴分析に適する。B budget通知だけでは停止せず、D queue時間はcredit使用量分析の根拠でない。",
+      "notes": "早期warningはNOTIFY、running queryも止めるhard thresholdはSUSPEND_IMMEDIATE、翌日のwarehouse usage分析はWAREHOUSE_METERING_HISTORYでありA,C,E。BudgetのnotificationだけのBは停止actionではない。WAREHOUSE_LOAD_HISTORYのqueue時間だけを集計するDはcredit usageの履歴分析に指定された情報源ではない。",
       "correct": true
     },
     {
@@ -237,16 +217,16 @@
         "E"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/02-data-governance.md",
           "heading": "Encryption key management — key hierarchyとCMKの責任を分ける"
         }
       ],
-      "notes": "A Tri-Secret SecureでCMKとSnowflake keyを組み合わせ、C Business Critical以上、D CMK availability/rotation/recoveryはcustomer責任、E periodic rekeyingはEnterprise以上。B CMKなしでは要件を満たさず、F rekeyingでrecoveryは不要にならない。",
+      "notes": "Customer KMS keyをSnowflake keyと組み合わせる機能はTri-Secret Secure (A)、EditionはBusiness Critical以上 (C)。CMK availability／rotation／recoveryの責任を考慮し (D)、periodic rekeyingは独立にEnterprise以上 (E)。Snowflake-managed keyだけのBはCMK要件を満たさず、periodic rekeyingを有効化してもCMK無効化・削除時のrecovery責任はなくならないためFは誤り。",
       "correct": true
     },
     {
@@ -257,8 +237,6 @@
         "D"
       ],
       "confidence": "high",
-      "evidence_status": "sufficient",
-      "distractor_exclusion_supported": true,
       "ambiguous": false,
       "evidence": [
         {
@@ -270,7 +248,9 @@
           "heading": "Notification — messageを外部channelへ配送する"
         }
       ],
-      "notes": "A Alert on new dataは新規row出現時に評価。C condition/actionで判定・処理し、D webhook integrationが配送する。B scheduled alertは定期的に全既存dataを評価し、E emailだけではwebhook要件に合わない。",
+      "notes": "新しいrow到着時だけの評価にはAlert on new data、条件成立時の処理にはconditionとaction、webhookへの配信にはnotification integrationが必要なのでA,C,D。Scheduled taskで全tableを再scanするBは新規data起点のalert要件と異なり、emailだけのEはwebhook配送を満たさない。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
       "correct": true
     },
     {
@@ -281,8 +261,6 @@
         "E"
       ],
       "confidence": "high",
-      "evidence_status": "sufficient",
-      "distractor_exclusion_supported": true,
       "ambiguous": false,
       "evidence": [
         {
@@ -290,7 +268,9 @@
           "heading": "System-defined role — account管理責務を分離する"
         }
       ],
-      "notes": "USERADMINはuser/role管理(B)、SECURITYADMINはgrant管理(C)、SYSADMINはwarehouse/database object管理(E)。Aは責務を過剰集中し、DはUSERADMINのobject管理を誤っている。",
+      "notes": "USERADMINはuserとroleの作成・管理、SECURITYADMINはgrant管理、SYSADMINはwarehouseやdatabase等のobject管理を担うためB,C,E。SECURITYADMINへ全日常管理を集約するAは本文の責務分離と異なり、USERADMINがwarehouse/databaseを管理するDも責務の割当が違う。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
       "correct": true
     },
     {
@@ -299,20 +279,16 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
           "heading": "コストセンタータグ付け — 部門へ費用を帰属させる"
-        },
-        {
-          "file": "textbook/domain-2/03-monitoring-cost.md",
-          "heading": "専用resourceと共有resourceでは帰属の粒度が異なる"
         }
       ],
-      "notes": "同じapplication userが部門別queryを発行する場合はQUERY_TAGでquery単位に分類しQUERY_ATTRIBUTION_HISTORYでcompute集計するC。A warehouse tag/meteringはquery別部門を分けず、B user固定tagも分離できない。D custom budgetはquery費用を自動分割しない。",
+      "notes": "同一application userが複数部門のSQLを実行する場合、queryごとのQUERY_TAGで分類しQUERY_ATTRIBUTION_HISTORYからquery computeを集計する。Idle費用はquery attributionに含まれず別途配賦規則を設ける。Warehouse tag一つやuser tag一つでは複数部門を分離できず (A,B)、custom budgetは部門別query computeを自動分割しない (D)。",
       "correct": true
     },
     {
@@ -321,20 +297,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
           "heading": "予算 — 月次credit超過を予測する"
-        },
-        {
-          "file": "textbook/domain-2/03-monitoring-cost.md",
-          "heading": "Custom budgetの対象を選ぶ"
         }
       ],
-      "notes": "D cost_center=finance tag/valueをcustom budgetに加えれば対応object増加に追随し月次credit limitと超過予測通知が可能。A Resource Monitorはwarehouse quota trigger、B account budgetは全体監視、C QUERY_TAGはattribution用でbudget登録ではない。",
+      "notes": "対応objectへ付けたcost_center=finance tag/valueをcustom budgetの対象選択へ追加すれば、対象objectの増加に追随し月次credit limitと超過予測通知を設定できる (D)。Resource Monitorはobjectの複数種別を対象にするbudget forecastではなく (A)、全account budgetを特定tagだけに絞るBは要件にない対象削除を伴う。QUERY_TAG/session parameterはbudget対象の登録方法ではない (C)。",
       "correct": true
     },
     {
@@ -343,16 +315,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
-          "heading": "監視権限と対象追加権限を分ける"
+          "heading": "予算 — 月次credit超過を予測する"
         }
       ],
-      "notes": "Tagによるcustom budget対象選択にはtagへのAPPLYBUDGETが必要で、本文はAPPLYと区別するためA。B warehouse MODIFY、C VIEWER、D CREATE TAGはbudget対象追加権限ではない。",
+      "notes": "Custom budgetのtag-based対象選択へtagを加える権限はtagに対するAPPLYBUDGET。objectへtagを付けるAPPLYとは別権限であるためA。Warehouse MODIFY、budget VIEWER、CREATE TAGはいずれも本文が示す対象追加privilegeではない。",
       "correct": true
     },
     {
@@ -362,20 +334,117 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
           "heading": "予算 — 月次credit超過を予測する"
+        }
+      ],
+      "notes": "予測通知は将来のcredit超過の予測であって実績超過ではなく、標準limit通知だけではwarehouseを停止しない (B)。Limitはcredit単位であり、契約単価や他費用を含む通貨請求額上限の保証ではない (C)。通知だけで実績超過や停止済みとするA、Resource Monitorがbudget通知を受けてserverless処理を停止したとするDは本文に反する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q86",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Network policy — 接続元networkを制限する"
+        },
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Authentication — 主体に合う認証方式"
+        }
+      ],
+      "notes": "接続元networkの制御は対象へactivateしたnetwork policy (B)、password loginのMFA要件はauthentication policy／MFA (C)。Role SELECT privilegeはobject authorizationで接続元を制限せず (A)、resource monitorはwarehouse credit制御で認証方式に関係しない (D)。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "correct": true
+    },
+    {
+      "id": "M1-Q87",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/01-security-model.md",
+          "heading": "Logging／tracing — handler codeの動作をevent tableへ記録する"
+        }
+      ],
+      "notes": "Handler codeのlog／trace telemetryはactive event tableへ収集し、SQLでqueryして分析するためC。QUERY_HISTORYはquery履歴、LOGIN_HISTORYはlogin調査、WAREHOUSE_METERING_HISTORYはwarehouse meteringであり内部telemetry保存先ではない。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "correct": true
+    },
+    {
+      "id": "M1-Q88",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data lineage — upstreamとdownstreamを追跡する"
+        }
+      ],
+      "notes": "Lineageはview等のobject dependencyとCTAS等のdata movementの両方を示し、基底sourceから派生targetへの影響を追う。よってA。BはCTAS movementを除外し、Cはupstream/downstreamの向きを逆にし、Dは分類tagを実際の依存関係と混同している。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "correct": true
+    },
+    {
+      "id": "M1-Q89",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/02-data-governance.md",
+          "heading": "Data masking — Query結果を行と列で制御する"
+        }
+      ],
+      "notes": "担当regionの行を絞るにはrow access policy (B)、email columnの返却値をroleに応じて置換するにはmasking policy (D)。TagのみのAは分類metadataで単独強制しない。Time Travel保持期間は行・列のquery結果制御でない (C)。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "correct": true
+    },
+    {
+      "id": "M1-Q90",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence": [
+        {
+          "file": "textbook/domain-2/03-monitoring-cost.md",
+          "heading": "予防・測定・請求を分ける"
         },
         {
           "file": "textbook/domain-2/03-monitoring-cost.md",
-          "heading": "予測通知は超過直前の強制停止とは異なる"
+          "heading": "ACCOUNT_USAGE — 履歴とmetadataをSQLで分析する"
         }
       ],
-      "notes": "B forecastは将来超過予測で通常limit通知はwarehouseを停止しない。C limit単位はcreditで通貨請求上限保証ではない。Aは実績がlimit未満との条件に反し、D budget serverless測定処理はResource Monitorで停止しない。",
+      "notes": "Warehouse metering実績だけではaccount全体の請求額にならず、serverless・storage等の他費用もある (A)。Metered creditを請求へ換算するには契約単価やcloud services adjustmentを確認し、billed usageと区別する (B)。Credit自体は通貨額でなく契約条件に依存するためCは誤り、QUERY_TAGは分類に使うものでmeteredとbilled creditを等しくしないためDも誤り。",
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
       "correct": true
     }
   ],
@@ -388,10 +457,9 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "notes": "初回評価の指摘を修正後、新規独立2エージェントで全15問を解答・確定し、親がregistryで採点。回答確定後の変更はreviewからcompleteへの状態表示とDomain READMEの進捗・評価リンクのみで、本文の技術説明と問題文は変更していない。最終表示を含むcontent hashを保存。モデルの任意の品質指摘は各notesに保持。",
   "content_hashes": {
     "textbook_sha256": "447060051cf1f04cfb626d732cc4be2185f97c129973aee2960af702acf548f9",
-    "questions_sha256": "3a334d1d65b989cc375ad7030282b6725fbafb9a5865e12ce592b1fd1c1513ad",
-    "coverage_matrix_sha256": "d7822df8bcf3608961434775e3986f73bba0564da3b97808b9c8cfdb5220c6ab"
+    "questions_sha256": "8c37d265b92c7b356557309dd1d29a4885969e653a6b92a33da01e2752f3903f",
+    "coverage_matrix_sha256": "38ba35426b966778f125c87cf0bc3efe53d79f55f22415d37ac812c374eeed71"
   }
 }

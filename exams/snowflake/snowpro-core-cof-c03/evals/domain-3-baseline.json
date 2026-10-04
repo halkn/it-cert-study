@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-baseline-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-baseline-mock-100-2026-10-04",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -44,9 +44,17 @@
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "External stageは外部storageを指す"
+        },
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "Stage privilegeはinternalとexternalで異なる"
+        },
+        {
+          "file": "textbook/domain-3/03-connectors-integrations.md",
+          "heading": "Storage integration — cloud storageの資格情報をobjectへ切り出す"
         }
       ],
-      "notes": "外部stageはstorage integrationを参照し、複数role利用はexternal stageのUSAGE grantで行う。User stageはlocal/internal向けかつuser専用、credential直書き非推奨、table stageは外部S3共有用でない。",
+      "notes": "Storage integration参照のexternal stageは資格情報をSQLに残さず利用でき、external stage利用roleにはUSAGEが必要。User/table stageはinternal用。access key直書きとREAD grantは本文の推奨構成・external privilegeに合わない。",
       "correct": true
     },
     {
@@ -64,7 +72,7 @@
           "heading": "PUTとGETはlocalとinternal stageの間だけ"
         }
       ],
-      "notes": "PUTはworksheetで実行不可。Snowsight UIのupload機能かSnowSQL等clientを使う。GETはdownload方向で、internal stageにstorage integrationは要らない。",
+      "notes": "PUT/GETともworksheetから実行できず、Snowsight UIにはnamed internal stageへの別upload機能がある。A/Bはworksheet実行が誤りでGETはdownload。internal stage uploadにstorage integrationは不要。",
       "correct": true
     },
     {
@@ -82,7 +90,7 @@
           "heading": "同じファイルが二重にロードされない仕組み"
         }
       ],
-      "notes": "FORCE=TRUEはload metadataを無視して全ファイルをロードし重複を生み得る。ON_ERROR、PURGE、VALIDATION_MODEは再ロードを強制する選択肢として説明されていない。",
+      "notes": "FORCE=TRUEはload metadataを無視し全ファイルを再ロードして重複し得る。ON_ERRORは失敗時の処理、PURGEは成功後のstage file削除、VALIDATION_MODEはロードせず検証であり再ロードの原因ではない。",
       "correct": true
     },
     {
@@ -100,7 +108,7 @@
           "heading": "ON_ERRORでロード継続の方針を決める"
         }
       ],
-      "notes": "SKIP_FILEはerror行を含むファイル全体を飛ばし他ファイルを続行する。CONTINUEはerror行単位、ABORTはCOPY全体停止、VALIDATION_MODEはロードを行わない。",
+      "notes": "SKIP_FILEはerror行を含むファイル全体をskipし他を継続。CONTINUEはerror行をskip、ABORT_STATEMENTはCOPY全体を中止。VALIDATION_MODEはロードせず検証する。",
       "correct": true
     },
     {
@@ -119,7 +127,7 @@
           "heading": "COPY INTO <location> でアンロードする"
         }
       ],
-      "notes": "SINGLE=TRUEは1 file、HEADER=TRUEは列名見出しを出力する。OVERWRITEは同名file上書き、MATCH_BY_COLUMN_NAMEは半構造化load用。",
+      "notes": "SINGLE=TRUEで1ファイルにし、HEADER=TRUEで列見出しを出す。OVERWRITEは同名上書き、MATCH_BY_COLUMN_NAMEはtableへの半構造化ロード向けで要件に合わない。",
       "correct": true
     },
     {
@@ -135,9 +143,13 @@
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
+        },
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Compare — 要件から取り込み方式を選ぶ"
         }
       ],
-      "notes": "File arrival後まもないloadはSnowpipe auto-ingestでevent notificationを使う。Task pollingは時刻起動、Streamingはrow単位client書込、Openflowは外部統合flow。",
+      "notes": "Snowpipe auto-ingestはcloud event notificationを受けserverless computeでファイルを到着後まもなくロードする。Task/COPYは到着イベント起点でなく、Streamingはファイルなしの行書込み、Openflowは外部flow統合。",
       "correct": true
     },
     {
@@ -155,7 +167,7 @@
           "heading": "Offsetが進むのはDMLで消費したときだけ"
         }
       ],
-      "notes": "SELECTだけではstream offsetは進まず同じ変更を繰り返し返す。DMLで消費するとoffsetが進む。taskは動作中という前提、APPEND_ONLYやclusteringはこの症状説明と合わない。",
+      "notes": "SELECTだけではstream offsetが進まず、同じ変更が再び返る。DML transactionで消費したか確認する。taskは実行中との前提。APPEND_ONLYやclustering keyは本文上この再読込原因ではない。",
       "correct": true
     },
     {
@@ -172,9 +184,13 @@
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Target lagは鮮度の目標を表す"
+        },
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Incremental refreshとfull refresh"
         }
       ],
-      "notes": "TARGET_LAGはbase dataに対する鮮度目標、最小60秒。AUTOは作成時に一度評価して固定され、target lagは固定refresh scheduleではない。",
+      "notes": "TARGET_LAGはbase dataに対する鮮度遅れの目標で、最小60秒。AUTOのrefresh modeは作成時に決まり固定。10分は固定scheduleではなく鮮度目標。",
       "correct": true
     },
     {
@@ -190,9 +206,13 @@
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "API integration — 外部HTTPS serviceの呼び出しを許可する"
+        },
+        {
+          "file": "textbook/domain-3/03-connectors-integrations.md",
+          "heading": "Storage integrationとAPI integrationを取り違えない"
         }
       ],
-      "notes": "SQLから外部HTTPS APIを呼ぶにはAPI integrationとexternal functionを組み合わせる。Storage integration/external stageはcloud storage、notificationは通知、security integrationは認証用途。",
+      "notes": "SQLから外部HTTPS APIを関数として呼ぶ構成はAPI integrationとexternal function。Storage integrationはcloud storage、notificationは通知、securityは認証認可用。",
       "correct": true
     },
     {
@@ -210,9 +230,182 @@
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "必要なobjectは3つ"
+        },
+        {
+          "file": "textbook/domain-3/03-connectors-integrations.md",
+          "heading": "同期と参照"
         }
       ],
-      "notes": "Git repositoryはsecret、git_https_api API integration、HTTPS ORIGINを持つGit repository objectの3つが必要。external stage/storage integrationはS3等のfile access用。",
+      "notes": "Git連携にはsecret、API_PROVIDER=git_https_apiのAPI integration、HTTPS ORIGINのGit repository objectが必要。External stageとstorage integrationはcloud storage用でGit repositoryの要件として挙げられていない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q91",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "ロードは「置く」「解釈する」「入れる」の3段階"
+        },
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "名前付きformatとinline指定の使い分け"
+        }
+      ],
+      "notes": "Stageがファイルの置き場所、named file formatがfile typeとparse規則を再利用する。stream offset、warehouse、network policyはいずれもこの役割でない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q92",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "Internal stageのencryptionは作成時に決まる"
+        },
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "Directory tableはstageのファイル一覧をSQLで扱う"
+        }
+      ],
+      "notes": "SNOWFLAKE_SSEはserver-side encryptionのみで、client-side暗号化を避けpre-signed URLで扱う用途に合う。SNOWFLAKE_FULLは両方。AWS_SSE_KMSとNONEはexternal storage側方式。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q93",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "ロード前に検証する VALIDATION_MODE"
+        },
+        {
+          "file": "textbook/domain-3/01-loading-unloading.md",
+          "heading": "Mini hands-on — CSVを検証してからロードする"
+        }
+      ],
+      "notes": "VALIDATION_MODEはSELECT変換つきCOPYと併用不可なので変換なしの検証COPYを別に行う。Aは併用不可。CONTINUEは部分ロード、FORCEはload metadata無視で検証専用ではない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q94",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Auto-ingestとREST APIの2方式"
+        },
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
+        }
+      ],
+      "notes": "Snowpipe REST APIのinsertFilesはpipe名とfile一覧でstage fileのloadを依頼し、SnowpipeはSnowflake提供computeを使う。COPYはuser-managed warehouse、Streamは変更追跡、Streamingは行書込み。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q95",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Snowpipe Streaming — ファイルを作らず行を直接書き込む"
+        },
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "自動化は「何が引き金になるか」で分かれる"
+        }
+      ],
+      "notes": "Snowpipe Streamingはstage fileなしに行を直接tableへ書く。Auto-ingest/COPYはstage filesをロードし、Dynamic Tableはquery結果の鮮度維持。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q96",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Serverless taskとuser-managed task"
+        },
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "作成しただけでは動かない"
+        }
+      ],
+      "notes": "Serverless taskにはEXECUTE MANAGED TASKが必要。taskは作成直後suspendedのためRESUMEが要る。Warehouse MONITORは代替権限でなく、SELECTもscheduleを有効にしない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q97",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/02-automated-ingestion.md",
+          "heading": "Openflow — 外部systemとの接続をNiFiベースで統合する"
+        }
+      ],
+      "notes": "OpenflowはApache NiFi上でprocessorを組み合わせ外部source/destinationを接続する。Dynamic Table/materialized viewはquery結果、standard streamは変更追跡用。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q98",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-3/03-connectors-integrations.md",
+          "heading": "DriverとSnowflake Python APIとSnowparkの違い"
+        }
+      ],
+      "notes": "ResourceをPython objectとして操作するのはSnowflake Python API (snowflake.core)、SQLをcursorで実行し結果取得するのはPython Connector。Bは逆。JDBCはJava用、Dは用途を取り違える。",
       "correct": true
     }
   ],
@@ -227,7 +420,7 @@
   },
   "content_hashes": {
     "textbook_sha256": "28f3815688fb82e0743650b6cfae7c07ad6d1433ee644ef0818f044954d71d32",
-    "questions_sha256": "a244d01a7c584f8f765a09f84751c5caa430da35b167e7a901c5ed2040c56218",
-    "coverage_matrix_sha256": "97147f604342847b0cabe1cc1c4e93ae532dcebbe1ee9ec85d0b03fb82d39a58"
+    "questions_sha256": "9e85f5c9f88cfbaa79f27d8dfdba86861f46923a6b9c9b931e8010edaf69f528",
+    "coverage_matrix_sha256": "5ed8704cd2ba3808ab7a90aaa573d42f40cc82e62fa2ee09241d561b1162018a"
   }
 }

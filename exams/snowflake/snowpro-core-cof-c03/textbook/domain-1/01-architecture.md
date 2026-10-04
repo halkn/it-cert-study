@@ -271,6 +271,8 @@ Editionは下位Editionを土台に、上位になるほど追加機能やより
 | Business Critical | Enterpriseに強化されたsecurity／data protectionを追加 | PHIなどの高機密data、private connectivity、Tri-Secret Secure、account failover／failbackなどが必要 |
 | Virtual Private Snowflake（VPS） | Business Criticalを基に、他accountから隔離された専用Snowflake環境 | 最も厳しいisolation要件がある |
 
+permanent tableのTime Travel保持期間はStandardでは最大1日、Enterprise以上では最大90日です。30日保持が必要なら最小のEditionはEnterpriseです。temporary／transient tableの上限はEnterprise以上でも1日であり、Editionだけで保持期間が延びるわけではありません。根拠: `docs-snowflake-editions`, `docs-time-travel`。
+
 ### Edition選定で注意すること
 
 - 上位Editionは下位Editionの単なる「高速版」ではない。

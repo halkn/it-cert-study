@@ -4,6 +4,9 @@
 
 | Date | Scope | Result |
 |---|---|---|
+| 2026-10-04 | 100問の総合模擬セット | 日本語版の配点31／20／18／21／10%に合わせ、全19 Objectiveから重複なしで100問をDomain混在の固定順で編成。既存64問と新規36問を採用し、問題bankは103問。Q56・Q62・Q63は補足問題として残す。必要選択数を明記し、練習時間の目安は115分。問題冊子と採点・解説冊子を分離し、採点一覧・Domain別記録欄・本文へのリンクを追加。セット台帳から再生成し、構造Validatorで配分と冊子の更新漏れも検証する。 |
+| 2026-10-04 | 新規問題と設問改善 | 公式資料に沿って36問を作成。独立評価で見つかったEditionの保持期間根拠不足を1.1本文に補足。Secure materialized view、managed access、機能別Edition、AUTO refresh mode、Search Optimization、NULLを含む明細、累積順序の条件を明確化。Python client・lineage・telemetryの誤答肢を改善し、結果cacheは24時間更新／初回から31日上限の判断を追加。修正前の回答は完成根拠へ流用していない。 |
+| 2026-10-04 | 最終独立評価と検証 | 修正後の新規gpt-6-luna / lowを問題品質・本文限定で独立起動し、Domain 1〜4の31／20／18／21問、計90問を評価。各評価の総合・Domain別正答率100%、本文根拠十分率100%、曖昧問題0件。低確信度や難易度所見は原文を保持。全回答確定後に採点し、評価束と現行教材の一致を確認して8レポートを保存。Domain 5の既存2件を含む10件のhash検証、構造Validator（19 Objective・89 Topic・185出典・18図・278問）、冊子の再生成一致、不正セット・冊子更新漏れの拒否確認、差分チェック、変更Markdownのローカルリンク・anchor 539件が成功。NULL集計と最高額tieはSQLite相当式でも確認。Snowflake実環境では未実行。教材全体は完成条件の最終確認までreviewを維持。 |
 | 2026-08-13 | 英語版 COF-C03 Certification Page / Study Guide | Study Guide 2026-07-08 版を確認。5 domains、weights、19 objectives と配下トピックを登録。 |
 | 2026-08-13 | 日本語版 COF-C03 Certification Page | 日本語認定ページとStudy Guide申込フォームを確認。配布PDFの版・英語版との同等性は未検証。 |
 | 2026-08-13 | Objective 1.1 | Architecture、cloud platform、Edition、compute costの公式docsを確認。本文、図、8問、Coverage Matrixを更新。 |

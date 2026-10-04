@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-quality-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-3-quality-mock-100-2026-10-04",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "storage integrationを使うexternal stageとstage USAGE grantで要件を満たす。",
+      "notes": "storage integrationとexternal stageで資格情報をSQLへ直書きせず、role単位でUSAGE共有できる。",
       "correct": true
     },
     {
@@ -46,7 +46,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "PUTはworksheetで実行できず、Snowsightのupload UIか対応clientを使う。",
+      "notes": "PUTはworksheetから実行できない。Snowsightのアップロードまたはclientを用いる。",
       "correct": true
     },
     {
@@ -56,7 +56,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "FORCE=TRUEは既ロードファイルも再ロード対象にする。",
+      "notes": "FORCE=TRUEはロード済みファイルも再ロード対象にする。",
       "correct": true
     },
     {
@@ -66,7 +66,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "errorのあるfileだけskipして残りを処理する指定。",
+      "notes": "ファイル単位でerror時にskipする要件に合う。",
       "correct": true
     },
     {
@@ -77,7 +77,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "単一fileとheader出力を指定する。",
+      "notes": "SINGLEで単一出力、HEADERで列見出し。OVERWRITEは上書き制御で要件に不要。",
       "correct": true
     },
     {
@@ -87,7 +87,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Snowpipe auto-ingestとcloud event notificationが、warehouse常時稼働なしの到着後ロードに合う。",
+      "notes": "Snowpipe auto-ingestは通知により到着を検知しserverlessロードする。",
       "correct": true
     },
     {
@@ -95,9 +95,9 @@
       "selected_option_ids": [
         "B"
       ],
-      "confidence": "high",
+      "confidence": "medium",
       "ambiguous": false,
-      "notes": "streamをSELECTで読むだけではoffsetを消費しない。DML内で消費されているか確認する。",
+      "notes": "SELECTでstreamを読むだけでは消費されずoffsetが進まない。DML transactionで消費されるか確認。",
       "correct": true
     },
     {
@@ -106,12 +106,10 @@
         "A",
         "C"
       ],
-      "confidence": "low",
+      "confidence": "medium",
       "ambiguous": false,
-      "notes": "Aは正しい。BはAUTOがrefreshごとにmodeを切り替えるという記述が不正確に見える。Cの60秒最小値には低確信があり、私の知識では1秒指定が可能だった可能性があるため、2選択必須条件と選択肢の事実関係が両立しないおそれがある。問題品質上、正答数・前提を要確認。",
-      "correct": true,
-      "reported_ambiguous": true,
-      "grader_notes": "モデルの指摘は最小TARGET_LAGが1秒だった可能性という記憶への不確信であり、文面の複数解釈ではない。回答確定後に公式target-lag文書で最小60秒、refresh-modes文書でAUTOは作成時だけ解決し以後固定と確認。選択肢A/Cのみ成立し、曖昧性はないと判定。元の指摘とlow確信度を保持。https://docs.snowflake.com/en/user-guide/dynamic-tables/target-lag / https://docs.snowflake.com/en/user-guide/dynamic-tables/refresh-modes"
+      "notes": "TARGET_LAGはbase dataに対する鮮度目標。60秒が最小と判断。BはAUTOが解決したmodeは実行ごとに切り替わるとの断定、Dは固定scheduleとの誤解。",
+      "correct": true
     },
     {
       "id": "M1-Q33",
@@ -120,7 +118,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SQLから外部APIを呼ぶ構成はAPI integrationとexternal function。",
+      "notes": "外部APIをSQLから呼ぶ構成はAPI integrationとexternal function。",
       "correct": true
     },
     {
@@ -130,9 +128,90 @@
         "B",
         "C"
       ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "private Git repoの認証secret、git_https_api integration、HTTPS ORIGIN付きGit repository objectが必要。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q91",
+      "selected_option_ids": [
+        "C"
+      ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Git repository object、認証secret、Git HTTPS API integrationが必要。",
+      "notes": "stageが場所、named file formatがCSV解釈規則を再利用する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q92",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "pre-signed URLとserver-side encryption onlyの要件からSNOWFLAKE_SSEと判断。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q93",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "VALIDATION_MODEは変換SELECT付きCOPYでは使えないと理解。変換なしの検証COPYで入力errorを確認する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q94",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "通知なしに既存stage fileを指定してpipeへ依頼する方法はSnowpipe REST APIと判断。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q95",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "行データをファイル化せず取り込む用途はSnowpipe Streaming。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q96",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "serverless taskにEXECUTE MANAGED TASKが必要で、作成後suspendedならRESUMEも必要。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q97",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "NiFi processorによる外部system連携とflow管理はOpenflow。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q98",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "resource object管理はsnowflake.core Python API、接続とSQL実行はPython Connector。",
       "correct": true
     }
   ],
@@ -145,9 +224,12 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
+  "review_notes": [
+    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
+  ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "a244d01a7c584f8f765a09f84751c5caa430da35b167e7a901c5ed2040c56218",
-    "coverage_matrix_sha256": "97147f604342847b0cabe1cc1c4e93ae532dcebbe1ee9ec85d0b03fb82d39a58"
+    "questions_sha256": "9e85f5c9f88cfbaa79f27d8dfdba86861f46923a6b9c9b931e8010edaf69f528",
+    "coverage_matrix_sha256": "5ed8704cd2ba3808ab7a90aaa573d42f40cc82e62fa2ee09241d561b1162018a"
   }
 }

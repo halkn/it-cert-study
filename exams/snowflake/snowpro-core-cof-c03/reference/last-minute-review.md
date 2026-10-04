@@ -67,4 +67,4 @@
 3. 正解肢だけでなく、各誤答肢が要件を満たさない理由を説明する。
 4. [章末問題](../exercises/chapter/README.md)と[Domain演習](../exercises/domain/README.md)で確認する。
 
-既存の模擬問題集はTopic確認用の問題bankです。日本語版の配点に合わせた最終模擬セットの編成は別作業であり、この資料の配点表示を問題bankの出題比率と混同しません。Source IDとObjectiveの詳細は[Referenceの索引](README.md)を参照します。
+[100問の模擬試験](../exercises/mock/sets/full-01-questions.md)は日本語版の配点に合わせて編成しています。採点後は[解答・復習冊子](../exercises/mock/sets/full-01-answers.md)から本文へ戻ります。Topic確認用の問題bankは別の比率で構成されているため、総合セットと使い分けます。Source IDとObjectiveの詳細は[Referenceの索引](README.md)を参照します。

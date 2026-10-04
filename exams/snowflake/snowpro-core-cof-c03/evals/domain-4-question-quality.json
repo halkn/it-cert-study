@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-4-quality-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-4-quality-mock-100-2026-10-04",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     4
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "要件はwarehouse size一定のまま同時利用増に追従。multi-cluster scale outが直接対応。Bは個別実行時間、Cはscan、Dは起動待ちで状況と不一致。",
+      "notes": "BIだけの同時実行増加とoverload待機にはscale outが合う。size増加やQASは主因とずれる。",
       "correct": true
     },
     {
@@ -47,7 +47,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "spillを伴う単独aggregateはメモリー増加と処理入力削減が妥当。Bは同一クエリを全clusterへ分割する仕組みではなく、Cは結果cache設定。",
+      "notes": "spillを減らすメモリー増加と処理対象データ量の削減を選択。cluster追加は単一集約を分割しない。",
       "correct": true
     },
     {
@@ -57,7 +57,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "idle時間があり、クエリへのcompute attributionとwarehouse metered computeの差はあり得る。選択肢は明瞭。",
+      "notes": "実行へのcompute配賦にidle時間が入らない説明。",
       "correct": true
     },
     {
@@ -68,7 +68,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "過剰scanはfilterとpartition配置、JOIN後の過剰行数はjoin条件・keyの重複が対応。AとDは提示症状の一次原因として弱い。",
+      "notes": "過剰scanはfilter/partition pruning、過剰join出力は結合条件・keyの重複を確認する。",
       "correct": true
     },
     {
@@ -78,7 +78,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "特定クエリの並列化可能部分へ追加computeという要件に合致。Dは機能停止で要件と逆。",
+      "notes": "要件は必要時に追加computeを使うQAS。選択性の高いfilterや大規模scanがあるだけで必ず適格とは限らず、適格判定と見積り確認が必要。",
       "correct": true
     },
     {
@@ -88,7 +88,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "高選択性の等価検索に候補partitionを減らす手法。Aも構造配置改善ではあるが一意IDのpoint lookupにはDが直接的。",
+      "notes": "既存配置を変えず等価検索のaccess pathを追加する要件に合う。",
       "correct": true
     },
     {
@@ -98,7 +98,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Standardで配置を改善し範囲filterに対応する選択肢。BはEnterprise要件との齟齬があり、Dはこの用途より等価検索向けに見える。",
+      "notes": "Standardでtable配置を改善する日付範囲検索なのでclustering key。",
       "correct": true
     },
     {
@@ -108,7 +108,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "更新に合わせて集約を維持し複数queryから使う保存結果の候補。通常viewは集約結果を保存せず、result cacheは同一query条件依存。",
+      "notes": "更新に追随する集約結果を複数queryで使う要件に合う。",
       "correct": true
     },
     {
@@ -119,7 +119,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "suspendでwarehouse local cacheは失われる一方、条件を満たす保存結果の再利用はwarehouse suspendと別。Dは同名resumeでもcache維持とする点が誤り。",
+      "notes": "suspendでwarehouse local cacheは失われる一方、条件を満たす保存結果の再利用はwarehouse稼働状態に依存しない。",
       "correct": true
     },
     {
@@ -129,7 +129,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "row access policy後は行可視性判定が必要となるためmetadata統計のみの即時回答は一般に期待しにくい。",
+      "notes": "row access policyで可視性判定が要るため、metadataだけでCOUNTできるとは限らない。",
       "correct": true
     },
     {
@@ -139,7 +139,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "保存結果の再利用を避け、他条件を揃えてcold/warmを別に測る。Dは結果cache無効化とlocal cache無効化を混同。",
+      "notes": "保存結果を無効にして条件を揃え、cold/warmを別々に測る。FALSEがlocal cacheもcoldにするわけではない。",
       "correct": true
     },
     {
@@ -149,7 +149,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "array全要素を展開してqtyを数値化し集計する必要がある。Aは先頭要素のみ、C/Dは数量合計でなく件数。",
+      "notes": "arrayを全要素展開し、qtyを数値化して数量を合計する。",
       "correct": true
     },
     {
@@ -158,9 +158,9 @@
         "A",
         "B"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "directory tableのmetadataと文書内容の抽出を区別する問題。Bはhandler等の具体的な仕組み・前提がやや広く、単に『別途内容処理』なら自然。",
+      "notes": "directory tableはfile metadata向けで、PDF本文の金額抽出には別途内容処理が要る。",
       "correct": true
     },
     {
@@ -170,7 +170,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "partition単位のwindow SUMなら全明細を残して顧客合計を付加し、SUMはNULLを無視する。Cはrunning totalになり要件と異なる。",
+      "notes": "partition単位のwindow SUMなら元の全行を保持できる。",
       "correct": true
     },
     {
@@ -180,7 +180,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "有効行を絞った後、updated_atと一意idで順序を決めROW_NUMBERとQUALIFYを使う。タイ同率を扱う要件が明確。",
+      "notes": "有効行を先に絞り、timestampと一意なidで順序を決めてROW_NUMBER/QUALIFYを使う。",
       "correct": true
     },
     {
@@ -191,7 +191,58 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "重複を保つUNION ALLと、先頭から現在行までのROWS frameが要件に対応。順序列自体は問題文でtimestamp・一意idの順と示されている。",
+      "notes": "重複を残すにはUNION ALL、行ごとの累積にはprecedingからcurrent rowまでのROWS frame。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q99",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "粒度とjoin keyを調べて行数増大の原因を直す。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q100",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "QAS適格性・追加serverless costと、scale factorが資源上限であって倍率保証でない点を確認する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q101",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "24時間の保持延長は再利用で更新されるが、初回から最大31日の上限がある。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q102",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "COUNT(*)は3行、COUNT(amount)は2値、AVGはNULLを除いた15。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q103",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "RANKでamountだけを順位付けし、同額最高額の全行を残す。order_idを順位キーに含めると同順位にならない。",
       "correct": true
     }
   ],
@@ -204,10 +255,12 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
+  "review_notes": [
+    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
+  ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "636458efff4e11dbc109bd8a29037a9b5fba214d3f8bd4f2bf1fca078d7871af",
-    "coverage_matrix_sha256": "cc7ad05df12fe0458c37e2297af90c7d5f84ebb187736b97f23c22ce27f567d3"
-  },
-  "notes": "Domain 5実装に伴いDomain 4 READMEの古い残件表示をCoverage Matrixへの参照に変更したため、新規独立2エージェントで全16問を再評価。技術本文・問題・Coverageは変更なし。全回答確定後に採点。M1-Q47の内容処理の具体性に関する任意の指摘とmedium確信度は原文のまま保持。"
+    "questions_sha256": "3bc058658962e1be42e68d1d2a5de8c843b9c71d2f2272e235101f335777437b",
+    "coverage_matrix_sha256": "dd268618424b16651c9c121cd23fe5b745b00a8dee505532798f5a0ac8c2a06a"
+  }
 }

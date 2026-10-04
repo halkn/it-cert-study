@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-4-baseline-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-4-baseline-mock-100-2026-10-04",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     4
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -37,16 +37,20 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/01-evaluate-query-performance.md",
-          "heading": "遅いクエリを待機と実行に分ける"
+          "heading": "queueは混雑・起動待ち・lockを区別する"
+        },
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "似たworkloadをまとめ、競合する処理を分ける"
         }
       ],
-      "notes": "本文は、実行は速くoverload queueだけが増える同時利用時にはmulti-clusterのscale outが候補と明記する。Bのscale upは単一クエリ実行向け、CのQASは大きなscan向け、DのAUTO_SUSPENDはprovisioning待ち・起動頻度向けで、overload待ちを解消する選択肢ではない。",
+      "notes": "overload待機増加かつ同時利用増へのscale outはmulti-clusterが候補。size拡大は単一query性能、QASはscan、AUTO_SUSPENDはprovisioning待ちに対応し、示された原因に合わない。",
       "correct": true
     },
     {
@@ -56,16 +60,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/01-evaluate-query-performance.md",
           "heading": "spillは中間データがメモリーに収まらない兆候"
         }
       ],
-      "notes": "spillは中間データがmemoryに収まらない兆候であり、本文は入力・列削減、小batch化、より大きいwarehouseによるmemory増加を対策候補とするのでAとD。Bはcluster追加で単一queryのmemoryを合算しないと明記。CのUSE_CACHED_RESULTは保存結果再利用を制御し、spillを抑えない。",
+      "notes": "大量spillの対策は入力・batchの縮小と、warehouse拡大によるメモリー増加。multi-clusterは単一queryのメモリーを合算しない。結果cache設定はspillを抑えず、問題文でもQAS由来の少量spillを除外している。",
       "correct": true
     },
     {
@@ -74,16 +78,16 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/01-evaluate-query-performance.md",
-          "heading": "履歴で遅さを探し、配賦で費用を調べる"
+          "heading": "配賦creditはwarehouse請求全体ではない"
         }
       ],
-      "notes": "本文はCREDITS_ATTRIBUTED_COMPUTEがquery executionへの配賦でありidle時間を含まないとするのでC。Aは同時実行でも資源消費に基づく配賦なので等しい秒数ではない。BはQAS creditが別列で扱われるため誤り。Dはidleを全queryへ均等配賦すると本文は述べず、むしろidleを含まない。",
+      "notes": "配賦対象はquery実行computeでidle時間を含まないため、idleのあるwarehouseではmeteredとの差が生じ得る。配賦は同秒数で均等ではなく資源消費基準、QAS分は別列であり、本文は差を一律に欠落やQASとしない。",
       "correct": true
     },
     {
@@ -93,9 +97,9 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/01-evaluate-query-performance.md",
@@ -106,7 +110,7 @@
           "heading": "exploding joinは入力と出力の行数を比べる"
         }
       ],
-      "notes": "狭い日付filterでほぼ全partitionを読むならfilterとdata配置を調べるためB。予想外のjoin行数増加ならjoin条件、key一意性、双方の対応行数を調べるためC。Aのspillは中間データmemory不足の調査だが問題で示された2つの症状に直接対応しない。Dのoverload queueは混雑待機の診断で、提示されたscan・join増大の原因確認ではない。",
+      "notes": "狭い日付条件で全partition近くを読む場合、filterとpartitionの値域・配置を確認する。予想外のJOIN増大は結合条件、key一意性、対応行数を確認する。spillとoverload queueは設問の2つの直接観測症状ではない。",
       "correct": true
     },
     {
@@ -115,16 +119,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/02-optimize-query-performance.md",
           "heading": "QASはeligibleな処理の一部をserverless computeへ渡す"
         }
       ],
-      "notes": "本文は時々の大きなscanに対してwarehouse全体を常に大きくせず、並列化可能な部分をQASへ渡し、SYSTEM$ESTIMATE_QUERY_ACCELERATIONでeligibility・時間見積りを確認する方法を示す。有限scale factorも設定例があるのでA。Bは頻繁な日付範囲filterと配置改善向け。Cは同一tableの反復計算結果向け。Dはscale factor 0が課金停止ではなく上限なしと本文に明記。",
+      "notes": "まれな大scanの並列化可能部分に追加computeを使う要件にはQASの適格性・見積り確認が合い、有限scale factorで評価する。clusteringやMVは別対象。scale factor 0は上限をなくす値で、課金停止ではない。",
       "correct": true
     },
     {
@@ -133,16 +137,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/02-optimize-query-performance.md",
           "heading": "Search Optimizationは巨大tableから少数行を探す"
         }
       ],
-      "notes": "本文は巨大tableからcustomer ID等で少数行を探すpoint lookupにSearch Optimizationのaccess pathが適する。Aのclusteringは頻繁な範囲filterに合わせた配置改善向け。Bの通常viewは定義を保存するが検索構造や結果を保存しない。Cは同時実行scale outで検索候補partition削減の機構ではない。",
+      "notes": "巨大tableで高選択性ID条件から少数行を探すsearch access pathはSearch Optimizationの用途。clusteringは配置を変え、通常viewは計算保存でなく、multi-clusterは同時実行拡張である。",
       "correct": true
     },
     {
@@ -151,20 +155,16 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/02-optimize-query-performance.md",
           "heading": "clustering keyは頻繁なfilterに合わせて配置を整える"
-        },
-        {
-          "file": "textbook/domain-4/02-optimize-query-performance.md",
-          "heading": "改善する対象で4つの手法を分ける"
         }
       ],
-      "notes": "本文は頻繁な範囲filterで値域重複による過剰scanがある大tableではclusteringで配置・pruningを改善し、Standardでも利用可能とするためC。Aのmaterialized viewは反復する計算結果を保存しEnterprise以上。BのQASはEnterprise以上の追加computeでscan処理を速めるが配置改善ではない。DのSearch Optimizationは少数行point lookup向けでEnterprise以上。",
+      "notes": "Standardでも利用可能なclusteringで、頻繁な日付範囲filterの配置とpruningを改善する要件に合う。本文の比較表ではQASとSearch Optimization、materialized viewはいずれもEnterprise以上。",
       "correct": true
     },
     {
@@ -173,16 +173,16 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/02-optimize-query-performance.md",
           "heading": "materialized viewは繰り返す計算結果を保存する"
         }
       ],
-      "notes": "同一tableの繰り返す日別集約を保存しbase table変更に合わせて維持するものはmaterialized viewなのでB。Aの結果cacheは条件の合う同一query結果再利用で、明示的に保存・自動維持する候補ではない。Cの通常viewはSQL定義だけを保存して計算結果を保存しない。Dのclusteringはdata配置を変えてrange pruningを改善し、集約結果を保存しない。",
+      "notes": "反復する単一table集約を保存し、base tableに応じて維持する候補はmaterialized view。通常viewは結果を保存せず、result cacheは同一SQLの保存結果再利用である。clusteringはデータ配置の変更。",
       "correct": true
     },
     {
@@ -192,20 +192,20 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/03-caching.md",
-          "heading": "warehouseのlocalにあるtable dataを読む"
+          "heading": "何を再利用するのかを分ける"
         },
         {
           "file": "textbook/domain-4/03-caching.md",
-          "heading": "保存結果を再利用してクエリ処理を省く"
+          "heading": "warehouseのlocalにあるtable dataを読む"
         }
       ],
-      "notes": "本文はsuspendでwarehouse local cacheが破棄される一方、保存結果は別管理でsuspendだけでは消えないとするためAとB。Cは保存結果の再利用にresume/local cache再構築は要件ではない。Dは同じwarehouse名でもresume後はcoldで、local cacheがそのまま残らない。",
+      "notes": "suspendでwarehouse local data cacheは破棄される。一方、保存結果は別管理でsuspendだけでは消えず、設問の再利用条件も揃う。resume後のlocal cacheはcoldであり、同名warehouseでも再構築されない。",
       "correct": true
     },
     {
@@ -214,16 +214,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/03-caching.md",
           "heading": "metadataで読み取りを省く"
         }
       ],
-      "notes": "本文はrow access policy付きCOUNTではroleごとに可視行を判定するためscanが必要で、統計だけで答えられると一般化できないとするためD。Aはまさに本文の例に反する。Bは行可視性がcountに影響するため誤り。CのCOUNT(column)への変更でpolicy判定を省けるとは本文に記載がなく、本文の説明と合わない。",
+      "notes": "row access policy付きCOUNTではroleごとの可視行判定が必要なのでscanが起こり得て、統計だけで返す最適化を一般化できない。COUNT形式変更で可視性判定を省けるという根拠はない。",
       "correct": true
     },
     {
@@ -232,9 +232,9 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/03-caching.md",
@@ -245,7 +245,7 @@
           "heading": "USE_CACHED_RESULTで結果再利用を制御する"
         }
       ],
-      "notes": "本文は結果再利用を無効にし、SQL・data・warehouse size等を揃え、coldとwarmを分けて測るとするためC。Aは保存結果hitで処理を省略した実行を測る。Bは結果再利用を含めて比較し、local cacheのscan割合だけでも切り分けにならない。DはUSE_CACHED_RESULT=FALSEが結果再利用だけを無効化しwarehouse cacheをcoldにはしないと明記される。",
+      "notes": "結果再利用を切った上でSQL・data・warehouse・負荷を揃え、coldとwarmを分けて比較する。FALSEは保存結果のみを無効にしlocal cacheをcoldにしないため、Dは不適切。A/Bは保存結果hitを混ぜる。",
       "correct": true
     },
     {
@@ -254,20 +254,16 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/04-data-transformation.md",
           "heading": "JSONのpathで値を取り出し、ARRAYを行へ展開する"
-        },
-        {
-          "file": "textbook/domain-4/04-data-transformation.md",
-          "heading": "集約は出力の粒度とNULLの扱いを決める"
         }
       ],
-      "notes": "本文例と同様、LATERAL FLATTENでarray各要素を行化しVALUEのqtyを数値castし、sku別SUMを使うのでB。Aは[0]の先頭要素だけで他のitemを落とす。CのCOUNT(*)はqty合計ではなく展開された要素数を数える。Dもqty値の合計でなく値の件数を数える。",
+      "notes": "複数要素をLATERAL FLATTENで要素ごとの行にし、VALUE内のqtyを数値化してSUMする。items[0]は最初の要素だけ。COUNTは数量の合計でなく件数を返す。",
       "correct": true
     },
     {
@@ -277,16 +273,16 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/04-data-transformation.md",
           "heading": "非構造化fileはmetadataと内容を区別する"
         }
       ],
-      "notes": "directory tableはstage fileのpath、size、URL等metadataを一覧化し、PDF本文を自動でSQL列へ変換せず、内容抽出はUDF/procedure handler等の別処理が必要なのでA・B。Cはdirectory tableのmetadataとVARIANT内文書fieldを混同。Dもmetadata refreshが本文内容を抽出・field化するものではない。",
+      "notes": "directory tableはpath、size、URL等のfile metadataを一覧化し、PDF本文をSQL列へ自動変換しない。金額抽出にはhandler等の別処理が必要。metadata refreshは本文抽出を行わない。",
       "correct": true
     },
     {
@@ -295,20 +291,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/04-data-transformation.md",
           "heading": "window functionは各行を残して関連する行を計算する"
-        },
-        {
-          "file": "textbook/domain-4/04-data-transformation.md",
-          "heading": "集約は出力の粒度とNULLの扱いを決める"
         }
       ],
-      "notes": "window SUM(PARTITION BY customer)は各明細行を保って顧客合計を付け、SUMはNULLを除外するためD。AのGROUP BYは顧客単位へ行を縮約する。Bは全顧客を一つのpartitionとして合計する。Cは顧客内の累積合計となり、顧客全体の合計ではない。",
+      "notes": "PARTITION BY customerのSUM windowは明細行を保ちつつ顧客合計を各行へ付与し、SUMはNULLを除外する。GROUP BYは行を縮約、全体windowは顧客を分けず、累積frameは顧客全体合計でなく先行分までとなる。",
       "correct": true
     },
     {
@@ -317,9 +309,9 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/04-data-transformation.md",
@@ -330,7 +322,7 @@
           "heading": "ROWSとRANGE、順位関数を使い分ける"
         }
       ],
-      "notes": "有効行をwindow前にWHEREで絞り、顧客ごとに一意tie-breaker idを含むROW_NUMBER順序で最新を決め、window後にQUALIFY=1で1件に絞るのでC。AのRANKは同順位に同じ順位を与えるためupdated_at同値なら複数件あり得る。BはMAX時刻のみを返してrecord自体を選ばず、同率時刻の一意選択もできない。Dは本文がwindow計算前のWHEREへROW_NUMBER条件を置けないと明記。",
+      "notes": "WHEREで有効行を対象化し、updated_atと一意idでROW_NUMBER順序を確定してQUALIFY後に1件を選ぶ。RANKは同率複数を返し得て、MAXだけではrecordを選べず、window条件をWHEREに直接置けない。",
       "correct": true
     },
     {
@@ -340,9 +332,9 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-4/04-data-transformation.md",
@@ -350,10 +342,105 @@
         },
         {
           "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "window functionは各行を残して関連する行を計算する"
+        }
+      ],
+      "notes": "重複を残す連結はUNION ALL。ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROWは指定された一意順序で先頭から各行までを累積する。UNIONは重複除去、逆向きframeは後続側を含む。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q99",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-4/01-evaluate-query-performance.md",
+          "heading": "exploding joinは入力と出力の行数を比べる"
+        },
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "JOINで粒度を崩し、最後にDISTINCTで隠さない"
+        }
+      ],
+      "notes": "join出力増大と粒度ずれは条件・key一意性・双方の粒度を調べ、要件に合わせ集約やkeyを直す。warehouse拡大や結果cacheは原因修正でなく、CROSS JOINは増大を悪化させる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q100",
+      "selected_option_ids": [
+        "A",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-4/02-optimize-query-performance.md",
+          "heading": "QASはeligibleな処理の一部をserverless computeへ渡す"
+        }
+      ],
+      "notes": "QASの対象可否とserverless追加費用を確認する。scale factorは追加compute上限で高速化倍率の保証ではない。eligibleでないqueryへの一律効果・保証、および追加費用がないという選択肢は本文と反する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q101",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-4/03-caching.md",
+          "heading": "保存結果を再利用してクエリ処理を省く"
+        }
+      ],
+      "notes": "保存結果は原則24時間で、再利用のたびに24時間が更新されるが初回実行から最大31日。したがって32日目に初回結果は残らず、warehouse稼働や再利用で31日上限は延びない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q102",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
+          "heading": "集約は出力の粒度とNULLの扱いを決める"
+        }
+      ],
+      "notes": "COUNT(*)はNULL行を含め3、COUNT(amount)は非NULL値2件、AVGはNULLを除外して(10+20)/2=15。本文のCOUNTとAVGのNULL規則が全選択肢を区別する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q103",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "evidence_status": "sufficient",
+      "distractor_exclusion_supported": true,
+      "evidence": [
+        {
+          "file": "textbook/domain-4/04-data-transformation.md",
           "heading": "ROWSとRANGE、順位関数を使い分ける"
         }
       ],
-      "notes": "重複を残す連結はUNION ALLで、timestamp・一意id順に行単位で先頭から現在行まで累積するframeはROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROWなのでBとC。Aは現在行から後続方向の合計で逆向き。DのUNIONは重複除去を行い、要件に反する。",
+      "notes": "同額最高をすべて返すにはamountだけのRANK=1を使う。同点値は同順位となる。ROW_NUMBERは1行に絞り、idを順位順に足すと同額を同順位にできない。",
       "correct": true
     }
   ],
@@ -368,8 +455,7 @@
   },
   "content_hashes": {
     "textbook_sha256": "d8401f641b17124969e6cc6ab53b2b5d3650635f018317197a4515eef74d88c2",
-    "questions_sha256": "636458efff4e11dbc109bd8a29037a9b5fba214d3f8bd4f2bf1fca078d7871af",
-    "coverage_matrix_sha256": "cc7ad05df12fe0458c37e2297af90c7d5f84ebb187736b97f23c22ce27f567d3"
-  },
-  "notes": "Domain 5実装に伴いDomain 4 READMEの古い残件表示をCoverage Matrixへの参照に変更したため、新規独立2エージェントで全16問を再評価。技術本文・問題・Coverageは変更なし。全回答確定後に採点。M1-Q47の内容処理の具体性に関する任意の指摘とmedium確信度は原文のまま保持。"
+    "questions_sha256": "3bc058658962e1be42e68d1d2a5de8c843b9c71d2f2272e235101f335777437b",
+    "coverage_matrix_sha256": "dd268618424b16651c9c121cd23fe5b745b00a8dee505532798f5a0ac8c2a06a"
+  }
 }
