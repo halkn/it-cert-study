@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-1-quality-jpn-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-1-quality-mock-100-2026-10-04",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     1
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history after Terraform comparison was added; Domain 1 only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "独立warehouseでcomputeを分離し、永続data共有で鮮度を保てる。Aは競合を解かず、Bは同一warehouse内の負荷競合が残る。",
+      "notes": "独立warehouseで同じ永続データを共有できる。",
       "correct": true
     },
     {
@@ -47,7 +47,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "PHIにはEdition要件とBAA等の条件確認が必要。選択肢は明確で、A/Cは無関係な代替策。",
+      "notes": "",
       "correct": true
     },
     {
@@ -59,7 +59,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "region、row-level securityのEnterprise以上、独立computeという3要件に対応。Bは不要な複製。",
+      "notes": "",
       "correct": true
     },
     {
@@ -69,7 +69,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "CIから再現可能なdeployにCLIとversion管理project/SQLが適合。Terraformの選択肢はSQL/application実行との責務が不自然に混同されている。",
+      "notes": "",
       "correct": true
     },
     {
@@ -79,7 +79,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "明示されたwarehouse、database/schema、完全修飾名の条件から、まずsession roleとobject privilegeを比較する。A/Bは問題文でほぼ除外済み。",
+      "notes": "指定済み条件から、current roleと付与privilegeが差分候補。",
       "correct": true
     },
     {
@@ -89,7 +89,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Organizationが複数accountの最上位管理単位。Distractorも用語で区別可能。",
+      "notes": "",
       "correct": true
     },
     {
@@ -99,7 +99,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "新規sessionに適用されるservice user固有の既定はUser level。Sessionは個々のsession設定。",
+      "notes": "",
       "correct": true
     },
     {
@@ -109,7 +109,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "自動scale outとStandard policyが応答性を優先する意図に合う。Economyは起動を抑える。問題文はcost許容度や対象Snowflake構成を示さず、推奨の最適性には多少文脈依存がある。",
+      "notes": "Standard policyはresponse優先と理解。",
       "correct": true
     },
     {
@@ -119,7 +119,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "短いauto-suspendとauto-resumeで待機costを抑え、必要時に起動できる。選択肢は明快。",
+      "notes": "",
       "correct": true
     },
     {
@@ -129,7 +129,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "日付filterのpruning不良と少ないDML、頻用filterはclustering key評価に合う。標準viewのORDER BYは物理配置を保証しない。",
+      "notes": "頻繁な同一filterなのでclustering評価が候補。",
       "correct": true
     },
     {
@@ -140,10 +140,8 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "性能結果保持にはmaterialized viewが候補で、cost/secure処理の影響評価も妥当。ただし『secureとして定義できる』がmaterialized viewにも一般に成立するか、また提示機能で要件を同時に満たすかの表現に曖昧さがある。知識なしの消去ではA/Cが容易。",
-      "correct": true,
-      "reported_ambiguous": true,
-      "grader_notes": "回答確定後の公式文書照合でMaterialized views can be secure viewsと明記されていることを確認。選択肢Bは成立し、secure指定がstorageやmaintenance costをなくすわけではないためDも成立する。指摘は機能可否の知識への不確信であり、文面の複数解釈ではないと判定。元の指摘とmedium確信度を保持。https://docs.snowflake.com/en/user-guide/views-materialized#secure-materialized-views"
+      "notes": "secure materialized viewの可否に多少迷い。コストと性能評価は必要。",
+      "correct": true
     },
     {
       "id": "M1-Q12",
@@ -152,7 +150,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "大量文書から関連passageを低遅延で検索しsourceを渡す機能という記述はCortex Searchに直結。",
+      "notes": "",
       "correct": true
     },
     {
@@ -163,7 +161,190 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "自然言語から承認済みmetric準拠SQLを生成するにはCortex Analystとsemantic model/view。B/Cは要件に直結しない。",
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q68",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q69",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "30日Time TravelがEnterprise機能との認識。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q70",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q71",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q72",
+      "selected_option_ids": [
+        "A",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q73",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q74",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q75",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q76",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "停止でlocal cacheが消えることと、起動ごとの最低課金が該当。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q77",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q78",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q79",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q80",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q81",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q82",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q83",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q84",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
+      "correct": true
+    },
+    {
+      "id": "M1-Q85",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "",
       "correct": true
     }
   ],
@@ -176,12 +357,12 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
+  "review_notes": [
+    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
+  ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "f36a5335a4972ca88ba4ed0049263dc7629520568f971f5a966d833ac2e61ef2",
-    "coverage_matrix_sha256": "c02cdc6d2e9142a091434adc87585f75327647c2dc6a67185b3f936399598efe"
-  },
-  "evaluation_bundle_domains": [
-    1
-  ]
+    "questions_sha256": "35a7ade77f3ff675164cf282dbc15257e0cb132c7207f02de7a832df21dc8829",
+    "coverage_matrix_sha256": "d7329515c568bca6399ac86402525c41f1b61f8fad15fc101871a041e69399d3"
+  }
 }

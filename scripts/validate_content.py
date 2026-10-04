@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
+from build_mock_exam import render_set
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_STATUSES = {"planned", "draft", "review", "complete"}
@@ -252,6 +253,34 @@ def validate_exam(config_path: Path) -> tuple[Validation, str]:
         for key, value in config.get("release_completion_requirements", {}).items():
             validation.check(exam_metadata.get(key) == value, f"complete exam coverage requires exam.{key}={value}")
         validation.check(all(item.get("status") == "complete" for item in objectives), "complete exam coverage requires every objective to be complete")
+
+    if 'mock_sets' in registries:
+        mock_data = load_json(registry_path('mock_sets'))
+        validation.check(mock_data.get('schema_version') == 1, 'mock sets have unsupported schema_version')
+        sets = mock_data.get('sets', [])
+        set_ids = [item.get('id') for item in sets]
+        validation.check(bool(sets) and len(set_ids) == len(set(set_ids)), 'mock sets must have unique IDs')
+        output_paths = []
+        for spec in sets:
+            set_id = spec.get('id', '<missing>')
+            validation.check(bool(spec.get('id')) and bool(spec.get('title')), 'mock set needs an ID and title')
+            validation.check(spec.get('status') in ALLOWED_STATUSES, f'mock set {set_id} has invalid status')
+            validation.check(spec.get('blueprint_source_id') == exam_metadata.get('study_guide_source_id'), f'mock set {set_id} must use the canonical Study Guide')
+            minutes = spec.get('practice_time_minutes')
+            validation.check(isinstance(minutes, int) and minutes > 0, f'mock set {set_id} needs positive practice time')
+            for answers, key in ((False, 'question_file'), (True, 'answer_file')):
+                value = spec.get(key, '')
+                if not is_safe_repo_path(value):
+                    validation.check(False, f'mock set {set_id} has an unsafe {key}')
+                    continue
+                output_paths.append(value)
+                try:
+                    rendered = render_set(exam_root, spec, questions_by_id, answers)
+                    path = exam_root / value
+                    validation.check(path.is_file() and path.read_text(encoding='utf-8') == rendered, f'mock set {set_id} has missing or stale {key}')
+                except (KeyError, ValueError, TypeError, OSError) as exc:
+                    validation.check(False, f'mock set {set_id}: {exc}')
+        validation.check(len(output_paths) == len(set(output_paths)), 'mock set output files must not overlap')
 
     required_template_sections = {
         "shared/templates/chapter.md": ["## 前提知識", "## この章の用語", "## What", "## How", "## When / Why", "## Compare", "## 確認問題", "## 章のまとめ", "## 次に学ぶこと", "## 根拠"],

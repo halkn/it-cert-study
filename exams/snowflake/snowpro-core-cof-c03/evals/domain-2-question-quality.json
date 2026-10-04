@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-domain-2-question-quality-2026-10-03",
+  "evaluation_id": "snowpro-core-cof-c03-domain-2-quality-mock-100-2026-10-04",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-04",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     2
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "利用可能な汎用モデルの最低性能モデル。独立した新規エージェントへ会話履歴を渡さず実施。"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
   },
   "source_revision": {
-    "git_commit": "746152c15755b7876f45cf724bf4186a003a68b0",
+    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -37,9 +37,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Managed access schemaによりgrant判断をschema ownerへ集約し、security role側がownerを担う。",
-      "correct": true,
-      "evidence": []
+      "notes": "Schemaのmanaged access化とsecurity roleへのschema ownershipでgrant判断を集約できる。Aはaccount全体MANAGE GRANTSという要件に反し、Cはregular schemaのため個別owner grantを取り除けない。",
+      "correct": true
     },
     {
       "id": "M1-Q15",
@@ -51,9 +50,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "人間のSSO/MFA、serviceのkey pair、interactive appのOAuthを分離する。AとFはserviceに人間のpromptを持ち込む。",
-      "correct": true,
-      "evidence": []
+      "notes": "人間のSSOとMFA、serviceのkey-pair、interactive appのOAuthの組合せ。AとFはserviceにinteractive human認証を持ち込むため弱い。",
+      "correct": true
     },
     {
       "id": "M1-Q16",
@@ -62,9 +60,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Secondary rolesで両database権限を使いつつprimary roleを新規objectのownerにできる。",
-      "correct": true,
-      "evidence": []
+      "notes": "FINANCE_ROLEをprimaryにして新規objectのownershipを決め、両access roleをsecondaryで有効化すれば両databaseを参照できる。",
+      "correct": true
     },
     {
       "id": "M1-Q17",
@@ -75,9 +72,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "分類tag、tag-based masking、lineageが要件に対応。",
-      "correct": true,
-      "evidence": []
+      "notes": "Tagで分類し、tag-based maskingで値を隠し、lineageで派生影響を調べる。D単独は分類結果をpolicyや影響調査に結び付けない。",
+      "correct": true
     },
     {
       "id": "M1-Q18",
@@ -85,11 +81,10 @@
         "B",
         "D"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "末尾4桁の表示制御はmasking、差分プライバシーとbudgetはprivacy policyと解釈。Aggregation policyは利用者を集計に制限する目的と紛らわしく、症例文の『集計』だけだと選択の揺れがありうる。",
-      "correct": true,
-      "evidence": []
+      "notes": "末尾4桁の表示はmasking、differential privacyとprivacy budgetはprivacy policy。",
+      "correct": true
     },
     {
       "id": "M1-Q19",
@@ -100,9 +95,8 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "継続finding検出はscanner、PagerDuty通知はnotification integration、UDF内部処理観測はlogging/tracingとevent table。Bはalert履歴がsourceという点が不自然。",
-      "correct": true,
-      "evidence": []
+      "notes": "継続検出にTrust Center scanner、外部通知にnotification integration、handler内部telemetryにlogging/tracingとevent table。Critical findingをPagerDutyへ送る部分の設定粒度は問題文で省略されているが、選択肢上はこの組合せ。",
+      "correct": true
     },
     {
       "id": "M1-Q20",
@@ -113,9 +107,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "別regionの書込可能primaryへの切替はfailover group、refreshとpromotion手順、org/account指定のidentifier。",
-      "correct": true,
-      "evidence": []
+      "notes": "Failover group、定期refreshとpromotion runbook、organization/account nameに基づく識別子が必要。",
+      "correct": true
     },
     {
       "id": "M1-Q21",
@@ -126,9 +119,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "通知、即時suspend、warehouse metering履歴でのusage分析。",
-      "correct": true,
-      "evidence": []
+      "notes": "通知、running queryを止める即時suspend、翌日のwarehouse metering分析。Bのbudget notificationだけでは停止できず、Dはqueue時間でcredit原因を説明しない。",
+      "correct": true
     },
     {
       "id": "M1-Q22",
@@ -140,9 +132,8 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "CMK連携、Business Critical以上、CMK運用回復策、periodic rekey要件。Fは回復手順不要と断定しており不適切。Dは正答として必要だが、設問はCMKとrekeyのavailability/recoveryのどの側面を指すか少し広い。",
-      "correct": true,
-      "evidence": []
+      "notes": "Tri-Secret Secure、Business Critical以上、CMK運用手順、Enterprise以上のperiodic rekeyingを選択。Edition条件を別々に判定する点が重要。",
+      "correct": true
     },
     {
       "id": "M1-Q23",
@@ -153,9 +144,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "新規データ用alert、condition/action、webhook integration。",
-      "correct": true,
-      "evidence": []
+      "notes": "新規data alert、condition/action、webhook integration。全表定期scanは要件に合わない。",
+      "correct": true
     },
     {
       "id": "M1-Q24",
@@ -166,9 +156,8 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "USERADMINがuser/role、SECURITYADMINがgrant、SYSADMINがwarehouse/objectを管理する責務分担。",
-      "correct": true,
-      "evidence": []
+      "notes": "USERADMINはuser/role、SECURITYADMINはgrant、SYSADMINはwarehouse/database object管理。",
+      "correct": true
     },
     {
       "id": "M1-Q51",
@@ -177,20 +166,18 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "同一user/warehouse内で部門ごとのquery compute帰属にはquery tagとQUERY_ATTRIBUTION_HISTORYが適切。idleは別配賦方針という前提。",
-      "correct": true,
-      "evidence": []
+      "notes": "QUERY_TAGとQUERY_ATTRIBUTION_HISTORYでquery computeを部門別に分類する。idle費用は別途配賦という条件にも整合する。",
+      "correct": true
     },
     {
       "id": "M1-Q52",
       "selected_option_ids": [
         "D"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "Tag/valueで対象を動的にまとめるcustom budgetと月次limit/forecast通知。『credit超過の見込み』はforecastと読み取れる。",
-      "correct": true,
-      "evidence": []
+      "notes": "対象tag/valueをcustom budgetへ登録し、月次credit limitとforecast通知を設定する。",
+      "correct": true
     },
     {
       "id": "M1-Q53",
@@ -199,9 +186,8 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "設問で不足privilegeをTagへbudget対象として適用する権限と限定しているためAPPLYBUDGET。用語が固有で知識なしでは推測困難な点はある。",
-      "correct": true,
-      "evidence": []
+      "notes": "tagをbudget対象に追加するためのAPPLYBUDGET privilegeを選択。権限名が一般的でなく、問われている機能固有の知識を要する。",
+      "correct": true
     },
     {
       "id": "M1-Q54",
@@ -211,9 +197,61 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Forecastは実績limit超過を意味せず、budget通知自体はwarehouse停止を行わない。Credit limitは請求額上限保証ではない。Dは予測通知からresource monitorの停止を誤って推論している。",
-      "correct": true,
-      "evidence": []
+      "notes": "Forecast通知は将来予測であり停止を意味しない。credit limitも通貨建て請求額の保証ではない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q86",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "接続元はnetwork policy、password loginのMFAはauthentication policy等で制御する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q87",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "handlerのlog/traceをSQLで調査する保存先はevent table。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q88",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "Lineageでobject dependencyとdata movementを追う。CTAS派生tableがどの条件でlineageに現れるかは構成・履歴条件の影響があり得るが、選択肢上の方針はA。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q89",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "行の絞り込みはrow access policy、email表示値の置換はmasking policy。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q90",
+      "selected_option_ids": [
+        "A",
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Warehouse meteringは全account費用ではなく、serverless/storage等もある。credit換算には契約単価とcloud services調整の確認が必要。",
+      "correct": true
     }
   ],
   "result": {
@@ -225,10 +263,12 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "notes": "初回評価の指摘を修正後、新規独立2エージェントで全15問を解答・確定し、親がregistryで採点。回答確定後の変更はreviewからcompleteへの状態表示とDomain READMEの進捗・評価リンクのみで、本文の技術説明と問題文は変更していない。最終表示を含むcontent hashを保存。モデルの任意の品質指摘は各notesに保持。",
+  "review_notes": [
+    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
+  ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "3a334d1d65b989cc375ad7030282b6725fbafb9a5865e12ce592b1fd1c1513ad",
-    "coverage_matrix_sha256": "d7822df8bcf3608961434775e3986f73bba0564da3b97808b9c8cfdb5220c6ab"
+    "questions_sha256": "8c37d265b92c7b356557309dd1d29a4885969e653a6b92a33da01e2752f3903f",
+    "coverage_matrix_sha256": "38ba35426b966778f125c87cf0bc3efe53d79f55f22415d37ac812c374eeed71"
   }
 }
