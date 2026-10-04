@@ -1,6 +1,6 @@
 # SnowPro Core COF-C03 Syllabus
 
-基準はユーザーが公式サイトから取得した日本語版 *SnowPro Core 認定資格試験学習ガイド*（2026-02-20更新）です。5 Domainの配点、全19 Objective・89 Topicと配下scopeを照合し、以下を教材向けに再構成しています。試験範囲の照合完了は、本文・演習の完成を意味しません。Domain 5の本文・演習は未執筆です。配布案内は[公式日本語認定ページ](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)、版と照合履歴は `sources.json` と[Verification Log](verification-log.md)を参照してください。
+基準はユーザーが公式サイトから取得した日本語版 *SnowPro Core 認定資格試験学習ガイド*（2026-02-20更新）です。5 Domainの配点、全19 Objective・89 Topicと配下scopeを照合し、以下を教材向けに再構成しています。試験範囲の照合完了は、本文・演習の完成を意味しません。全Domainの本文・図・3層の演習は整備済みです。Referenceと模擬セット編成は仕上げ段階です。配布案内は[公式日本語認定ページ](https://learn.snowflake.com/en/certifications/snowpro-core-jpn-C03/)、版と照合履歴は `sources.json` と[Verification Log](verification-log.md)を参照してください。
 
 ## Domain 1 — Snowflake AI Data Cloud の機能とアーキテクチャ（31%）
 

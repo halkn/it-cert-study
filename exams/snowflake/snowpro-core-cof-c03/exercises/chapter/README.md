@@ -36,3 +36,19 @@ ID は `C<domain>-<objective>-Q<number>`（例: `C1-1.1-Q01`）を使用しま�
 - [C4-4.4-Q06: UNION ALLの意味](c4-4.4-q06.md)
 - [C4-4.4-Q07: ROWSとRANGE](c4-4.4-q07.md)
 - [C4-4.4-Q08: QUALIFYの対象](c4-4.4-q08.md)
+
+## Domain 5
+
+- [C5-5.1-Q01: 別regionの書込み再開](c5-5.1-q01.md)
+- [C5-5.1-Q02: 共有と開発用分岐](c5-5.1-q02.md)
+- [C5-5.1-Q03: Cloneの変更とstorage](c5-5.1-q03.md)
+- [C5-5.1-Q04: 保持期間の上限](c5-5.1-q04.md)
+- [C5-5.1-Q05: Fail-safeの担当](c5-5.1-q05.md)
+- [C5-5.2-Q01: Readerの費用](c5-5.2-q01.md)
+- [C5-5.2-Q02: Imported databaseの利用](c5-5.2-q02.md)
+- [C5-5.2-Q03: 再共有の条件](c5-5.2-q03.md)
+- [C5-5.2-Q04: Direct shareの境界](c5-5.2-q04.md)
+- [C5-5.2-Q05: Clean Roomの用途](c5-5.2-q05.md)
+- [C5-5.3-Q01: Marketplaceの役割](c5-5.3-q01.md)
+- [C5-5.3-Q02: Listingの公開先と料金](c5-5.3-q02.md)
+- [C5-5.3-Q03: Packageとapplication](c5-5.3-q03.md)

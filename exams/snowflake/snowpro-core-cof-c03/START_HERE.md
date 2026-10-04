@@ -2,7 +2,7 @@
 
 このリポジトリは Snowflake 初学者が COF-C03 の試験範囲を順番に学ぶための教材です。ただし、試験と本教材はデータベース・SQL・クラウドの完全な入門コースではありません。
 
-日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録と照合は完了していますが、Domain 1〜4は完成し、Domain 5は未執筆です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
+日本語受験向けに、日本語版Study Guide（2026-02-20更新）を試験範囲の基準にしています。全19 Objective・89 Topicの登録・照合と、Domain 1〜5の本文・図・3層の演習が完了しています。教材全体はReferenceと模擬セット編成の仕上げを進める`review`です。試験範囲の照合済みと教材全体の完成を区別して、[Coverage Matrix](docs/coverage-matrix.json)で進捗を確認してください。
 
 ## 最初に確認すること
 
@@ -41,7 +41,11 @@
 - [4.3 キャッシュを利用する](textbook/domain-4/03-caching.md)
 - [4.4 データ変換を実行する](textbook/domain-4/04-data-transformation.md)
 
-## 教材完成後の学習順序
+- [5.1 コラボレーションとデータ保護](textbook/domain-5/01-collaboration-protection.md)
+- [5.2 データ共有](textbook/domain-5/02-data-sharing.md)
+- [5.3 MarketplaceとListing](textbook/domain-5/03-marketplace-listings.md)
+
+## 学習順序
 
 1. [Syllabus](docs/syllabus.md)で試験全体と用語を眺める。
 2. Domain 1から5まで、各DomainのREADMEに記載された順に章を読む。
@@ -52,4 +56,4 @@
 
 ## 最初の章
 
-[Domain 1: Snowflake AI Data Cloud の機能とアーキテクチャ](textbook/domain-1/README.md)から開始します。章が`complete`になるまでは、未完成であることを前提に参照してください。
+[Domain 1: Snowflake AI Data Cloud の機能とアーキテクチャ](textbook/domain-1/README.md)から開始します。

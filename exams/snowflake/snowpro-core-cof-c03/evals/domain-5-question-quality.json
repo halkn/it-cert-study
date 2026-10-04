@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "snowpro-core-domain-5-question-quality-2026-10-03",
+  "evaluation_type": "question-quality",
+  "evaluated_on": "2026-10-03",
+  "exam_id": "snowflake-snowpro-core-cof-c03",
+  "domains": [
+    5
+  ],
+  "model": {
+    "id": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
+  },
+  "source_revision": {
+    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
+    "working_tree_dirty": true
+  },
+  "test_controls": {
+    "answers_hidden_until_locked": true,
+    "registry_hidden_until_locked": true,
+    "external_sources_allowed": false,
+    "allowed_paths": []
+  },
+  "thresholds": {
+    "overall_score_percent": 80,
+    "per_domain_score_percent": 70,
+    "textbook_evidence_percent": 90,
+    "maximum_ambiguous_questions": 0
+  },
+  "questions": [
+    {
+      "id": "M1-Q55",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "書込みを再開するにはsecondaryをprimaryへ昇格する構成が要件に合う。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q56",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "許可した列と行だけをsecure viewで公開する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q57",
+      "selected_option_ids": [
+        "B",
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "cloneの更新はsourceへ反映されず、変更や履歴によりstorageが増え得る。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q58",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "同名objectがあると旧tableをそのままUNDROPできないため、空tableをrenameしてから復元する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q59",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "Fail-safeからの復旧はSupport経由だが、成功や所要時間は保証されない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q60",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "契約のないconsumer向けreader accountではproviderがwarehouse computeを負担する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q61",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "consumer側のimported databaseでANALYSTへIMPORTED PRIVILEGESを付与する。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q62",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "resharing条件下で列を限定するにはconsumer側通常databaseのsecure viewを下流共有する解釈。Imported database内へのview作成可否が少し気になった。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q63",
+      "selected_option_ids": [
+        "A"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "DROP後に再作成されたobjectには権限を改めてshareへgrantする必要がある。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q64",
+      "selected_option_ids": [
+        "B",
+        "D"
+      ],
+      "confidence": "medium",
+      "ambiguous": false,
+      "notes": "offeringの公開先・policyとrunnerのtemplate利用権限を設定し、集計出力に制限する。A/Cはclean roomの制御モデルと合わない。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q65",
+      "selected_option_ids": [
+        "D"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "共有データはconsumer自身のwarehouseでqueryし、自社データとJOINできる。Cはstorage負担の記述で消去できる。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q66",
+      "selected_option_ids": [
+        "B"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "特定顧客への有料提供はprivate listing、別region配送管理はCross-Cloud Auto-Fulfillment。",
+      "correct": true
+    },
+    {
+      "id": "M1-Q67",
+      "selected_option_ids": [
+        "C"
+      ],
+      "confidence": "high",
+      "ambiguous": false,
+      "notes": "application packageをListing経由で提供し、consumerがinstall後に必要なtableアクセスを許可する。",
+      "correct": true
+    }
+  ],
+  "result": {
+    "overall_score_percent": 100.0,
+    "per_domain_score_percent": {
+      "5": 100.0
+    },
+    "textbook_evidence_percent": null,
+    "ambiguous_question_count": 0,
+    "passed": true
+  },
+  "notes": "全回答確定後に親が採点。初回評価後の修正を別の新規2エージェントで再試験。最終回答の確定後は技術本文・設問を変更せず、review→completeの状態表示とDomain READMEの進捗・評価リンクのみ更新して最終hashを保存。問題品質のJSONはagentの確定回答メッセージから転記。",
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "bb541f775c2cb2f6adc4430b481e9695e802daef8b9c5423f04bc653121125c9",
+    "coverage_matrix_sha256": "30b240a5612e0ad8e72819a6427437ab8e61b1c985df51d585d579d9519bbf34"
+  }
+}

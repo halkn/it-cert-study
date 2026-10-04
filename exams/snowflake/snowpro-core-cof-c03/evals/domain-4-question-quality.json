@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history, after revisions; Domain 1/3/4 evaluated together and split by Domain after all responses locked"
+    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
   },
   "source_revision": {
-    "git_commit": "da0c340eece405abf47be510f0130341be3cd1de",
+    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "実行時間でなくoverload待ちが増えており、cluster scale outが直接対応する。",
+      "notes": "要件はwarehouse size一定のまま同時利用増に追従。multi-cluster scale outが直接対応。Bは個別実行時間、Cはscan、Dは起動待ちで状況と不一致。",
       "correct": true
     },
     {
@@ -47,7 +47,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "spillには単一queryのmemory余裕と処理入力削減が対応する。multi-clusterは単一queryを各clusterへ分割しない。",
+      "notes": "spillを伴う単独aggregateはメモリー増加と処理入力削減が妥当。Bは同一クエリを全clusterへ分割する仕組みではなく、Cは結果cache設定。",
       "correct": true
     },
     {
@@ -57,7 +57,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "query compute attributionはidle時間をqueryへ配賦しないため、metered totalより小さくなり得る。",
+      "notes": "idle時間があり、クエリへのcompute attributionとwarehouse metered computeの差はあり得る。選択肢は明瞭。",
       "correct": true
     },
     {
@@ -68,7 +68,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "partition pruning不足とJOIN後の行数増加をそれぞれ直接調べる。",
+      "notes": "過剰scanはfilterとpartition配置、JOIN後の過剰行数はjoin条件・keyの重複が対応。AとDは提示症状の一次原因として弱い。",
       "correct": true
     },
     {
@@ -78,7 +78,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "QASのeligible判定と見積り、有限scale factorで評価する。",
+      "notes": "特定クエリの並列化可能部分へ追加computeという要件に合致。Dは機能停止で要件と逆。",
       "correct": true
     },
     {
@@ -88,7 +88,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "高選択性の等価lookupで候補partitionを減らす用途にSearch Optimizationが直接的。",
+      "notes": "高選択性の等価検索に候補partitionを減らす手法。Aも構造配置改善ではあるが一意IDのpoint lookupにはDが直接的。",
       "correct": true
     },
     {
@@ -98,7 +98,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Editionを変えず頻繁なdate range filterの配置・pruningを改善する選択。",
+      "notes": "Standardで配置を改善し範囲filterに対応する選択肢。BはEnterprise要件との齟齬があり、Dはこの用途より等価検索向けに見える。",
       "correct": true
     },
     {
@@ -108,7 +108,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "反復する単一table集約を保存しbase更新に応じて維持する要件にmaterialized viewが適する。",
+      "notes": "更新に合わせて集約を維持し複数queryから使う保存結果の候補。通常viewは集約結果を保存せず、result cacheは同一query条件依存。",
       "correct": true
     },
     {
@@ -119,7 +119,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "suspendでwarehouse local cacheは破棄されるが、保持中のpersisted query result再利用はsuspendだけでは無効にならない。",
+      "notes": "suspendでwarehouse local cacheは失われる一方、条件を満たす保存結果の再利用はwarehouse suspendと別。Dは同名resumeでもcache維持とする点が誤り。",
       "correct": true
     },
     {
@@ -129,7 +129,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "row access policy適用下では可視性判定が必要で、metadata-only COUNT最適化を一律には期待できない。",
+      "notes": "row access policy後は行可視性判定が必要となるためmetadata統計のみの即時回答は一般に期待しにくい。",
       "correct": true
     },
     {
@@ -139,7 +139,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "結果再利用を切り、他条件を揃えた上でcold/warmを分けて測定する。Dはresult cache無効化とlocal cache無効化を混同している。",
+      "notes": "保存結果の再利用を避け、他条件を揃えてcold/warmを別に測る。Dは結果cache無効化とlocal cache無効化を混同。",
       "correct": true
     },
     {
@@ -149,7 +149,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "配列要素ごとにFLATTENしqtyを数値化して集計する。",
+      "notes": "array全要素を展開してqtyを数値化し集計する必要がある。Aは先頭要素のみ、C/Dは数量合計でなく件数。",
       "correct": true
     },
     {
@@ -158,9 +158,9 @@
         "A",
         "B"
       ],
-      "confidence": "high",
+      "confidence": "medium",
       "ambiguous": false,
-      "notes": "directory tableはfile metadata一覧であり、PDF内容抽出には別のdocument processingが必要。",
+      "notes": "directory tableのmetadataと文書内容の抽出を区別する問題。Bはhandler等の具体的な仕組み・前提がやや広く、単に『別途内容処理』なら自然。",
       "correct": true
     },
     {
@@ -170,7 +170,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "partitionなしのSUM windowを各明細行に付けると全体合計になるため、顧客partitionが必要。Dは各顧客内合計を全行に付ける。",
+      "notes": "partition単位のwindow SUMなら全明細を残して顧客合計を付加し、SUMはNULLを無視する。Cはrunning totalになり要件と異なる。",
       "correct": true
     },
     {
@@ -180,7 +180,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "有効行を対象に一意idでtie-breakするROW_NUMBERとQUALIFYで必ず1件にする。",
+      "notes": "有効行を絞った後、updated_atと一意idで順序を決めROW_NUMBERとQUALIFYを使う。タイ同率を扱う要件が明確。",
       "correct": true
     },
     {
@@ -191,7 +191,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "重複を残すUNION ALLと、先頭から現在行までのROWS frameを指定する。",
+      "notes": "重複を保つUNION ALLと、先頭から現在行までのROWS frameが要件に対応。順序列自体は問題文でtimestamp・一意idの順と示されている。",
       "correct": true
     }
   ],
@@ -208,5 +208,6 @@
     "textbook_sha256": null,
     "questions_sha256": "636458efff4e11dbc109bd8a29037a9b5fba214d3f8bd4f2bf1fca078d7871af",
     "coverage_matrix_sha256": "cc7ad05df12fe0458c37e2297af90c7d5f84ebb187736b97f23c22ce27f567d3"
-  }
+  },
+  "notes": "Domain 5実装に伴いDomain 4 READMEの古い残件表示をCoverage Matrixへの参照に変更したため、新規独立2エージェントで全16問を再評価。技術本文・問題・Coverageは変更なし。全回答確定後に採点。M1-Q47の内容処理の具体性に関する任意の指摘とmedium確信度は原文のまま保持。"
 }

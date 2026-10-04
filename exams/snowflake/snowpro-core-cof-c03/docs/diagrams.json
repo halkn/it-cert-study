@@ -156,23 +156,39 @@
     },
     {
       "id": "d5-data-protection-lifecycle",
-      "objective_ids": ["5.1"],
-      "learning_goal": "clone、Time Travel、Fail-safe、replication の目的を区別できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "objective_ids": [
+        "5.1"
+      ],
+      "learning_goal": "履歴復旧・独立分岐・共同利用・別regionの継続を区別できる",
+      "source_ids": [
+        "docs-time-travel",
+        "docs-fail-safe",
+        "docs-clone-storage",
+        "docs-replication-bcdr",
+        "docs-secure-sharing"
+      ],
+      "format": "mermaid",
+      "file": "diagrams/domain-5/protection-selection.md",
+      "status": "complete",
+      "last_verified": "2026-10-03"
     },
     {
       "id": "d5-sharing-model",
-      "objective_ids": ["5.2", "5.3"],
-      "learning_goal": "provider、consumer、reader、listing のデータと compute の関係を説明できる",
-      "source_ids": [],
-      "format": "svg",
-      "file": null,
-      "status": "planned",
-      "last_verified": null
+      "objective_ids": [
+        "5.1",
+        "5.2"
+      ],
+      "learning_goal": "shareへのobject grantとconsumer内のrole grant・費用負担を区別できる",
+      "source_ids": [
+        "docs-secure-sharing",
+        "docs-sharing-provider",
+        "docs-sharing-consumer",
+        "docs-reader-accounts"
+      ],
+      "format": "mermaid",
+      "file": "diagrams/domain-5/sharing-boundaries.md",
+      "status": "complete",
+      "last_verified": "2026-10-03"
     },
     {
       "id": "d4-transformation-grain",
@@ -190,6 +206,7 @@
       "status": "complete",
       "last_verified": "2026-10-03"
     },
-    {"id":"d2-cost-management-selection","objective_ids":["2.3"],"learning_goal":"費用帰属の分類、Budgetの予測通知、Resource Monitorの停止を要件から選べる","source_ids":["docs-cost-attributing","docs-budgets","docs-resource-monitors","docs-budget-custom-actions"],"format":"mermaid","file":"diagrams/domain-2/cost-management-selection.md","status":"complete","last_verified":"2026-10-03"}
+    {"id":"d2-cost-management-selection","objective_ids":["2.3"],"learning_goal":"費用帰属の分類、Budgetの予測通知、Resource Monitorの停止を要件から選べる","source_ids":["docs-cost-attributing","docs-budgets","docs-resource-monitors","docs-budget-custom-actions"],"format":"mermaid","file":"diagrams/domain-2/cost-management-selection.md","status":"complete","last_verified":"2026-10-03"},
+    {"id":"d5-listing-delivery","objective_ids":["5.3"],"learning_goal":"公開先と料金を分離し、shareのqueryとappのinstallを区別できる","source_ids":["docs-listings","docs-auto-fulfillment","docs-native-app-framework"],"format":"mermaid","file":"diagrams/domain-5/listing-delivery.md","status":"complete","last_verified":"2026-10-03"}
   ]
 }
