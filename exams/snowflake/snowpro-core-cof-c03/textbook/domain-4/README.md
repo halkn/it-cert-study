@@ -1,6 +1,6 @@
 # Domain 4 — 性能最適化、クエリ、変換
 
-配点21%。全4章の本文、図4点、章末26問、Domain演習10問、模擬16問を整備し、`complete`です。ユーザーが公式サイトから取得した日本語版Study Guide（2026-02-20更新、p.10）の全4Objective・14Topicとの対応を確認しています。教材全体の基準も日本語版へ切り替えています。教材全体の進捗は[Coverage Matrix](../../docs/coverage-matrix.json)を参照してください。
+配点21%。全4章の本文、図4点、章末26問、Domain演習10問、模擬21問を整備し、`complete`です。ユーザーが公式サイトから取得した日本語版Study Guide（2026-02-20更新、p.10）の全4Objective・14Topicとの対応を確認しています。教材全体の基準も日本語版へ切り替えています。教材全体の進捗は[Coverage Matrix](../../docs/coverage-matrix.json)を参照してください。
 
 1. [4.1 クエリ性能評価](01-evaluate-query-performance.md)
 2. [4.2 クエリ性能最適化](02-optimize-query-performance.md)
@@ -13,5 +13,5 @@
 
 - [章末問題](../../exercises/chapter/README.md#domain-4): 26問
 - [Domain演習](../../exercises/domain/README.md#domain-4): 10問
-- [模擬問題](../../exercises/mock/README.md#set-1--domain-4): 16問
+- [模擬問題](../../exercises/mock/README.md#問題bank--domain-4): 21問（[追加問題](../../exercises/mock/README.md#問題bank--追加問題)の5問を含む）
 - 評価結果と公式範囲の再確認状況は[Verification Log](../../docs/verification-log.md)を参照してください。

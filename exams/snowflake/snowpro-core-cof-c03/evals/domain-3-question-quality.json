@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-quality-mock-100-2026-10-04",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-question-quality-2026-10-05",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-04",
+  "evaluated_on": "2026-10-05",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
   },
   "source_revision": {
-    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
+    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "storage integrationとexternal stageで資格情報をSQLへ直書きせず、role単位でUSAGE共有できる。",
+      "notes": "storage integration経由stageとUSAGE grant。",
       "correct": true
     },
     {
@@ -46,7 +46,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "PUTはworksheetから実行できない。Snowsightのアップロードまたはclientを用いる。",
+      "notes": "PUTはworksheet不可。",
       "correct": true
     },
     {
@@ -56,7 +56,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "FORCE=TRUEはロード済みファイルも再ロード対象にする。",
+      "notes": "FORCEにより既ロードfileも再ロードされる。",
       "correct": true
     },
     {
@@ -66,7 +66,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "ファイル単位でerror時にskipする要件に合う。",
+      "notes": "file単位でskipする指定。",
       "correct": true
     },
     {
@@ -77,7 +77,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SINGLEで単一出力、HEADERで列見出し。OVERWRITEは上書き制御で要件に不要。",
+      "notes": "単一fileとheader出力。",
       "correct": true
     },
     {
@@ -87,7 +87,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Snowpipe auto-ingestは通知により到着を検知しserverlessロードする。",
+      "notes": "cloud eventによるSnowpipe auto-ingest。",
       "correct": true
     },
     {
@@ -95,9 +95,9 @@
       "selected_option_ids": [
         "B"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "SELECTでstreamを読むだけでは消費されずoffsetが進まない。DML transactionで消費されるか確認。",
+      "notes": "SELECTだけではstream offsetを消費しない。",
       "correct": true
     },
     {
@@ -108,7 +108,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "TARGET_LAGはbase dataに対する鮮度目標。60秒が最小と判断。BはAUTOが解決したmodeは実行ごとに切り替わるとの断定、Dは固定scheduleとの誤解。",
+      "notes": "TARGET_LAGの意味と最小時間幅を選んだ。最小値について知識に若干の不確実さがある。",
       "correct": true
     },
     {
@@ -118,7 +118,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "外部APIをSQLから呼ぶ構成はAPI integrationとexternal function。",
+      "notes": "external functionとAPI integration。",
       "correct": true
     },
     {
@@ -128,9 +128,9 @@
         "B",
         "C"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "private Git repoの認証secret、git_https_api integration、HTTPS ORIGIN付きGit repository objectが必要。",
+      "notes": "Git認証secret、API integration、repository object。",
       "correct": true
     },
     {
@@ -140,7 +140,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "stageが場所、named file formatがCSV解釈規則を再利用する。",
+      "notes": "stageが場所、file formatが解析規則。",
       "correct": true
     },
     {
@@ -150,7 +150,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "pre-signed URLとserver-side encryption onlyの要件からSNOWFLAKE_SSEと判断。",
+      "notes": "pre-signed URLとserver-side暗号化条件からSNOWFLAKE_SSEと判断。細かなinternal stage encryption仕様は少し不確実。",
       "correct": true
     },
     {
@@ -160,7 +160,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "VALIDATION_MODEは変換SELECT付きCOPYでは使えないと理解。変換なしの検証COPYで入力errorを確認する。",
+      "notes": "VALIDATION_MODEの変換付きCOPY制約を避ける検証手順と判断。",
       "correct": true
     },
     {
@@ -168,9 +168,9 @@
       "selected_option_ids": [
         "A"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "通知なしに既存stage fileを指定してpipeへ依頼する方法はSnowpipe REST APIと判断。",
+      "notes": "file名を指定してSnowpipe REST APIでload依頼。",
       "correct": true
     },
     {
@@ -180,7 +180,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "行データをファイル化せず取り込む用途はSnowpipe Streaming。",
+      "notes": "file uploadを介さないrow ingestion。",
       "correct": true
     },
     {
@@ -189,9 +189,9 @@
         "A",
         "C"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "serverless taskにEXECUTE MANAGED TASKが必要で、作成後suspendedならRESUMEも必要。",
+      "notes": "managed task権限とresumeが必要。",
       "correct": true
     },
     {
@@ -201,7 +201,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "NiFi processorによる外部system連携とflow管理はOpenflow。",
+      "notes": "NiFiベースの外部flow管理。",
       "correct": true
     },
     {
@@ -211,7 +211,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "resource object管理はsnowflake.core Python API、接続とSQL実行はPython Connector。",
+      "notes": "resource object APIとSQL connectorを用途別に選ぶ。",
       "correct": true
     }
   ],
@@ -229,7 +229,14 @@
   ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "9e85f5c9f88cfbaa79f27d8dfdba86861f46923a6b9c9b931e8010edaf69f528",
-    "coverage_matrix_sha256": "5ed8704cd2ba3808ab7a90aaa573d42f40cc82e62fa2ee09241d561b1162018a"
-  }
+    "questions_sha256": "53e9a405f95f63dee214e3040dc0274bde2aa69022d460a3e792ec1c8bb2b22e",
+    "coverage_matrix_sha256": "8bd2b2504693e4167da72c41c9014e28460ca7fd080ebd61273dc8082f307f3b"
+  },
+  "notes": [
+    "M1-Q26: GETをuploadに使う選択肢やinternal stageにstorage integration必須とする選択肢は機能カテゴリ上の誤りが明瞭で、distractorとして弱い。",
+    "M1-Q33: APIをSQLから呼ぶ要件に対しAPI integration/external function以外の3選択肢は名称上も用途上も離れており、推測で正答しやすい。",
+    "M1-Q95: file化/upload不要のrow ingestionはStreamingの説明にほぼ直結し、他選択肢は明瞭なfile-based機能。",
+    "M1-Q97: Apache NiFiという固有語がOpenflowを強く示し、ほかは内部refresh/query objectで明らかに異なる。",
+    "複数問で正解の並びが同じ概念語（たとえば要件の語をそのまま選択肢が反復）になっており、全問横断では正解位置に目立つ偏りは見られない。各問の選択肢順も概ね分散している。"
+  ]
 }

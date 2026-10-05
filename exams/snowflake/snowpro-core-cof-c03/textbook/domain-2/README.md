@@ -1,6 +1,6 @@
 # Domain 2 — アカウント管理とデータガバナンス
 
-配点20%。日本語版の全3 Objective・24 Topicは`complete`です。独立した問題品質評価とtextbook限定評価は両方15/15正答、本文根拠十分率100%、曖昧問題0件です。
+配点20%。日本語版の全3 Objective・24 Topicは`complete`です。現行の模擬問題bankに対する独立した問題品質評価とtextbook限定評価は、下記の評価記録を参照してください。
 
 1. [2.1 セキュリティモデル](01-security-model.md) — `complete`
 2. [2.2 データガバナンス](02-data-governance.md) — `complete`

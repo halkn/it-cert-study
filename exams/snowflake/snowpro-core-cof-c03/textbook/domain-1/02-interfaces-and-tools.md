@@ -1,7 +1,7 @@
 # 1.2 インターフェースとツールを利用する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -48,6 +48,8 @@
 
 interfaceを変えてもprivilegeは増えません。たとえばVS Code拡張を使っても、active roleに`SELECT`がなければtableはqueryできません。queryがwarehouseを必要とするなら、SnowsightでもCLIでもVS Codeでも利用可能なwarehouseが必要です。
 
+接続自体の失敗と、接続後のtableへのSELECT権限不足を分けます。Network policyは接続元IP等によるアクセスを制御し、tableのSELECTをgrantする機能ではありません。同じaccountへ接続成功し、warehouseのUSAGEとobject名も確認済みなら、interfaceごとのactive roleとSELECT privilegeを比較します。Network policyの設定は[2.1](../domain-2/01-security-model.md#network-policies)で学びます。
+
 <a id="snowsight"></a>
 ## Snowsightで探索・実行・監視する
 
@@ -55,7 +57,7 @@ SnowsightはSnowflakeのweb interfaceです。browserからdatabase objectの探
 
 Snowsightの開発面では、Workspacesがfile-basedの環境を提供します。SQLとPythonのfileをfolderで整理し、実行し、Git repositoryと連携できます。COF-C03で重要なのは特定のmenu位置の暗記ではなく、**browser内で対話的に探索・開発・管理する入口**だと識別することです。
 
-旧来のWorksheetsからWorkspacesへの移行が進んでいます。したがって「SQLをbrowserで対話実行する」という能力と、特定時点のnavigation名を分けて覚えます。画面名が変わっても、statementを実行するroleとwarehouseのcontextは必要です。
+Workspacesは旧来のLegacy Worksheetsを置き換えています。したがって「SQLをbrowserで対話実行する」という能力と、特定時点のnavigation名を分けて覚えます。画面名が変わっても、statementを実行するroleとwarehouseのcontextは必要です。
 
 ### Snowsightを選ぶ場面
 
@@ -171,6 +173,8 @@ SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_WAREHOUSE(),
 
 続けて[Domain演習D1-Q04〜Q05](../../exercises/domain/README.md)と[模擬問題M1-Q04〜Q05](../../exercises/mock/README.md)で要件からtoolを選びます。
 
+- [D1-Q15: Domain演習](../../exercises/domain/d1-q15.md)
+
 ## 章のまとめ
 
 Snowsight、Snowflake CLI、VS Code拡張は同じSnowflakeを異なる作業環境から操作します。browserでの探索・監視にはSnowsight、反復可能なcommandとCI/CDにはCLI、local codeとGit中心の開発にはVS Code拡張を選びます。どの入口でもsession context、role privilege、warehouse computeの原則は共通です。
@@ -187,3 +191,4 @@ Snowsight、Snowflake CLI、VS Code拡張は同じSnowflakeを異なる作業環
 - `docs-snowsight-workspaces` — [Workspaces](https://docs.snowflake.com/en/user-guide/ui-snowsight/workspaces-working)
 - `docs-snowflake-cli` — [Snowflake CLI](https://docs.snowflake.com/en/developer-guide/snowflake-cli/index)
 - `docs-vscode-extension` — [Snowflake Extension for Visual Studio Code](https://docs.snowflake.com/en/user-guide/vscode-ext)
+- `docs-network-policies` — https://docs.snowflake.com/en/user-guide/network-policies

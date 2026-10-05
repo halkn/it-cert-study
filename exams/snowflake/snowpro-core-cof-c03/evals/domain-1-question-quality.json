@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-1-quality-mock-100-2026-10-04",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-1-question-quality-2026-10-05",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-04",
+  "evaluated_on": "2026-10-05",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     1
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
   },
   "source_revision": {
-    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
+    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -36,7 +36,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "独立warehouseで同じ永続データを共有できる。",
+      "notes": "共有データを保ちcomputeを分離する要件に合う。",
       "correct": true
     },
     {
@@ -47,7 +47,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "PHIにはedition要件とBAA等の条件確認が必要。",
       "correct": true
     },
     {
@@ -59,7 +59,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "region、row-level securityのedition、compute分離が各要件に対応。",
       "correct": true
     },
     {
@@ -69,7 +69,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Git管理とCI反復deployにCLIとproject/SQLが適する。",
       "correct": true
     },
     {
@@ -79,7 +79,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "指定済み条件から、current roleと付与privilegeが差分候補。",
+      "notes": "記載条件下ではroleとそのprivilegeの比較が残る。",
       "correct": true
     },
     {
@@ -89,7 +89,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Organizationが複数accountを包含する。",
       "correct": true
     },
     {
@@ -99,7 +99,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "user-levelの既定値設定。",
       "correct": true
     },
     {
@@ -109,7 +109,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "Standard policyはresponse優先と理解。",
+      "notes": "応答性を優先するならStandard scaling policy。Economyはcredit効率寄り。",
       "correct": true
     },
     {
@@ -119,7 +119,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "短いauto-suspendとauto-resumeが待機費用を抑える。",
       "correct": true
     },
     {
@@ -129,7 +129,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "頻繁な同一filterなのでclustering評価が候補。",
+      "notes": "反復する日付filterに対しclustering keyを評価する。",
       "correct": true
     },
     {
@@ -140,7 +140,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "secure materialized viewの可否に多少迷い。コストと性能評価は必要。",
+      "notes": "Secure materialized viewと費用・performanceの評価。Bの仕様可否にはやや知識依存がある。",
       "correct": true
     },
     {
@@ -150,7 +150,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "passage検索とsource提示の用途。",
       "correct": true
     },
     {
@@ -161,7 +161,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Analystと承認済みmetricを表すsemantic model/view。",
       "correct": true
     },
     {
@@ -172,7 +172,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "永続storageとwarehouse computeが分離し、認証・metadataはCloud Services側。",
       "correct": true
     },
     {
@@ -182,7 +182,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "30日Time TravelがEnterprise機能との認識。",
+      "notes": "30日Time TravelにはEnterprise tierが必要という理解。edition固有知識が必要。",
       "correct": true
     },
     {
@@ -192,7 +192,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Browser UIでSQL結果とwarehouse/query状態を調査する。",
       "correct": true
     },
     {
@@ -202,7 +202,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "VS CodeのSnowflake拡張が記載用途に直接対応。",
       "correct": true
     },
     {
@@ -213,7 +213,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "式の再利用はUDF、複数step処理はstored procedure。",
       "correct": true
     },
     {
@@ -223,7 +223,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "変数文字列を識別子として解釈するIDENTIFIER($var)。",
       "correct": true
     },
     {
@@ -233,7 +233,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Standard policyは追加clusterの起動応答性を重視。",
       "correct": true
     },
     {
@@ -243,7 +243,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "大きなmemoryを要するSnowpark用途。",
       "correct": true
     },
     {
@@ -254,7 +254,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "停止でlocal cacheが消えることと、起動ごとの最低課金が該当。",
+      "notes": "停止でlocal cacheを失い、起動時の最低課金が影響する理解。",
       "correct": true
     },
     {
@@ -264,7 +264,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Transientはsession終了後も残り、Fail-safe不要の要件に合う。",
       "correct": true
     },
     {
@@ -274,7 +274,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "外部stage上のfileを参照するread-only table。",
       "correct": true
     },
     {
@@ -284,7 +284,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "micro-partition metadataでpruningする。",
       "correct": true
     },
     {
@@ -294,7 +294,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "filter改善とreclustering compute/storage費用を比較する。",
       "correct": true
     },
     {
@@ -304,7 +304,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "SQL/Python/Markdownのcell型notebook用途。",
       "correct": true
     },
     {
@@ -314,7 +314,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Streamlit in Snowflakeが対話data appに直接対応。",
       "correct": true
     },
     {
@@ -324,7 +324,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Snowpark DataFrame処理をSnowflake側へpush downする。",
       "correct": true
     },
     {
@@ -334,7 +334,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "SQLから要約・分類等のAI機能を呼び出す。",
       "correct": true
     },
     {
@@ -344,7 +344,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "自作modelのversionと推論利用を管理するModel Registry。",
       "correct": true
     }
   ],
@@ -362,7 +362,29 @@
   ],
   "content_hashes": {
     "textbook_sha256": null,
-    "questions_sha256": "35a7ade77f3ff675164cf282dbc15257e0cb132c7207f02de7a832df21dc8829",
-    "coverage_matrix_sha256": "d7329515c568bca6399ac86402525c41f1b61f8fad15fc101871a041e69399d3"
-  }
+    "questions_sha256": "7bd623dcf4e33f00ea785d42006242338b31df5f1ee2a2079fc8902b2e83b8c0",
+    "coverage_matrix_sha256": "cf0ca3a1cb8474593f4ac56b0a94de3a824c5cd12660ac86a008875b56a87f9f"
+  },
+  "notes": [
+    {
+      "id": "M1-Q05",
+      "reason": "Snowsight側でSELECTが成功した前提に加えて同一account/warehouse/db/schemaと完全修飾名が明示されておりroleが自然な診断対象。ただし実際のinterface固有session設定や実効privilegeの差もあり得るため、原因特定問題としては観測条件をもう少し限定すると堅牢。"
+    },
+    {
+      "id": "M1-Q11",
+      "reason": "正解候補Bはsecure materialized viewの製品仕様知識を要求し、残るDは設計上の一般論。知識がない受験者にはBの真偽が消去しづらく、secure性質とmaterialized性質を両立できるかが問われている。"
+    },
+    {
+      "id": "M1-Q69",
+      "reason": "editionとTime Travel保持期間の細かな仕様記憶に強く依存する。選択肢は比較的消去可能だが、要件から設計原理を適用するより暗記問題になりやすい。"
+    },
+    {
+      "id": "M1-Q74",
+      "reason": "Standard policyの挙動を知れば一意だが、Economyからの切替以外の選択肢が明らかに要件を満たさず、消去で推測しやすい。"
+    },
+    {
+      "id": "M1-Q76",
+      "reason": "Bの「起動後60秒の最低課金」は現行課金仕様の記憶を問う細部で、起動回数増加という症状から直接は導けない。問題の主旨であるcache損失と課金影響のうち後者が仕様暗記に寄る。"
+    }
+  ]
 }

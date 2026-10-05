@@ -1,7 +1,7 @@
 # 5.3 Marketplace と Listing で共有する
 
 > Status: complete
-> Last verified: 2026-10-03
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -105,13 +105,15 @@ Private／publicとfree／paidは独立した軸です。Listingはデータだ�
 - [C5-5.3-Q02: Listingの公開先と料金](../../exercises/chapter/c5-5.3-q02.md)
 - [C5-5.3-Q03: Packageとapplication](../../exercises/chapter/c5-5.3-q03.md)
 
+- [D5-Q09: Domain演習](../../exercises/domain/d5-q09.md)
+
 ## 章のまとめ
 
 Marketplaceは製品を発見・公開する場で、Listingは製品と提供条件をまとめます。データのshareとlogicのpackageを区別し、公開先、料金、region配送、実行権限を要件に合わせます。
 
 ## 次に学ぶこと
 
-[Domain 5演習](../../exercises/domain/README.md#domain-5)で比較を練習し、[模擬問題](../../exercises/mock/README.md#set-1--domain-5)で要件から選定します。
+[Domain 5演習](../../exercises/domain/README.md#domain-5)で比較を練習し、[模擬問題](../../exercises/mock/README.md#問題bank--domain-5)で要件から選定します。
 
 ## 根拠・関連する公式ドキュメント
 

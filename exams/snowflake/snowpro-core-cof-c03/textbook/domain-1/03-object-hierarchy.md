@@ -1,7 +1,7 @@
 # 1.3 オブジェクト階層と種類を区別する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -46,6 +46,8 @@ Object名を正しく解決するには、包含関係と権限関係を分け�
 ## OrganizationとAccountの境界
 
 Organizationはbusiness entityに属する複数accountを結び付けます。accountをregionやcloud platformをまたいで管理し、organization-levelのusage、billing、replication、sharingなどを横断的に扱う単位です。
+
+Organization accountはorganizationの管理者が複数accountの管理やusage確認に使う特別なaccountです。複数accountを包含するOrganizationという管理単位と、その中の管理用accountを区別します。Replication groupは選んだobjectを別accountへ同期する構成、failover groupは同期に加えsecondaryをprimaryへ昇格できる構成で、企業のaccount全体を包含する階層ではありません。詳細は[2.2](../domain-2/02-data-governance.md#replication-failover)で扱います。
 
 Accountは通常のdatabase作業における管理境界です。user、role、warehouse、resource monitor、integration、databaseなどがaccount内に存在します。warehouseはdatabaseやschemaの中には入りません。databaseとは独立したaccount-level compute objectだからです。
 
@@ -164,6 +166,8 @@ UNSET object_name;
 
 続けて[Domain演習D1-Q06〜Q07](../../exercises/domain/README.md)と[模擬問題M1-Q06〜Q07](../../exercises/mock/README.md)へ進みます。
 
+- [D1-Q16: Domain演習](../../exercises/domain/d1-q16.md)
+
 ## 章のまとめ
 
 Snowflakeの配置階層はOrganization、Account、Database、Schema、Schema objectの順です。ただしwarehouse、share、applicationなどはschema外のaccount objectです。実行時にはcurrent contextで名前とcomputeを解決し、parameterはlevel間のprecedenceで、SQL variableはsession限定の値として扱います。
@@ -180,3 +184,5 @@ Snowflakeの配置階層はOrganization、Account、Database、Schema、Schema o
 - `docs-parameters` — [Parameters](https://docs.snowflake.com/en/sql-reference/parameters)
 - `docs-sql-variables` — [SQL variables](https://docs.snowflake.com/en/sql-reference/session-variables)
 - `docs-context-functions` — [Context functions](https://docs.snowflake.com/en/sql-reference/functions-context)
+- `docs-sequences` — https://docs.snowflake.com/en/sql-reference/sql/create-sequence
+- `docs-replication-bcdr` — https://docs.snowflake.com/en/user-guide/replication-intro

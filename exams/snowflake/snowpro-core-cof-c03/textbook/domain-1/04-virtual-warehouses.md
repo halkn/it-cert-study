@@ -1,7 +1,7 @@
 # 1.4 Virtual Warehouseを構成する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -63,6 +63,8 @@ Multi-cluster warehouseは同じwarehouseにclusterを追加し、同時queryの
 
 Auto-scale modeでは`MIN_CLUSTER_COUNT`から`MAX_CLUSTER_COUNT`の範囲で増減します。Standard policyはqueueの抑制と応答性を優先し、Economy policyはcluster起動を控えてcredit節約を優先するため、queryがqueueで待つ時間が長くなり得ます。Scaling policyはcluster数が固定されるMaximized modeでは意味を持ちません。
 
+Maximized modeではMINとMAXのcluster数を同じ値へ設定し、warehouse稼働中はその数のclusterを使います。高いconcurrencyへ常時備える一方、負荷低下に合わせてcluster数を減らせません。Peak時の応答性とpeak後のscale inを両立するなら、MINとMAXを異なる値にしたAuto-scale modeとStandard policyを検討します。
+
 <a id="use-case-configurations"></a>
 ## Workloadから構成を選ぶ
 
@@ -79,7 +81,7 @@ Auto-scale modeでは`MIN_CLUSTER_COUNT`から`MAX_CLUSTER_COUNT`の範囲で増
 <a id="best-practices"></a>
 ## Scale up/downとScale out/inを症状で分ける
 
-![warehouse scaling](../../diagrams/domain-1/warehouse-scaling.md)
+[図を開く: Warehouseのスケーリング](../../diagrams/domain-1/warehouse-scaling.md)
 
 - 1つのlarge queryが遅い、spillしている: sizeを上げるscale upを検討する。
 - 多数queryがqueueする: cluster数を増やすscale outを検討する。
@@ -135,6 +137,8 @@ DROP WAREHOUSE cert_d1_14_wh;
 - [C1-1.4-Q04](../../exercises/chapter/c1-1.4-q04.md) Auto-suspend
 
 [Domain演習D1-Q08〜Q09](../../exercises/domain/README.md)、[模擬M1-Q08〜Q09](../../exercises/mock/README.md)へ進みます。
+
+- [D1-Q17: Domain演習](../../exercises/domain/d1-q17.md)
 
 ## 章のまとめ
 

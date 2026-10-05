@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-domain-5-baseline-2026-10-03",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-5-baseline-2026-10-05",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-05",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     5
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
   },
   "source_revision": {
-    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
+    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -37,16 +37,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/01-collaboration-protection.md",
           "heading": "別regionへの複製と業務の切替"
         }
       ],
-      "notes": "secondaryをprimaryへ昇格して書込みを再開するのがfailoverであり、failover groupが切替能力を持つ。A: replication groupだけでは昇格能力を保証しない。B: shareは読取り専用で共有objectへINSERTできない。C: cloneの変更は独立しており同期しない。",
+      "notes": "Failover groupはfailover能力を持ち、failoverでsecondaryをprimaryへ昇格して書込みを再開すると本文にあるためD。Aはreplication groupだけではsecondaryを書込み可能なprimaryへ切り替える能力を保証しない。Bは共有objectが読取り専用でINSERTできない。Cはclone後の変更が独立し、元とcloneの変更は相互に反映されない。",
       "correct": true
     },
     {
@@ -55,16 +55,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/01-collaboration-protection.md",
           "heading": "読取り権限を渡して最新データを共同利用する"
         }
       ],
-      "notes": "必要な列・行だけを返すsecure viewを公開し、基底tableをshareへ直接追加しない構成が示されている。Aが要件を満たす。B: cloneは作成後の本番更新に同期せず、全列・全行の公開にもならない。C: SECURE指定だけでは許可条件は生まれず、必要なfilter/policyを別途設計する。D: Time Travelは過去状態の検索であり、shareへ登録して最新更新に追従させる機能ではない。",
+      "notes": "本文は、必要な列と行だけを返すsecure viewを公開し、基底tableをshareへ直接追加しない構成を示す。Aが条件に合う。Bはcloneの変更が元へ反映されず独立すると本文にある。CはSECUREを付けるだけでは行の許可条件は生まれず、基底tableの公開範囲を制限しない。DはTime Travelが過去状態の検索・複製・復元であり、共有や更新追従の機能ではない。",
       "correct": true
     },
     {
@@ -74,16 +74,16 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/01-collaboration-protection.md",
           "heading": "初期データを共有して独立した開発用分岐を作る"
         }
       ],
-      "notes": "clone後の変更は新しいpartitionに保存され、元とcloneの変更は相互反映されないためB。変更partitionと履歴保持にはstorage費用が発生し得るためC。Aは変更独立の説明に反する。D: COPY GRANTSで明示grantを引き継げるがOWNERSHIPはコピーしない。",
+      "notes": "標準tableのcloneは作成時に同じmicro-partitionを参照するが、その後の変更は新partitionに保存され元とcloneへ相互反映されない。従って本番値は変わらずBが正しい。変更partition、履歴保持、query computeに費用が発生し得るためCも正しい。Aは変更が相互に反映されない記述に反する。DはCOPY GRANTSでもOWNERSHIPをコピーしないと本文に明記される。",
       "correct": true
     },
     {
@@ -92,16 +92,20 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/01-collaboration-protection.md",
           "heading": "保持期間内の過去状態を検索・複製・復元する"
+        },
+        {
+          "file": "textbook/domain-5/01-collaboration-protection.md",
+          "heading": "保持期間はEditionとtable種別の両方で決まる"
         }
       ],
-      "notes": "UNDROPはDROP直前の状態に復元する。同名objectが存在すると失敗するため、既存の空tableをrenameしてから正しいcurrent schemaで復元する。A: 同名objectがある状態ではUNDROPが失敗。B: AT OFFSETは空tableの履歴を旧tableの履歴へ変えない。D: 保持期間延長はすでにある同名objectの置換や失われた履歴の復活ではなく、保持期間もEdition等で決まる。",
+      "notes": "UNDROPはDROP直前の状態を復元するが、同名objectがあると失敗するため、既存の空tableをrenameしてから復元するCが正しい。Aは同名objectがあるとUNDROPが失敗する。BのAT OFFSETは過去状態を検索する指定で、空tableをUNDROPする手段ではない。Dの90日はEnterprise以上のpermanent tableの上限で、設定変更は同名objectの置換やUNDROPの代わりにならず、履歴保持を延ばしてもすでに除去されたデータは戻らない。",
       "correct": true
     },
     {
@@ -110,16 +114,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/01-collaboration-protection.md",
           "heading": "Time Travel終了後の最終復旧をSnowflakeへ依頼する"
         }
       ],
-      "notes": "Time Travel後のFail-safe期間ではSnowflake Supportへ依頼できるがbest effortであり、数時間から数日かかり成功・即時復旧は保証しない。Dが適切。A: Fail-safeは利用者がSQLで履歴を検索する期間ではない。B: 7日間のFail-safeは変更不能で、90日へ延長できない。C: UNDROPはTime Travel終了後にFail-safeから利用者が即時復元する手段ではない。",
+      "notes": "Fail-safeでは他の手段で回復できない場合にSnowflake Supportへ依頼し、best effortで復旧を試みる。数時間から数日かかることがあり、成功も即時復旧も保証しないためD。AはFail-safeを利用者がSQLで履歴検索する期間とする点が本文に反する。Bは7日のFail-safe期間を利用者が90日に変更できるとは本文にない。CはUNDROPの復元とFail-safeを混同しており、Fail-safeはSQLで利用者が即時に復元する手段ではない。",
       "correct": true
     },
     {
@@ -128,16 +132,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/02-data-sharing.md",
           "heading": "Provider・consumer・reader accountの責務と費用負担"
         }
       ],
-      "notes": "Providerは契約のない取引先にreader accountを作成でき、readerはwarehouseで共有データをqueryする。Reader warehouse creditはprovider負担。Aが該当。B: 通常consumerと異なりcreditはprovider負担。C: readerは作成したproviderのデータのみを利用し、ロード/DML不可。D: 通常共有では物理コピーせず、データstorageの負担をreaderへ移すものではない。",
+      "notes": "Snowflakeと直接契約していない取引先にはproviderがreader accountを作成でき、readerのwarehouse creditはprovider負担と本文にある。readerはロードやDMLができず、作成providerのデータを利用する。よってA。Bはcredit負担先を逆にする。Cはreaderが複数providerを利用しデータをロードできるとしており、readerの制約と反する。Dは共有データをconsumer側へ物理コピーせず参照する通常の共有モデルに反し、storage負担移転の根拠もない。",
       "correct": true
     },
     {
@@ -146,16 +150,16 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/02-data-sharing.md",
           "heading": "共有objectとconsumer内のroleを二段階で許可する"
         }
       ],
-      "notes": "Providerがdatabase roleで区分していないshareの場合、consumerはIMPORTED PRIVILEGESをconsumer自身のaccount roleへgrantする。Bが適切。A: Provider側に同名roleを作るのではない。C: imported objectのcloneは利用できない。D: schema USAGEだけでは共有アクセス権を代替できない。",
+      "notes": "Database roleで区分されないshareでは、consumerがIMPORTED PRIVILEGESを自accountのroleへgrantすると本文にあるためB。Aはprovider内のrole名とconsumerのroleを揃える手順ではない。Cはimported databaseや共有tableのcloneができない。Dはschema USAGEだけでは共有アクセスを代替できないと本文に明記される。",
       "correct": true
     },
     {
@@ -164,16 +168,16 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/02-data-sharing.md",
           "heading": "受け取ったデータを再共有する条件を確認する"
         }
       ],
-      "notes": "許可されたresharingでは、自分の通常databaseにsecure viewを作り、そのviewを下流共有する。条件は同一regionかつ自organization内で満たされる。Cが適切。A: imported database内にviewを作るのではない。B: imported tableを直接shareへgrantできない。D: Native Appへの変換はproviderのresharing設定を免除しない。",
+      "notes": "許可されたresharingでは、自分の通常databaseにsecure viewを作り、そのviewを下流へ共有する。Direct shareはconsumer自身のorganization内・同一regionの再共有が可能で、提示された設定と条件に合うためC。Aはimported database内ではなく自分の通常databaseにviewを作るという本文の手順に反する。Bはimported objectをそのまま別shareへgrantできない。DはNative Appへの変換がresharing条件を免除するとの根拠がなく、設定確認を不要にする説明は本文の許可条件に反する。",
       "correct": true
     },
     {
@@ -182,16 +186,16 @@
         "A"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/02-data-sharing.md",
           "heading": "共有objectとconsumer内のroleを二段階で許可する"
         }
       ],
-      "notes": "DROP後に同名で再作成した新しいtableはshareへ明示的にgrantが必要なのでA。B: consumer warehouseのサイズはprovider側shareのobject権限を付与しない。C: imported databaseでTime Travelを有効化することはできず、共有権限の代替でもない。D: shareにfuture grantsは利用できない。",
+      "notes": "新しいtableやDROP後に再作成した同名objectはshareへ明示的にgrantが必要なのでA。Bはconsumer warehouseを大きくする説明が本文の公開権限要件を満たさない。Cはimported databaseのTime Travelが利用できないと本文にある。Dはshareに対するfuture grantsは利用できないと明記される。",
       "correct": true
     },
     {
@@ -201,16 +205,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/02-data-sharing.md",
           "heading": "生データの公開と分析の許可を分けるData Clean Room"
         }
       ],
-      "notes": "現行collaboration方式ではdata offeringのデータ・policyを公開し、analysis runnerが許可されたtemplateで分析する。また集計のみを返すには出力とpolicyを設計・確認する。よってB,D。A: ownerだけではanalysis runnerとして実行権限を持たない。C: private listingでtable全体を公開することは集計制約を生まない。",
+      "notes": "現行collaboration方式ではownerが参加accountと役割を定め、data providerがデータとpolicyを持つdata offeringを公開し、analysis runnerが許可templateとdata offeringで分析する。また集計だけを返すなら出力とpolicyを設計・確認する。従ってBとD。AはOwnerだけでは分析実行権限を持たないという本文に反する。Cは単にshared tableへSELECTを許すこととClean Roomの制約付き分析を混同し、private listingだけで集計限定になるとは本文にない。",
       "correct": true
     },
     {
@@ -219,16 +223,16 @@
         "D"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/03-marketplace-listings.md",
           "heading": "Marketplaceで製品を発見・取得・公開する"
         }
       ],
-      "notes": "Listing取得後、consumerは共有データを自分のwarehouseでqueryし、自社データと組み合わせる。Dが適切。A: Marketplaceはcompute/warehouseではない。B: 共有objectは読取り専用で更新できない。C: 同一region共有データ自体のstorage料金はconsumerに発生せず、query computeを負担する（根拠: textbook/domain-5/02-data-sharing.md『Provider・consumer・reader accountの責務と費用負担』）。",
+      "notes": "Marketplaceで取得したデータListingの共有データをconsumer自身のwarehouseでqueryし、自社データと組み合わせると本文にあるためD。AはMarketplaceがcomputeのEditionでもwarehouseでもないという記述に反する。Bは共有objectがconsumerから更新できるという根拠がなく、5.2本文でも共有objectは読取り専用とされる。Cは通常の同一region共有では共有データ自体のstorage料金はconsumerに発生せず、query computeはconsumer負担という本文に反する。",
       "correct": true
     },
     {
@@ -237,9 +241,9 @@
         "B"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/03-marketplace-listings.md",
@@ -250,7 +254,7 @@
           "heading": "別regionへListingの製品を自動配送する"
         }
       ],
-      "notes": "指定顧客限定の有料提供はpaid private listing、別region配送をSnowflakeに管理させるのはCross-Cloud Auto-Fulfillment。Bが適切。A: free/publicは対象の公開範囲と料金に合わず、Resource Monitorは配送機能ではない。C: publicは限定顧客向けと異なりClient Redirectは接続URLの振替でlisting配送ではない。D: 同一region direct shareは別region配送を満たさず、Time Travelも配送機能ではない。",
+      "notes": "指定顧客だけの有料提供はpaid private listing、別regionへのSnowflake管理の配送はCross-Cloud Auto-FulfillmentなのでB。Aはfree publicであり顧客限定有料という条件に合わず、Resource Monitorは配送機能ではない。Cはpublicで指定顧客限定ではなく、Client Redirectは接続URLの切替で製品配送の手段ではない。Dは同一region direct shareであり、別region配送を満たさず、Time Travelも配送機能ではない。",
       "correct": true
     },
     {
@@ -259,16 +263,20 @@
         "C"
       ],
       "confidence": "high",
+      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
-      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-5/03-marketplace-listings.md",
           "heading": "Native Appでconsumerのデータの近くにlogicを届ける"
+        },
+        {
+          "file": "textbook/domain-5/03-marketplace-listings.md",
+          "heading": "インストールとconsumerデータへのアクセスは別"
         }
       ],
-      "notes": "Providerがapplication packageをListingで提供し、consumerがinstallして、consumerの既存tableへの必要なアクセスをgrant/referenceで許可する。Cが適切。A: CREATE WAREHOUSE等の運用resource権限と既存data accessは別で、tableへの許可がないと検査できない。B: installだけではSELECT権限は付与されない。D: reader accountからconsumer accountの既存tableへアクセスする仕組みとは記載されず、appをconsumer account内で実行する要件にも合わない。",
+      "notes": "Providerはapplication packageを作ってListingで公開でき、consumerはinstall後、既存データへのアクセスをgrant/referenceで別途許可するためC。AはCREATE WAREHOUSEなど運用resourceの権限と既存データを読む権限が別という本文に反する。Bはinstallだけではconsumer tableを自由に読めずSELECTが自動付与されない。Dはreader accountが他consumer accountの既存tableを読む手段を本文に示しておらず、readerはproviderが作成・管理する別accountである。",
       "correct": true
     }
   ],
@@ -281,10 +289,13 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "notes": "全回答確定後に親が採点。初回評価後の修正を別の新規2エージェントで再試験。最終回答の確定後は技術本文・設問を変更せず、review→completeの状態表示とDomain READMEの進捗・評価リンクのみ更新して最終hashを保存。問題品質のJSONはagentの確定回答メッセージから転記。",
+  "notes": [
+    "回答は指定bundle内のtextbook本文だけを根拠として確定した。問題文と選択肢も同bundle内だけを使用した。",
+    "13問すべてで正答選択と各誤答の本文による排除根拠を特定できた。本文限定で根拠が不足する問題はなかった。"
+  ],
   "content_hashes": {
-    "textbook_sha256": "06b1363d761608d3985e2562614e278b1bc1a7b030fb58fb11398d85aba3bc80",
+    "textbook_sha256": "2baf5526820f36ee2409827472c35ba7dd8617b69c7f338a8d894c89172630bf",
     "questions_sha256": "bb541f775c2cb2f6adc4430b481e9695e802daef8b9c5423f04bc653121125c9",
-    "coverage_matrix_sha256": "30b240a5612e0ad8e72819a6427437ab8e61b1c985df51d585d579d9519bbf34"
+    "coverage_matrix_sha256": "09c382ec6b80f112c29304a5712897c95d29da0d4defa998ee8aef78df11159b"
   }
 }

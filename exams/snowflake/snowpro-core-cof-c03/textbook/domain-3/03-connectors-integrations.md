@@ -1,7 +1,7 @@
 # 3.3 Connector と Integration を識別する
 
 > Status: complete
-> Last verified: 2026-08-30
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -11,7 +11,7 @@
 - Kafka connectorとSpark connectorが内部で何を使い、何を解決するかを説明する
 - Driver、connector、Snowpark、Snowflake Python APIの役割を区別する
 - Storage integrationとAPI integrationの対象と、指定するパラメータの違いを説明する
-- Git integrationに必要な3つのobjectを挙げ、参照pathの形を説明する
+- Git integrationのobject構成を認証方式に応じて選び、参照pathの形を説明する
 - Integration objectの種類（security／storage／API／notification／external access）を用途で識別する
 
 ## 前提知識
@@ -141,7 +141,7 @@ CREATE STORAGE INTEGRATION my_s3_int
 
 External stageは定義の中でstorage integrationを参照します。1つのstorage integrationを複数のexternal stageで共有できるため、cloud側の権限設定を1か所に集約できます。3.1で作ったexternal stageの`STORAGE_INTEGRATION = my_s3_int`がこれにあたります。
 
-Storage integrationはaccount-level objectです。作成にはaccount-levelの`CREATE INTEGRATION`が必要で、既定ではACCOUNTADMINだけが持ちます。使う側のroleにはintegrationへの`USAGE`が要ります。
+Storage integrationはaccount-level objectです。作成にはaccount-levelの`CREATE INTEGRATION`が必要で、既定ではACCOUNTADMINだけが持ちます。Integrationを参照してstageを作成するroleにはintegrationへの`USAGE`が必要です。既存stageでロード・アンロードするroleにはstageへの`USAGE`が必要で、integrationへの追加の`USAGE`は不要です。
 
 <a id="api-integration"></a>
 ## API integration — 外部HTTPS serviceの呼び出しを許可する
@@ -175,13 +175,15 @@ External functionは、Snowflakeの外に保存・実行されるユーザー定
 
 Git integrationは、remote Git repositoryのファイルをSnowflake内のGit repository cloneへ同期する機能です。cloneはbranch、tag、commitを含む完全なcloneとして保持されます。
 
-### 必要なobjectは3つ
+### 認証方式に応じてobjectを組み合わせる
 
-単一のobjectでは完結しません。
+SQLでrepositoryのcloneを作る場合はAPI integrationとGit repository objectを組み合わせます。認証方式によってsecretの要否が変わります。
 
-1. **Secret**: repositoryへの認証情報。`TYPE = password`のtoken認証やOAuthを使います（schema-level object）。
+1. **Secret**: token認証の場合にusernameとtokenを保持します（`TYPE = password`、schema-level object）。認証なしのrepositoryでは不要です。
 2. **API integration**: `API_PROVIDER = git_https_api`を指定し、`API_ALLOWED_PREFIXES`で対象repositoryのURL接頭辞、`ALLOWED_AUTHENTICATION_SECRETS`で使えるsecretを限定します（account-level object）。
-3. **Git repository**: `ORIGIN`にHTTPSのrepository URL、`API_INTEGRATION`、`GIT_CREDENTIALS`を指定します（schema-level object）。
+3. **Git repository**: `ORIGIN`にHTTPSのrepository URLと`API_INTEGRATION`を指定します。secretを使う認証では`GIT_CREDENTIALS`も指定します（schema-level object）。
+
+次はprivate repositoryへtoken認証する3objectの構成例です。
 
 ```sql
 CREATE SECRET my_git_secret
@@ -201,7 +203,7 @@ CREATE GIT REPOSITORY snowflake_extensions
   ORIGIN = 'https://github.com/my-account/snowflake-extensions.git';
 ```
 
-認証方式は、認証なし、token、OAuth flowから選べます。
+認証なしではsecretと`GIT_CREDENTIALS`を省略します。WorkspaceでOAuth flowを使う場合は、API integrationの`API_USER_AUTHENTICATION`でSnowflake GitHub App等を構成してuserの認証を行います。token認証の3object構成をすべての方式へ当てはめません。
 
 ### 同期と参照
 
@@ -267,7 +269,7 @@ DESC STAGE s3_landing;
 - Spark connectorは内部でJDBC driverを使い、Spark UDFはpushdownできない。
 - Kafka connectorはSnowpipeとSnowpipe Streamingの両方をサポートする。
 - Storage integrationは`STORAGE_ALLOWED_LOCATIONS`、API integrationは`API_ALLOWED_PREFIXES`で許可範囲を指定する。
-- Git integrationにはsecret、API integration（`git_https_api`）、Git repositoryの3つが要る。
+- Git repository cloneはAPI integration（`git_https_api`）を参照する。token認証ではsecretも使い、認証なしでは省略する。
 - Integrationはaccount-level objectで、作成権限は既定でACCOUNTADMINが持つ。
 
 ## 間違えやすいポイント
@@ -292,12 +294,14 @@ DESC STAGE s3_landing;
 - [C3-3.3-Q09: Git repositoryの参照path](../../exercises/chapter/c3-3.3-q09.md)
 - [C3-3.3-Q10: integrationの種類](../../exercises/chapter/c3-3.3-q10.md)
 
+- [D3-Q11: Domain演習](../../exercises/domain/d3-q11.md)
+
 ## 章のまとめ
 
 - Driverは自作applicationからの接続、connectorは既存productとの受け渡し、integrationは外部serviceへの経路を担当する。
 - Kafka connectorは2つのロード方式を選べ、Spark connectorはJDBC経由でpushdownを行う。
 - Storage integrationはstorage、API integrationはHTTPS endpointを対象とし、許可範囲の指定パラメータが異なる。
-- Git integrationはsecret、API integration、Git repositoryの組合せで構成し、`FETCH`でremoteから同期する。
+- Git integrationはAPI integrationとGit repositoryを組み合わせ、token認証ならsecretを追加する。`FETCH`でremoteから同期する。
 - Integrationはすべてaccount-level objectであり、作成権限は既定でACCOUNTADMINにある。
 
 ## 次に学ぶこと

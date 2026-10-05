@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-3-baseline-mock-100-2026-10-04",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-baseline-2026-10-05",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-04",
+  "evaluated_on": "2026-10-05",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
   },
   "source_revision": {
-    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
+    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -48,13 +48,9 @@
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "Stage privilegeはinternalとexternalで異なる"
-        },
-        {
-          "file": "textbook/domain-3/03-connectors-integrations.md",
-          "heading": "Storage integration — cloud storageの資格情報をobjectへ切り出す"
         }
       ],
-      "notes": "Storage integration参照のexternal stageは資格情報をSQLに残さず利用でき、external stage利用roleにはUSAGEが必要。User/table stageはinternal用。access key直書きとREAD grantは本文の推奨構成・external privilegeに合わない。",
+      "notes": "Bは、外部storageのstageがstorage integrationを参照でき、external stageにはUSAGEをgrantするという本文の説明に一致する。資格情報をSQLへ直接書かずintegrationを使うとも明記されている。Aはuser stageが個人用で他userと共有できない。Cは資格情報をSQLへ直接書くうえ、external stageにREADではなくUSAGEをgrantするため誤り。Dはtable stageがinternal stageであり、S3 URLを設定する用途ではない。",
       "correct": true
     },
     {
@@ -72,7 +68,7 @@
           "heading": "PUTとGETはlocalとinternal stageの間だけ"
         }
       ],
-      "notes": "PUT/GETともworksheetから実行できず、Snowsight UIにはnamed internal stageへの別upload機能がある。A/Bはworksheet実行が誤りでGETはdownload。internal stage uploadにstorage integrationは不要。",
+      "notes": "Cは、PUT/GETはSnowsight worksheetから実行できず、Snowsight UIにはnamed internal stageへuploadする別機能があるという記述に合う。AはworksheetでPUTできない。BはGETがstageからlocalへのdownloadであり、worksheetからも実行できない。Dはinternal stageへのuploadにstorage integrationが必要とは本文に書かれず、integrationはexternal storage向けとして説明されている。",
       "correct": true
     },
     {
@@ -90,7 +86,7 @@
           "heading": "同じファイルが二重にロードされない仕組み"
         }
       ],
-      "notes": "FORCE=TRUEはload metadataを無視し全ファイルを再ロードして重複し得る。ON_ERRORは失敗時の処理、PURGEは成功後のstage file削除、VALIDATION_MODEはロードせず検証であり再ロードの原因ではない。",
+      "notes": "CのFORCE=TRUEはload metadataを無視して対象ファイルを再ロードし、重複が生じ得ると本文が明記している。AのCONTINUEはerror行を飛ばして続行する設定、BのPURGEは成功後にstage上のファイルを削除する設定、DのVALIDATION_MODEはロードせず検証結果だけを返す設定であり、いずれも再ロードを強制する説明ではない。",
       "correct": true
     },
     {
@@ -108,7 +104,7 @@
           "heading": "ON_ERRORでロード継続の方針を決める"
         }
       ],
-      "notes": "SKIP_FILEはerror行を含むファイル全体をskipし他を継続。CONTINUEはerror行をskip、ABORT_STATEMENTはCOPY全体を中止。VALIDATION_MODEはロードせず検証する。",
+      "notes": "AのSKIP_FILEはerror行を含むファイルを丸ごとskipする一方、残りのファイルは対象にできる。BのCONTINUEはerror行を飛ばしてロードを続けるがファイル単位のskipではない。CはCOPY文全体を中止する。DのVALIDATION_MODEはロード前の検証専用で、errorファイルをskipして他ファイルをロードする指定ではない。",
       "correct": true
     },
     {
@@ -127,7 +123,7 @@
           "heading": "COPY INTO <location> でアンロードする"
         }
       ],
-      "notes": "SINGLE=TRUEで1ファイルにし、HEADER=TRUEで列見出しを出す。OVERWRITEは同名上書き、MATCH_BY_COLUMN_NAMEはtableへの半構造化ロード向けで要件に合わない。",
+      "notes": "AのSINGLE=TRUEは出力を1ファイルにまとめ、BのHEADER=TRUEは列名の見出し行を出力するため、2つの要件にそれぞれ対応する。CのOVERWRITE=TRUEは同名ファイルの上書き制御で、単一ファイル化やheader出力を指定しない。DのMATCH_BY_COLUMN_NAMEは半構造化データのload時に列名で対応付けるoptionであり、アンロード形式の要件ではない。",
       "correct": true
     },
     {
@@ -142,14 +138,14 @@
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
+          "heading": "Auto-ingestとREST APIの2方式"
         },
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Compare — 要件から取り込み方式を選ぶ"
+          "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
         }
       ],
-      "notes": "Snowpipe auto-ingestはcloud event notificationを受けserverless computeでファイルを到着後まもなくロードする。Task/COPYは到着イベント起点でなく、Streamingはファイルなしの行書込み、Openflowは外部flow統合。",
+      "notes": "Aはcloud storageのevent notificationを起点にpipeへファイルを取り込み、Snowpipeのserverless computeでロードするため、到着後まもなく・warehouseを常時起動しない要件に合う。Bはuser-managed warehouseで実行するCOPYをtask scheduleで呼ぶ案で、到着イベントを直接起点にしない。CのSnowpipe Streamingはstage上のファイルでなく行を書き込む方式。DのOpenflowは外部system間のconnector flowを構築する機能として記述され、このファイル到着ロード要件の選択肢として示されていない。",
       "correct": true
     },
     {
@@ -167,7 +163,7 @@
           "heading": "Offsetが進むのはDMLで消費したときだけ"
         }
       ],
-      "notes": "SELECTだけではstream offsetが進まず、同じ変更が再び返る。DML transactionで消費したか確認する。taskは実行中との前提。APPEND_ONLYやclustering keyは本文上この再読込原因ではない。",
+      "notes": "Bが確認点。本文はstreamをSELECTしただけではoffsetが進まず、同じ変更が繰り返し返ると明記し、INSERT ... SELECT FROM streamなどのDMLで消費されoffsetが進むと説明する。Aのtask suspended確認はtaskが実行されない場合の調査で、設問ではtask実行中。CのAPPEND_ONLYはINSERTのみを追跡する種類の選択であり、SELECTでoffsetが進まない原因を解決しない。Dのclustering keyはこのstream消費動作の説明に関係しない。",
       "correct": true
     },
     {
@@ -190,7 +186,7 @@
           "heading": "Incremental refreshとfull refresh"
         }
       ],
-      "notes": "TARGET_LAGはbase dataに対する鮮度遅れの目標で、最小60秒。AUTOのrefresh modeは作成時に決まり固定。10分は固定scheduleではなく鮮度目標。",
+      "notes": "Aはtarget lagがbase dataに対する鮮度の遅れ目標という本文の定義に一致し、Cは時間幅で指定できる最小値が60秒という記述に一致する。BはAUTOが作成時にINCREMENTALかFULLへ一度解決され、その後固定されるため誤り。Dはtarget lagがrefresh間隔や固定scheduleを指定するものではないと本文が明記する。",
       "correct": true
     },
     {
@@ -212,7 +208,7 @@
           "heading": "Storage integrationとAPI integrationを取り違えない"
         }
       ],
-      "notes": "SQLから外部HTTPS APIを関数として呼ぶ構成はAPI integrationとexternal function。Storage integrationはcloud storage、notificationは通知、securityは認証認可用。",
+      "notes": "CのAPI integrationとexternal functionは、SQLから外部HTTPS serviceを呼び出して結果を得る構成として本文に記載されている。Aのstorage integrationはcloud storageとexternal stage向け。Bのnotification integrationは通知先への通知用。Dのsecurity integrationは外部IdP/OAuth等の認証・認可用であり、住所API呼び出しではない。",
       "correct": true
     },
     {
@@ -229,14 +225,10 @@
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
-          "heading": "必要なobjectは3つ"
-        },
-        {
-          "file": "textbook/domain-3/03-connectors-integrations.md",
-          "heading": "同期と参照"
+          "heading": "認証方式に応じてobjectを組み合わせる"
         }
       ],
-      "notes": "Git連携にはsecret、API_PROVIDER=git_https_apiのAPI integration、HTTPS ORIGINのGit repository objectが必要。External stageとstorage integrationはcloud storage用でGit repositoryの要件として挙げられていない。",
+      "notes": "private repositoryへのtoken認証では、tokenを保持するsecret、API_PROVIDER=git_https_apiのAPI integration、HTTPS ORIGINとintegrationを指定するGit repository objectの3つを組み合わせると本文にあるためA・B・Cを選ぶ。Dのexternal stageとstorage integrationはcloud storageへのアクセス用で、Git repository cloneの構成要素ではない。",
       "correct": true
     },
     {
@@ -251,14 +243,14 @@
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "ロードは「置く」「解釈する」「入れる」の3段階"
+          "heading": "External stageは外部storageを指す"
         },
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "名前付きformatとinline指定の使い分け"
         }
       ],
-      "notes": "Stageがファイルの置き場所、named file formatがfile typeとparse規則を再利用する。stream offset、warehouse、network policyはいずれもこの役割でない。",
+      "notes": "Cはファイルの場所をstageで表し、CSVのheaderやdelimiterなどの解釈規則を再利用可能なnamed file formatへまとめる対応である。Aは場所とformatの役割を逆にしている。Bのstream offsetは変更追跡位置であり、場所やファイル解釈規則を保持しない。Dのwarehouseとnetwork policyもそれぞれ計算資源とnetwork access制御の概念である。",
       "correct": true
     },
     {
@@ -280,7 +272,7 @@
           "heading": "Directory tableはstageのファイル一覧をSQLで扱う"
         }
       ],
-      "notes": "SNOWFLAKE_SSEはserver-side encryptionのみで、client-side暗号化を避けpre-signed URLで扱う用途に合う。SNOWFLAKE_FULLは両方。AWS_SSE_KMSとNONEはexternal storage側方式。",
+      "notes": "BのSNOWFLAKE_SSEはinternal stageでserver-side暗号化のみを使う方式で、pre-signed URL等によりファイル本体を直接扱う用途に向くと本文が説明する。AのSNOWFLAKE_FULLはclient-sideとserver-sideの両方で、要件に反する。CのAWS_SSE_KMSは外部storage側のencryption typeとして挙げられ、internal stage用ではない。DのNONEはinternal stageの選択肢にない。",
       "correct": true
     },
     {
@@ -299,10 +291,10 @@
         },
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "Mini hands-on — CSVを検証してからロードする"
+          "heading": "COPY INTO <table> でstageからロードする"
         }
       ],
-      "notes": "VALIDATION_MODEはSELECT変換つきCOPYと併用不可なので変換なしの検証COPYを別に行う。Aは併用不可。CONTINUEは部分ロード、FORCEはload metadata無視で検証専用ではない。",
+      "notes": "Dは変換SELECT付きCOPYとVALIDATION_MODEを併用できないという本文の制約を踏まえ、変換なしの検証COPYで入力ファイルのparse errorを確認してから変換・ロードを行う選択である。Aは明示された併用不可の組合せ。BのON_ERROR=CONTINUEはerror行を飛ばして実際のロードを続ける動作で、検証結果だけを返さない。CのFORCEはload metadataを無視してロードする設定であり、検証機能ではない。",
       "correct": true
     },
     {
@@ -321,10 +313,10 @@
         },
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
+          "heading": "Bulk COPYとの違いを4点で押さえる"
         }
       ],
-      "notes": "Snowpipe REST APIのinsertFilesはpipe名とfile一覧でstage fileのloadを依頼し、SnowpipeはSnowflake提供computeを使う。COPYはuser-managed warehouse、Streamは変更追跡、Streamingは行書込み。",
+      "notes": "AのSnowpipe REST APIはclientがinsertFilesをpipe名とファイル一覧で呼び出してロードを依頼する方式で、SnowpipeはSnowflake提供のserverless computeを使う。Bはuser-managed warehouseによるbulk COPYで、pipeへファイル名を送る要件に合わない。Cはstreamがsource objectの変更を返すobjectであり、ファイル名をINSERTしてロードを起動する機能ではない。DのSnowpipe Streamingはstage file pathでなく行を直接書き込む方式。",
       "correct": true
     },
     {
@@ -340,13 +332,9 @@
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Snowpipe Streaming — ファイルを作らず行を直接書き込む"
-        },
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "自動化は「何が引き金になるか」で分かれる"
         }
       ],
-      "notes": "Snowpipe Streamingはstage fileなしに行を直接tableへ書く。Auto-ingest/COPYはstage filesをロードし、Dynamic Tableはquery結果の鮮度維持。",
+      "notes": "CのSnowpipe Streamingはstageへファイルを置かず、行をtableへ直接書き込むAPIと本文で定義されている。AのSnowpipe auto-ingestはstageへのファイル到着を起点にファイルをロードする。Bはstage上のファイルをCOPYする方式。DのSnowpipe REST APIはstage上のファイル一覧を指定するinsertFiles方式で、行データを直接送る機能ではない。",
       "correct": true
     },
     {
@@ -362,14 +350,14 @@
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Serverless taskとuser-managed task"
+          "heading": "作成しただけでは動かない"
         },
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "作成しただけでは動かない"
+          "heading": "Serverless taskとuser-managed task"
         }
       ],
-      "notes": "Serverless taskにはEXECUTE MANAGED TASKが必要。taskは作成直後suspendedのためRESUMEが要る。Warehouse MONITORは代替権限でなく、SELECTもscheduleを有効にしない。",
+      "notes": "Aはserverless task実行に必要なaccount-level EXECUTE MANAGED TASKをowner roleへ付与する対応。Cはtask作成直後がsuspendedであり、継続実行にはALTER TASK ... RESUMEが必要という本文に対応する。Bのwarehouse MONITORはserverless実行権限を代替するものとして本文に記載されず、serverless taskではwarehouseを指定しない。DのSELECTはtaskのscheduleを有効化せず、本文はRESUMEを必要としている。",
       "correct": true
     },
     {
@@ -387,7 +375,7 @@
           "heading": "Openflow — 外部systemとの接続をNiFiベースで統合する"
         }
       ],
-      "notes": "OpenflowはApache NiFi上でprocessorを組み合わせ外部source/destinationを接続する。Dynamic Table/materialized viewはquery結果、standard streamは変更追跡用。",
+      "notes": "BのOpenflowはApache NiFi上に構築された統合サービスで、多数のprocessorを組み合わせ任意のデータsourceと宛先を接続すると本文が説明する。AのDynamic Tableはquery結果を鮮度目標に従ってrefreshするtable。Cのstreamはsource objectの変更をCDCとして返す。Dのmaterialized viewはこの本文でOpenflowのような外部system接続flowとして説明されていない。",
       "correct": true
     },
     {
@@ -405,7 +393,7 @@
           "heading": "DriverとSnowflake Python APIとSnowparkの違い"
         }
       ],
-      "notes": "ResourceをPython objectとして操作するのはSnowflake Python API (snowflake.core)、SQLをcursorで実行し結果取得するのはPython Connector。Bは逆。JDBCはJava用、Dは用途を取り違える。",
+      "notes": "AはresourceをPython objectとして操作するSnowflake Python APIと、SQL文をcursorで実行して結果を受け取るSnowflake Connector for Pythonの用途を正しく対応させている。Bは両libraryの用途を逆にしている。CはPython Connectorがpure PythonでJDBC/ODBCに依存しないと本文にあるため誤り。DはPython APIがresource管理用、ConnectorがSQL接続・実行用という本文の区別に反する。",
       "correct": true
     }
   ],
@@ -419,8 +407,11 @@
     "passed": true
   },
   "content_hashes": {
-    "textbook_sha256": "28f3815688fb82e0743650b6cfae7c07ad6d1433ee644ef0818f044954d71d32",
-    "questions_sha256": "9e85f5c9f88cfbaa79f27d8dfdba86861f46923a6b9c9b931e8010edaf69f528",
-    "coverage_matrix_sha256": "5ed8704cd2ba3808ab7a90aaa573d42f40cc82e62fa2ee09241d561b1162018a"
-  }
+    "textbook_sha256": "71697be0f077a8516ec3395ff9fe73df1154f61bf3ac65d1ee113c9f7f8f3564",
+    "questions_sha256": "53e9a405f95f63dee214e3040dc0274bde2aa69022d460a3e792ec1c8bb2b22e",
+    "coverage_matrix_sha256": "8bd2b2504693e4167da72c41c9014e28460ca7fd080ebd61273dc8082f307f3b"
+  },
+  "notes": [
+    "18問すべてに本文内の根拠を対応付けた。回答選択と根拠の確定後、指定された出力ファイルのみ新規作成した。"
+  ]
 }
