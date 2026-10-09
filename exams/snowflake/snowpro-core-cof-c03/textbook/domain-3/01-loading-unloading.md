@@ -270,7 +270,7 @@ FROM (SELECT * FROM orders WHERE order_date >= '2026-08-01')
 | `OVERWRITE` | `FALSE` | 同名ファイルを上書きしない |
 | `HEADER` | `FALSE` | 列名の見出し行を出力しない |
 
-アンロードしたファイルは既定でgzip圧縮されます。「1ファイルにまとめたい」なら`SINGLE = TRUE`、「BIツールでそのまま開きたい」なら`HEADER = TRUE`というように、要件からoptionへ対応付けます。`MAX_FILE_SIZE`の既定16 MBは小さく、大きな結果は自動的に多数のファイルへ分かれます。
+`COMPRESSION = AUTO`のアンロードでは、CSV／JSONはgzip、ParquetはSnappyで圧縮されます。圧縮の既定値は出力形式と組み合わせて判断します。「1ファイルにまとめたい」なら`SINGLE = TRUE`、CSVへ列名の見出し行を付けたいなら`HEADER = TRUE`を指定します。`MAX_FILE_SIZE`の既定16 MBは小さく、大きな結果は自動的に多数のファイルへ分かれます。
 
 ### ファイルサイズは圧縮後100〜250 MBを目安にする
 

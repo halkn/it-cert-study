@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-question-quality-2026-10-05",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-question-quality-2026-10-10",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-05",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -28,6 +28,11 @@
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
   },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "2444a182f11068550e1addf440dd90a4446829ae5ce4728dbcd3e652c220f67f",
+    "coverage_matrix_sha256": "4b6837a62fafa3f4a034dcb746cd47633ed9e5ae325ff60a3a27c4d643f8cf3e"
+  },
   "questions": [
     {
       "id": "M1-Q25",
@@ -36,7 +41,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "storage integration経由stageとUSAGE grant。",
+      "notes": "Storage integrationとexternal stageでcloud資格情報をSnowflake管理にし、stage利用権限をroleへ付与できる。Aはuser stage、Cはcredential直書きと不適切な権限名、Dはtable stageの用途が合わず、誤答は明確。",
       "correct": true
     },
     {
@@ -46,7 +51,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "PUTはworksheet不可。",
+      "notes": "PUTはworksheetでは実行できず、Snowsightのアップロード機能かSnowSQL等のclientを使う。GETはdownload、storage integrationは外部storage向けなのでA・B・Dは消去しやすいが、問う知識は明確。",
       "correct": true
     },
     {
@@ -56,7 +61,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "FORCEにより既ロードfileも再ロードされる。",
+      "notes": "FORCE=TRUEは既ロード扱いのファイルも再ロード対象にする。ON_ERRORは失敗時の扱い、PURGEは処理後の削除、VALIDATION_MODEは検証に関するため、原因は一意。",
       "correct": true
     },
     {
@@ -66,7 +71,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "file単位でskipする指定。",
+      "notes": "SKIP_FILEはエラーを含むファイルをスキップし、他ファイルの処理を続ける要件に合う。CONTINUEは可能な行をロードするので要件と異なり、選択肢の区別も明瞭。",
       "correct": true
     },
     {
@@ -77,7 +82,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "単一fileとheader出力。",
+      "notes": "SINGLE=TRUEで単一ファイル、HEADER=TRUEで列見出しを出力する。OVERWRITEは既存ファイルの上書き、MATCH_BY_COLUMN_NAMEはロード時の列対応なので選択対象ではない。",
       "correct": true
     },
     {
@@ -87,7 +92,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "cloud eventによるSnowpipe auto-ingest。",
+      "notes": "Snowpipe auto-ingestはcloud event notificationで到着を検知し、warehouseを常時起動せずにロードする構成。Bはwarehouseを使うtask、Cはファイル投入方式と異なるStreaming、Dも要件より広い外部flowで、正解は明瞭。",
       "correct": true
     },
     {
@@ -97,7 +102,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "SELECTだけではstream offsetを消費しない。",
+      "notes": "streamをworksheetでSELECTして読むだけではオフセットは進まず、DMLで消費されるまで同じ変更が見える。taskが動作中という条件からAは外れ、Bが直接の確認点。",
       "correct": true
     },
     {
@@ -108,7 +113,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "TARGET_LAGの意味と最小時間幅を選んだ。最小値について知識に若干の不確実さがある。",
+      "notes": "TARGET_LAGはbase dataに対する目標遅延であり、時間幅指定の最小値は60 seconds。AUTOで解決したrefresh modeが実行ごとに切替わるというBは誤りで、10 minutesも固定scheduleを意味しない。AとCの組合せと判断したが、Cの下限値は細かな仕様知識への依存が強く、暗記問題寄り。",
       "correct": true
     },
     {
@@ -118,7 +123,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "external functionとAPI integration。",
+      "notes": "SQLから外部APIを呼び出すにはAPI integrationとexternal functionを使う。ほかのintegrationはstorage、通知、認証・network制御の用途で、誤答は容易に消去できる。",
       "correct": true
     },
     {
@@ -130,7 +135,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Git認証secret、API integration、repository object。",
+      "notes": "private GitHub repositoryへのtoken認証にはcredential secret、git_https_api用API integration、HTTPS ORIGINのGit repository objectが必要。Dはexternal stageとstorage integrationの構成で用途が異なり、単独で消去可能。",
       "correct": true
     },
     {
@@ -140,7 +145,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "stageが場所、file formatが解析規則。",
+      "notes": "stageに場所を定義し、named file formatにCSVのheaderやdelimiterを定義する。ほかはobjectの役割が明らかに異なるため、基礎用語を知っていれば容易。",
       "correct": true
     },
     {
@@ -150,7 +155,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "pre-signed URLとserver-side暗号化条件からSNOWFLAKE_SSEと判断。細かなinternal stage encryption仕様は少し不確実。",
+      "notes": "pre-signed URLを利用しclient-side暗号化を行わずserver-side暗号化のみとする条件はSNOWFLAKE_SSEに合う。SNOWFLAKE_FULLはclient-side暗号化を含み、AWS_SSE_KMSはこのSnowflake internal stageの選択肢として不適切。選択肢の製品固有知識への依存が高く、問題文は条件を十分限定している。",
       "correct": true
     },
     {
@@ -158,9 +163,9 @@
       "selected_option_ids": [
         "D"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "VALIDATION_MODEの変換付きCOPY制約を避ける検証手順と判断。",
+      "notes": "VALIDATION_MODEは変換SELECT付きCOPYでは使えないため、変換なしの対応する検証COPYを別途行う。Aは制約に反し、BとCは検証機能ではない。",
       "correct": true
     },
     {
@@ -170,7 +175,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "file名を指定してSnowpipe REST APIでload依頼。",
+      "notes": "event notificationなしで既存stageのファイルを指定してSnowpipeへ依頼する方式はSnowpipe REST API。COPY方式はSnowflake管理computeでpipeにロード依頼する要件と異なり、C・Dは成立しない。",
       "correct": true
     },
     {
@@ -180,7 +185,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "file uploadを介さないrow ingestion。",
+      "notes": "ファイルを介さず行データを送る機能はSnowpipe Streaming。auto-ingest、stage COPY、REST API insertFilesはいずれもファイルを前提とするので消去が容易。",
       "correct": true
     },
     {
@@ -191,7 +196,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "managed task権限とresumeが必要。",
+      "notes": "serverless taskにはEXECUTE MANAGED TASKが必要で、作成後suspendedのtaskはRESUMEが必要。MONITORでの代替やSELECTによるschedule有効化は誤り。",
       "correct": true
     },
     {
@@ -201,7 +206,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "NiFiベースの外部flow管理。",
+      "notes": "Apache NiFi processorによる外部systemとのdata flow管理にはOpenflowが該当する。dynamic tableとmaterialized viewはSnowflake内のquery結果維持、streamは変更追跡であり、要件の対比で正解を推測しやすい。",
       "correct": true
     },
     {
@@ -211,7 +216,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "resource object APIとSQL connectorを用途別に選ぶ。",
+      "notes": "Python API snowflake.coreはSnowflake resource objectの操作、Python Connectorは接続とSQL実行・結果取得に対応する。Bは役割を逆転し、C・Dは各機能の用途が合わない。",
       "correct": true
     }
   ],
@@ -224,19 +229,10 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "review_notes": [
-    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
-  ],
-  "content_hashes": {
-    "textbook_sha256": null,
-    "questions_sha256": "53e9a405f95f63dee214e3040dc0274bde2aa69022d460a3e792ec1c8bb2b22e",
-    "coverage_matrix_sha256": "8bd2b2504693e4167da72c41c9014e28460ca7fd080ebd61273dc8082f307f3b"
-  },
   "notes": [
-    "M1-Q26: GETをuploadに使う選択肢やinternal stageにstorage integration必須とする選択肢は機能カテゴリ上の誤りが明瞭で、distractorとして弱い。",
-    "M1-Q33: APIをSQLから呼ぶ要件に対しAPI integration/external function以外の3選択肢は名称上も用途上も離れており、推測で正答しやすい。",
-    "M1-Q95: file化/upload不要のrow ingestionはStreamingの説明にほぼ直結し、他選択肢は明瞭なfile-based機能。",
-    "M1-Q97: Apache NiFiという固有語がOpenflowを強く示し、ほかは内部refresh/query objectで明らかに異なる。",
-    "複数問で正解の並びが同じ概念語（たとえば要件の語をそのまま選択肢が反復）になっており、全問横断では正解位置に目立つ偏りは見られない。各問の選択肢順も概ね分散している。"
+    "18問すべてに回答した。記述条件に対して正答が概ね明確で、複数解釈が避けられない設問はなかった。",
+    "誤答選択肢の一部は機能領域が大きく異なり、要件語だけで消去できる。特にQ33、Q95、Q97、Q98は distractor が弱く、正答しても理解度の強い証拠になりにくい。",
+    "Q32とQ92は製品固有の細かな仕様値・暗号化方式の知識を要求する。Q32の60秒下限は暗記依存が強く、Q92は要件の読解よりstage encryption optionの対応知識を測る。",
+    "複数選択問題の正答選択肢位置は偏りを示さないが、全体として誤答選択肢が明白な問題が多く、知識が薄くても消去法で解ける問題がある。"
   ]
 }

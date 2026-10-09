@@ -94,12 +94,12 @@
     {
       "id": "d3-integration-map",
       "objective_ids": ["3.3"],
-      "learning_goal": "driver / connector / integration の担当範囲と接続の向きを区別できる",
-      "source_ids": ["docs-drivers-overview", "docs-kafka-connector-overview", "docs-spark-connector-overview", "docs-storage-integration-ddl", "docs-api-integration-ddl", "docs-git-repository-ddl", "docs-external-access-integration-ddl", "docs-notification-integration-ddl", "docs-security-integration-ddl"],
+      "learning_goal": "接続部品とaccount内の連携設定を区別し、integrationを用途別に選べる",
+      "source_ids": ["docs-drivers-overview", "docs-kafka-connector-overview", "docs-spark-connector-overview", "docs-storage-integration-ddl", "docs-api-integration-ddl", "docs-git-repository-ddl", "docs-external-access-integration-ddl", "docs-notification-integration-ddl", "docs-security-integration-ddl", "docs-security-integration-saml2"],
       "format": "mermaid",
       "file": "diagrams/domain-3/integration-map.md",
       "status": "complete",
-      "last_verified": "2026-08-30"
+      "last_verified": "2026-10-05"
     },
     {
       "id": "d4-query-bottlenecks",

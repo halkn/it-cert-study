@@ -1,7 +1,7 @@
 # 1.1 アーキテクチャを説明し、利用する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -174,10 +174,12 @@ table typeの詳細は[1.5 ストレージ概念](05-storage-concepts.md)で扱�
 ```sql
 SELECT edition
 FROM SNOWFLAKE.ORGANIZATION_USAGE.ACCOUNTS
-WHERE account_name = CURRENT_ACCOUNT();
+WHERE account_name = CURRENT_ACCOUNT_NAME();
 ```
 
 このviewをqueryするには`ORGANIZATION_USAGE`への適切なaccessが必要です。結果はaccountのEditionを示し、使用中のwarehouse sizeを示すものではありません。
+
+`ACCOUNT_NAME`は利用者が付けたaccount名なので、`CURRENT_ACCOUNT_NAME()`と比較します。`CURRENT_ACCOUNT()`が返すSnowflake割当のaccount locatorとは別の識別子です。根拠: `docs-current-account-name`, `docs-current-account`, `docs-organization-accounts`。
 
 ## ミニハンズオン：同じdataを2つのwarehouseから利用する
 
@@ -359,4 +361,7 @@ SnowflakeではDatabase Storageが永続dataを中央管理し、独立したVir
 - `docs-compute-cost` — [Understanding compute cost](https://docs.snowflake.com/en/user-guide/cost-understanding-compute)
 - `docs-create-warehouse` — [CREATE WAREHOUSE](https://docs.snowflake.com/en/sql-reference/sql/create-warehouse)
 - `docs-current-warehouse` — [CURRENT_WAREHOUSE](https://docs.snowflake.com/en/sql-reference/functions/current_warehouse)
+- `docs-current-account-name` — [CURRENT_ACCOUNT_NAME](https://docs.snowflake.com/en/sql-reference/functions/current_account_name)
+- `docs-current-account` — [CURRENT_ACCOUNT](https://docs.snowflake.com/en/sql-reference/functions/current_account)
+- `docs-organization-accounts` — [ACCOUNTS](https://docs.snowflake.com/en/sql-reference/organization-usage/accounts)
 - `docs-iceberg-tables` — [Apache Iceberg tables](https://docs.snowflake.com/en/user-guide/tables-iceberg)

@@ -70,7 +70,7 @@ streamとtaskで増分反映を組みました。streamをworksheetで`SELECT`�
 - A. taskがsuspendedになっていないか
 - B. streamがDML文で消費されているか
 - C. streamが`APPEND_ONLY`になっていないか
-- D. source tableのclustering keyが設定されているか
+- D. streamがstaleになって変更を読み取れなくなっていないか
 
 ## 第6問
 

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-baseline-2026-10-05",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-3-baseline-2026-10-10",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-05",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     3
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -30,6 +30,11 @@
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
   },
+  "content_hashes": {
+    "textbook_sha256": "4d6d2c6f00de53d8428d370a110f1c68eb274387198a1c951cf4c00ceab45d1e",
+    "questions_sha256": "2444a182f11068550e1addf440dd90a4446829ae5ce4728dbcd3e652c220f67f",
+    "coverage_matrix_sha256": "4b6837a62fafa3f4a034dcb746cd47633ed9e5ae325ff60a3a27c4d643f8cf3e"
+  },
   "questions": [
     {
       "id": "M1-Q25",
@@ -37,20 +42,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "External stageは外部storageを指す"
-        },
-        {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "Stage privilegeはinternalとexternalで異なる"
         }
       ],
-      "notes": "Bは、外部storageのstageがstorage integrationを参照でき、external stageにはUSAGEをgrantするという本文の説明に一致する。資格情報をSQLへ直接書かずintegrationを使うとも明記されている。Aはuser stageが個人用で他userと共有できない。Cは資格情報をSQLへ直接書くうえ、external stageにREADではなくUSAGEをgrantするため誤り。Dはtable stageがinternal stageであり、S3 URLを設定する用途ではない。",
+      "notes": "External stageはstorage integration参照を推奨し、複数user利用にはnamed stageと権限設定。Aはuser stage共有不可。C credentials直書き非推奨かつexternal USAGE。D table stageはtable専用internalでS3 URL不可。",
       "correct": true
     },
     {
@@ -59,16 +60,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "PUTとGETはlocalとinternal stageの間だけ"
         }
       ],
-      "notes": "Cは、PUT/GETはSnowsight worksheetから実行できず、Snowsight UIにはnamed internal stageへuploadする別機能があるという記述に合う。AはworksheetでPUTできない。BはGETがstageからlocalへのdownloadであり、worksheetからも実行できない。Dはinternal stageへのuploadにstorage integrationが必要とは本文に書かれず、integrationはexternal storage向けとして説明されている。",
+      "notes": "PUT/GET worksheetで不可。Snowsight UIはnamed internal stageへのupload機能が別にあり、またclientでPUT可能。A/B worksheet制約およびGET方向誤り、D internal stageにstorage integration不要。",
       "correct": true
     },
     {
@@ -77,16 +78,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "同じファイルが二重にロードされない仕組み"
         }
       ],
-      "notes": "CのFORCE=TRUEはload metadataを無視して対象ファイルを再ロードし、重複が生じ得ると本文が明記している。AのCONTINUEはerror行を飛ばして続行する設定、BのPURGEは成功後にstage上のファイルを削除する設定、DのVALIDATION_MODEはロードせず検証結果だけを返す設定であり、いずれも再ロードを強制する説明ではない。",
+      "notes": "FORCE TRUEはmetadataを無視して全対象をロードし重複しうる。ON_ERRORは行error処理、PURGE成功後削除、VALIDATION_MODEはloadせず検証。",
       "correct": true
     },
     {
@@ -95,16 +96,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "ON_ERRORでロード継続の方針を決める"
         }
       ],
-      "notes": "AのSKIP_FILEはerror行を含むファイルを丸ごとskipする一方、残りのファイルは対象にできる。BのCONTINUEはerror行を飛ばしてロードを続けるがファイル単位のskipではない。CはCOPY文全体を中止する。DのVALIDATION_MODEはロード前の検証専用で、errorファイルをskipして他ファイルをロードする指定ではない。",
+      "notes": "SKIP_FILEはerror行を含むファイル全体をskip。CONTINUEはerror行のみskip、ABORTは文全体中止、VALIDATION_MODEは検証だけでloadしない。",
       "correct": true
     },
     {
@@ -114,16 +115,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "COPY INTO <location> でアンロードする"
         }
       ],
-      "notes": "AのSINGLE=TRUEは出力を1ファイルにまとめ、BのHEADER=TRUEは列名の見出し行を出力するため、2つの要件にそれぞれ対応する。CのOVERWRITE=TRUEは同名ファイルの上書き制御で、単一ファイル化やheader出力を指定しない。DのMATCH_BY_COLUMN_NAMEは半構造化データのload時に列名で対応付けるoptionであり、アンロード形式の要件ではない。",
+      "notes": "SINGLE TRUEで1ファイル、HEADER TRUEで列見出し行。OVERWRITEは同名上書きで要件外、MATCH_BY_COLUMN_NAMEは半構造化入力のtable列対応でunload設定でない。",
       "correct": true
     },
     {
@@ -132,20 +133,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Auto-ingestとREST APIの2方式"
-        },
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Snowpipe — ファイル到着を起点に継続ロードする"
         }
       ],
-      "notes": "Aはcloud storageのevent notificationを起点にpipeへファイルを取り込み、Snowpipeのserverless computeでロードするため、到着後まもなく・warehouseを常時起動しない要件に合う。Bはuser-managed warehouseで実行するCOPYをtask scheduleで呼ぶ案で、到着イベントを直接起点にしない。CのSnowpipe Streamingはstage上のファイルでなく行を書き込む方式。DのOpenflowは外部system間のconnector flowを構築する機能として記述され、このファイル到着ロード要件の選択肢として示されていない。",
+      "notes": "Snowpipe auto-ingestはcloud event notificationでstage到着ファイルをロードしserverless computeを使う。Bはuser-managed COPY/taskのschedule、Cは行書き込みのためファイル単位でない、Dは一般外部system flowで要件に合致しない。",
       "correct": true
     },
     {
@@ -154,16 +151,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Offsetが進むのはDMLで消費したときだけ"
         }
       ],
-      "notes": "Bが確認点。本文はstreamをSELECTしただけではoffsetが進まず、同じ変更が繰り返し返ると明記し、INSERT ... SELECT FROM streamなどのDMLで消費されoffsetが進むと説明する。Aのtask suspended確認はtaskが実行されない場合の調査で、設問ではtask実行中。CのAPPEND_ONLYはINSERTのみを追跡する種類の選択であり、SELECTでoffsetが進まない原因を解決しない。Dのclustering keyはこのstream消費動作の説明に関係しない。",
+      "notes": "SELECTだけではstream offsetは進まないため、DMLで消費しているか確認。A taskは実行中とある。Cはappend-onlyに限らずSELECTは未消費。D staleなら変更を返せず、繰返し同じ変更の説明と異なる。",
       "correct": true
     },
     {
@@ -173,20 +170,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Target lagは鮮度の目標を表す"
-        },
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Incremental refreshとfull refresh"
         }
       ],
-      "notes": "Aはtarget lagがbase dataに対する鮮度の遅れ目標という本文の定義に一致し、Cは時間幅で指定できる最小値が60秒という記述に一致する。BはAUTOが作成時にINCREMENTALかFULLへ一度解決され、その後固定されるため誤り。Dはtarget lagがrefresh間隔や固定scheduleを指定するものではないと本文が明記する。",
+      "notes": "TARGET_LAGはbase dataとの鮮度目標で最小60秒。AUTO解決modeは作成時に固定されるのでB誤り。lagは固定schedule指定でないためD誤り。",
       "correct": true
     },
     {
@@ -195,20 +188,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "API integration — 外部HTTPS serviceの呼び出しを許可する"
-        },
-        {
-          "file": "textbook/domain-3/03-connectors-integrations.md",
-          "heading": "Storage integrationとAPI integrationを取り違えない"
         }
       ],
-      "notes": "CのAPI integrationとexternal functionは、SQLから外部HTTPS serviceを呼び出して結果を得る構成として本文に記載されている。Aのstorage integrationはcloud storageとexternal stage向け。Bのnotification integrationは通知先への通知用。Dのsecurity integrationは外部IdP/OAuth等の認証・認可用であり、住所API呼び出しではない。",
+      "notes": "SQLから外部HTTPS serviceを呼ぶのはAPI integration + external function。Storageはcloud storage、notificationはmessage queue等、security integrationは認証/IdP用途。",
       "correct": true
     },
     {
@@ -219,16 +208,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "認証方式に応じてobjectを組み合わせる"
         }
       ],
-      "notes": "private repositoryへのtoken認証では、tokenを保持するsecret、API_PROVIDER=git_https_apiのAPI integration、HTTPS ORIGINとintegrationを指定するGit repository objectの3つを組み合わせると本文にあるためA・B・Cを選ぶ。Dのexternal stageとstorage integrationはcloud storageへのアクセス用で、Git repository cloneの構成要素ではない。",
+      "notes": "token private repo構成はsecret、git_https_api API integration、ORIGIN URLを持つGit repository。DはGit cloneでexternal stageを使わない。",
       "correct": true
     },
     {
@@ -237,20 +226,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
-        {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "External stageは外部storageを指す"
-        },
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "名前付きformatとinline指定の使い分け"
         }
       ],
-      "notes": "Cはファイルの場所をstageで表し、CSVのheaderやdelimiterなどの解釈規則を再利用可能なnamed file formatへまとめる対応である。Aは場所とformatの役割を逆にしている。Bのstream offsetは変更追跡位置であり、場所やファイル解釈規則を保持しない。Dのwarehouseとnetwork policyもそれぞれ計算資源とnetwork access制御の概念である。",
+      "notes": "Stageはファイル置き場、named file formatはtype/parse規則を再利用する。Aの役割逆、B stream offsetは変更位置、D warehouse/network policyは役割が異なる。",
       "correct": true
     },
     {
@@ -259,20 +244,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "Internal stageのencryptionは作成時に決まる"
-        },
-        {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "Directory tableはstageのファイル一覧をSQLで扱う"
         }
       ],
-      "notes": "BのSNOWFLAKE_SSEはinternal stageでserver-side暗号化のみを使う方式で、pre-signed URL等によりファイル本体を直接扱う用途に向くと本文が説明する。AのSNOWFLAKE_FULLはclient-sideとserver-sideの両方で、要件に反する。CのAWS_SSE_KMSは外部storage側のencryption typeとして挙げられ、internal stage用ではない。DのNONEはinternal stageの選択肢にない。",
+      "notes": "SNOWFLAKE_SSEはserver-side暗号化のみでclientを通さずpre-signed URL利用に適する。SNOWFLAKE_FULLはclient+server side、AWS_SSE_KMSはexternal stageのS3側暗号化方式、NONEはinternal stageの常時暗号化と要件に合わない。",
       "correct": true
     },
     {
@@ -281,20 +262,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/01-loading-unloading.md",
           "heading": "ロード前に検証する VALIDATION_MODE"
-        },
-        {
-          "file": "textbook/domain-3/01-loading-unloading.md",
-          "heading": "COPY INTO <table> でstageからロードする"
         }
       ],
-      "notes": "Dは変換SELECT付きCOPYとVALIDATION_MODEを併用できないという本文の制約を踏まえ、変換なしの検証COPYで入力ファイルのparse errorを確認してから変換・ロードを行う選択である。Aは明示された併用不可の組合せ。BのON_ERROR=CONTINUEはerror行を飛ばして実際のロードを続ける動作で、検証結果だけを返さない。CのFORCEはload metadataを無視してロードする設定であり、検証機能ではない。",
+      "notes": "VALIDATION_MODEはSELECT変換を伴うCOPYと併用できず、別途変換なし検証COPYでparse検査する。A制約違反、Bはload時のerror継続で検証のみでない、Cは重複回避metadata無視で検証機能でない。",
       "correct": true
     },
     {
@@ -303,20 +280,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Auto-ingestとREST APIの2方式"
-        },
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "Bulk COPYとの違いを4点で押さえる"
         }
       ],
-      "notes": "AのSnowpipe REST APIはclientがinsertFilesをpipe名とファイル一覧で呼び出してロードを依頼する方式で、SnowpipeはSnowflake提供のserverless computeを使う。Bはuser-managed warehouseによるbulk COPYで、pipeへファイル名を送る要件に合わない。Cはstreamがsource objectの変更を返すobjectであり、ファイル名をINSERTしてロードを起動する機能ではない。DのSnowpipe Streamingはstage file pathでなく行を直接書き込む方式。",
+      "notes": "Snowpipe REST API insertFilesはpipe名・ファイル一覧をclientから指定し、serverless computeで動作する。BはSnowpipeでもなく限定要件に逆、C streamはobject DML変更、D Streamingは行を直接送るAPIでstage file path ingestionでない。",
       "correct": true
     },
     {
@@ -325,16 +298,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Snowpipe Streaming — ファイルを作らず行を直接書き込む"
         }
       ],
-      "notes": "CのSnowpipe Streamingはstageへファイルを置かず、行をtableへ直接書き込むAPIと本文で定義されている。AのSnowpipe auto-ingestはstageへのファイル到着を起点にファイルをロードする。Bはstage上のファイルをCOPYする方式。DのSnowpipe REST APIはstage上のファイル一覧を指定するinsertFiles方式で、行データを直接送る機能ではない。",
+      "notes": "Snowpipe Streamingはstageへファイルを置かず行を直接書き込む。AとBはfile/stage前提、D insertFilesはstage上のファイル一覧をpipeへ依頼する。",
       "correct": true
     },
     {
@@ -344,20 +317,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
-        {
-          "file": "textbook/domain-3/02-automated-ingestion.md",
-          "heading": "作成しただけでは動かない"
-        },
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Serverless taskとuser-managed task"
         }
       ],
-      "notes": "Aはserverless task実行に必要なaccount-level EXECUTE MANAGED TASKをowner roleへ付与する対応。Cはtask作成直後がsuspendedであり、継続実行にはALTER TASK ... RESUMEが必要という本文に対応する。Bのwarehouse MONITORはserverless実行権限を代替するものとして本文に記載されず、serverless taskではwarehouseを指定しない。DのSELECTはtaskのscheduleを有効化せず、本文はRESUMEを必要としている。",
+      "notes": "Serverless実行にEXECUTE MANAGED TASKが必要、作成taskはsuspendedなのでRESUMEも必要。Warehouse MONITORはserverless権限代替でないしwarehouseを指定しない。SELECTは実行有効化でない。",
       "correct": true
     },
     {
@@ -366,16 +335,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/02-automated-ingestion.md",
           "heading": "Openflow — 外部systemとの接続をNiFiベースで統合する"
         }
       ],
-      "notes": "BのOpenflowはApache NiFi上に構築された統合サービスで、多数のprocessorを組み合わせ任意のデータsourceと宛先を接続すると本文が説明する。AのDynamic Tableはquery結果を鮮度目標に従ってrefreshするtable。Cのstreamはsource objectの変更をCDCとして返す。Dのmaterialized viewはこの本文でOpenflowのような外部system接続flowとして説明されていない。",
+      "notes": "OpenflowはApache NiFi上の統合サービスで外部data source/destinationを接続。Dynamic Tableはquery結果refresh、Streamは変更追跡、Materialized viewも選択肢に記載される役割は外部system接続でない。",
       "correct": true
     },
     {
@@ -384,16 +353,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-3/03-connectors-integrations.md",
           "heading": "DriverとSnowflake Python APIとSnowparkの違い"
         }
       ],
-      "notes": "AはresourceをPython objectとして操作するSnowflake Python APIと、SQL文をcursorで実行して結果を受け取るSnowflake Connector for Pythonの用途を正しく対応させている。Bは両libraryの用途を逆にしている。CはPython Connectorがpure PythonでJDBC/ODBCに依存しないと本文にあるため誤り。DはPython APIがresource管理用、ConnectorがSQL接続・実行用という本文の区別に反する。",
+      "notes": "Python API snowflake.coreはresource object操作、Python ConnectorはSQL文字列をcursorで実行。B逆、C Python Connectorを使えるのにJava driver指定は役割違い、D SQL APIの記載用途なし、resource object APIはSQL結果取得の用途でない。",
       "correct": true
     }
   ],
@@ -406,12 +375,7 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "content_hashes": {
-    "textbook_sha256": "71697be0f077a8516ec3395ff9fe73df1154f61bf3ac65d1ee113c9f7f8f3564",
-    "questions_sha256": "53e9a405f95f63dee214e3040dc0274bde2aa69022d460a3e792ec1c8bb2b22e",
-    "coverage_matrix_sha256": "8bd2b2504693e4167da72c41c9014e28460ca7fd080ebd61273dc8082f307f3b"
-  },
   "notes": [
-    "18問すべてに本文内の根拠を対応付けた。回答選択と根拠の確定後、指定された出力ファイルのみ新規作成した。"
+    "全18問を教材本文だけから回答した。18問とも正解候補と各誤答を本文内の明示記述・用途比較で支持/除外可能と判断。"
   ]
 }

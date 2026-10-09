@@ -41,6 +41,22 @@ gpt-6-luna / lowの独立評価は、問題品質・本文限定の両方で全1
 
 全回答は正解・registryを見せる前に確定させ、親が採点しました。本文限定試験は対象Domainのtextbookだけを根拠とし、一般知識・公式Web・問題解説・既存評価を許可していません。初回の全Domain一括束による拾い漏れや指摘付き回答は完成根拠へ流用せず、修正後に新規エージェントでDomain別の本文監査を実施しました。
 
+## PR再レビューの修正（2026-10-10）
+
+公式文書で確認した次の5点を本文・設問・図・用語集へ反映しました。出典とCoverageの対応を更新し、README／START_HEREの完成表示も統一しました。
+
+- Standard streamはSQL操作の履歴ではなく正味の差分を返す。既存行のUPDATEと、未消費区間のINSERT→UPDATE／INSERT→DELETEを区別。
+- `ORGANIZATION_USAGE.ACCOUNTS.ACCOUNT_NAME`との比較を`CURRENT_ACCOUNT_NAME()`へ修正し、account locatorとの違いを説明。
+- UNDROPの復元先は削除時のcontainerであり、current database／schemaは省略名の解決に使うことを明確化。
+- アンロードの`COMPRESSION=AUTO`をCSV／JSONのgzipとParquetのSnappyに分け、章末問題の形式・条件を明示。
+- Integrationを外向き通信に限定せず、SSO認証と通知の送受信を含めた用途別の説明へ修正。
+
+本文限定評価で見つかったM1-Q31のDomain外知識に依存する誤答肢を、streamのstaleと未消費の違いを問う内容に変更しました。失われた一時回答は流用せず、変更したDomain 1／3／5について新規gpt-6-luna / lowの独立エージェントで問題品質と本文限定の両評価を再実施しました。31／18／13問、計62問で両評価の正答率100%、各Domainも100%、本文根拠十分率100%でした。6レポートは上表のリンク先へ保存しています。
+
+問題品質評価がM1-Q62／Q65で報告した疑義は、[再共有の制約](https://docs.snowflake.com/en/collaboration/resharing-as-resharer)と[共有時の費用負担](https://docs.snowflake.com/en/user-guide/data-sharing-intro)を回答確定後に照合しました。Imported objectの直接再共有とconsumerへの共有storage課金は成立しないため、複数正解となる曖昧性ではないと判定しました。原指摘・確信度・採点者の判断根拠をレポートへ保持し、判定後の曖昧問題は0件です。弱い誤答肢などの任意改善メモも保持しています。
+
+構造Validator（19 Objective・89 Topic・194出典・18図・285問）、変更のないDomain 2／4を含む全10評価レポートの採点・引用見出し・content hash検証、100問模擬セットの再生成照合、git diff --checkが成功しました。
+
 ## 確認範囲
 
 日本語Study Guideの版・SHA・全範囲は既存の全内容照合記録を参照しました。今回PDF原本を再取得して照合していないため、最新公開版との同一性は未確認です。Snowflake SQLは公式構文・権限・少量例の期待結果を静的に確認し、実アカウントでは未実行です。図は定義・ラベル・接続を確認しましたが、利用可能なrendererがなく、最終表示の視覚検査は未実施です。

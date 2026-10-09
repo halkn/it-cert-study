@@ -17,11 +17,11 @@
     {"id":5,"weight_percent":10,"title_ja":"データコラボレーション"}
   ],
   "objectives": [
-    {"objective_id":"1.1","domain":1,"title_ja":"アーキテクチャを説明し、利用する","chapter":"textbook/domain-1/01-architecture.md","status":"complete","last_verified":"2026-08-13","topics":[
+    {"objective_id":"1.1","domain":1,"title_ja":"アーキテクチャを説明し、利用する","chapter":"textbook/domain-1/01-architecture.md","status":"complete","last_verified":"2026-10-05","topics":[
       {"topic_id":"1.1.cloud-services-layer","title_ja":"Cloud Services layer","scope":[],"chapter_anchor":"cloud-services-layer","status":"complete","last_verified":"2026-08-13","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-key-concepts-architecture","docs-compute-cost"],"diagram_ids":["d1-three-layer-architecture"],"question_ids":{"chapter":["C1-1.1-Q01","C1-1.1-Q05","C1-1.1-Q06"],"domain":["D1-Q01"],"mock":["M1-Q01","M1-Q03","M1-Q68"]}},
       {"topic_id":"1.1.compute-layer","title_ja":"Compute layer","scope":[],"chapter_anchor":"compute-layer","status":"complete","last_verified":"2026-08-13","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-key-concepts-architecture","docs-compute-cost","docs-create-warehouse","docs-current-warehouse"],"diagram_ids":["d1-three-layer-architecture"],"question_ids":{"chapter":["C1-1.1-Q02","C1-1.1-Q05","C1-1.1-Q06"],"domain":["D1-Q01","D1-Q02"],"mock":["M1-Q01","M1-Q03"]}},
       {"topic_id":"1.1.database-storage-layer","title_ja":"Database Storage layer","scope":[],"chapter_anchor":"database-storage-layer","status":"complete","last_verified":"2026-08-13","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-key-concepts-architecture","docs-supported-cloud-platforms"],"diagram_ids":["d1-three-layer-architecture"],"question_ids":{"chapter":["C1-1.1-Q03","C1-1.1-Q05","C1-1.1-Q06"],"domain":["D1-Q01"],"mock":["M1-Q01","M1-Q03","M1-Q68"]}},
-      {"topic_id":"1.1.snowflake-editions","title_ja":"Snowflake Edition の比較","scope":[],"chapter_anchor":"snowflake-editions","status":"complete","last_verified":"2026-10-04","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-snowflake-editions","docs-time-travel"],"diagram_ids":[],"question_ids":{"chapter":["C1-1.1-Q04"],"domain":["D1-Q02","D1-Q03"],"mock":["M1-Q02","M1-Q03","M1-Q69"]}}
+      {"topic_id":"1.1.snowflake-editions","title_ja":"Snowflake Edition の比較","scope":[],"chapter_anchor":"snowflake-editions","status":"complete","last_verified":"2026-10-05","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-snowflake-editions","docs-time-travel","docs-current-account-name","docs-current-account","docs-organization-accounts"],"diagram_ids":[],"question_ids":{"chapter":["C1-1.1-Q04"],"domain":["D1-Q02","D1-Q03"],"mock":["M1-Q02","M1-Q03","M1-Q69"]}}
     ]},
     {"objective_id":"1.2","domain":1,"title_ja":"インターフェースとツールを利用する","chapter":"textbook/domain-1/02-interfaces-and-tools.md","status":"complete","last_verified":"2026-10-05","topics":[
       {"topic_id":"1.2.snowsight","title_ja":"Snowsight","scope":[],"chapter_anchor":"snowsight","status":"complete","last_verified":"2026-08-13","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-snowsight","docs-snowsight-workspaces"],"diagram_ids":[],"question_ids":{"chapter":["C1-1.2-Q01"],"domain":["D1-Q04","D1-Q05"],"mock":["M1-Q04","M1-Q05","M1-Q70"]}},
@@ -91,7 +91,7 @@
     {"objective_id":"3.2","domain":3,"title_ja":"自動データ取り込みを実行する","chapter":"textbook/domain-3/02-automated-ingestion.md","status":"complete","last_verified":"2026-10-05","topics":[
       {"topic_id":"3.2.snowpipe","title_ja":"Snowpipe","scope":[],"chapter_anchor":"snowpipe","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-snowpipe-intro","docs-snowpipe-auto","docs-snowpipe-rest","docs-create-pipe","docs-alter-pipe","docs-system-pipe-status","docs-snowpipe-billing"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q01","C3-3.2-Q02","C3-3.2-Q03","C3-3.1-Q10","C3-3.1-Q12"],"domain":["D3-Q04","D3-Q06"],"mock":["M1-Q30","M1-Q94"]}},
       {"topic_id":"3.2.snowpipe-streaming","title_ja":"Snowpipe Streaming","scope":[],"chapter_anchor":"snowpipe-streaming","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-snowpipe-streaming-overview"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q04"],"domain":["D3-Q04"],"mock":["M1-Q30","M1-Q95"]}},
-      {"topic_id":"3.2.streams","title_ja":"Stream","scope":[],"chapter_anchor":"streams","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-streams-intro","docs-streams","docs-create-stream"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q05","C3-3.2-Q06","C3-3.2-Q07","C3-3.2-Q08"],"domain":["D3-Q04","D3-Q05"],"mock":["M1-Q31"]}},
+      {"topic_id":"3.2.streams","title_ja":"Stream","scope":[],"chapter_anchor":"streams","status":"complete","last_verified":"2026-10-05","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-streams-intro","docs-streams","docs-create-stream"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q05","C3-3.2-Q06","C3-3.2-Q07","C3-3.2-Q08"],"domain":["D3-Q04","D3-Q05"],"mock":["M1-Q31"]}},
       {"topic_id":"3.2.tasks","title_ja":"Task","scope":[],"chapter_anchor":"tasks","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-tasks-intro","docs-create-task","docs-tasks-graphs"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q09","C3-3.2-Q10","C3-3.2-Q11"],"domain":["D3-Q05"],"mock":["M1-Q31","M1-Q96"]}},
       {"topic_id":"3.2.dynamic-tables","title_ja":"Dynamic Table","scope":[],"chapter_anchor":"dynamic-tables","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-dynamic-tables","docs-dt-refresh-modes"],"diagram_ids":["d3-ingestion-selection"],"question_ids":{"chapter":["C3-3.2-Q12","C3-3.2-Q13"],"domain":["D3-Q07"],"mock":["M1-Q32"]}},
       {"topic_id":"3.2.openflow","title_ja":"Openflow","scope":["global GAまでは出題対象外"],"chapter_anchor":"openflow","status":"complete","last_verified":"2026-10-05","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-openflow-about"],"diagram_ids":[],"question_ids":{"chapter":["C3-3.2-Q14"],"domain":["D3-Q10"],"mock":["M1-Q30","M1-Q97"]}}
@@ -100,7 +100,7 @@
       {"topic_id":"3.3.drivers","title_ja":"Snowflake driver","scope":[],"chapter_anchor":"drivers","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-drivers-overview","docs-jdbc","docs-odbc","docs-python-connector","docs-python-api-overview"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q01","C3-3.3-Q02"],"domain":["D3-Q09"],"mock":["M1-Q33","M1-Q98"]}},
       {"topic_id":"3.3.connectors","title_ja":"Snowflake connector","scope":[],"chapter_anchor":"connectors","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-kafka-connector-overview","docs-spark-connector-overview","docs-snowpark"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q03","C3-3.3-Q04"],"domain":["D3-Q09"],"mock":["M1-Q33"]}},
       {"topic_id":"3.3.storage-integration","title_ja":"Storage integration","scope":[],"chapter_anchor":"storage-integration","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-storage-integration-ddl","docs-s3-storage-integration"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q05","C3-3.3-Q06"],"domain":["D3-Q08"],"mock":["M1-Q25"]}},
-      {"topic_id":"3.3.api-integration","title_ja":"API integration","scope":[],"chapter_anchor":"api-integration","status":"complete","last_verified":"2026-08-30","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-api-integration-ddl","docs-external-functions","docs-external-access-integration-ddl"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q07","C3-3.3-Q10"],"domain":["D3-Q08"],"mock":["M1-Q33"]}},
+      {"topic_id":"3.3.api-integration","title_ja":"API integration","scope":[],"chapter_anchor":"api-integration","status":"complete","last_verified":"2026-10-05","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-api-integration-ddl","docs-external-functions","docs-external-access-integration-ddl","docs-security-integration-saml2","docs-notification-integration-ddl"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q07","C3-3.3-Q10"],"domain":["D3-Q08"],"mock":["M1-Q33"]}},
       {"topic_id":"3.3.git-integration","title_ja":"Git integration","scope":[],"chapter_anchor":"git-integration","status":"complete","last_verified":"2026-10-05","source_ids":["exam-study-guide-c03-jpn-2026-02-20","docs-git-overview","docs-git-setting-up","docs-git-repository-ddl","docs-alter-git-repository"],"diagram_ids":["d3-integration-map"],"question_ids":{"chapter":["C3-3.3-Q08","C3-3.3-Q09"],"domain":["D3-Q11"],"mock":["M1-Q34"]}}
     ]},
     {"objective_id":"4.1","domain":4,"title_ja":"クエリ性能を評価する","chapter":"textbook/domain-4/01-evaluate-query-performance.md","status":"complete","last_verified":"2026-10-03","topics":[
@@ -131,7 +131,7 @@
       "title_ja": "コラボレーションとデータ保護を説明する",
       "chapter": "textbook/domain-5/01-collaboration-protection.md",
       "status": "complete",
-      "last_verified": "2026-10-03",
+      "last_verified": "2026-10-05",
       "topics": [
         {
           "topic_id": "5.1.replication-failover",
@@ -224,7 +224,9 @@
             "exam-study-guide-c03-jpn-2026-02-20",
             "docs-time-travel",
             "docs-temp-transient-tables",
-            "docs-clone-command"
+            "docs-clone-command",
+            "docs-undrop-table-reference",
+            "docs-undrop-schema"
           ],
           "diagram_ids": [
             "d5-data-protection-lifecycle"
@@ -241,7 +243,7 @@
               "M1-Q59"
             ]
           },
-          "last_verified": "2026-10-03"
+          "last_verified": "2026-10-05"
         },
         {
           "topic_id": "5.1.fail-safe",

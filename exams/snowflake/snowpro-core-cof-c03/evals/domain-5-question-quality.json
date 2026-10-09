@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-5-question-quality-2026-10-05",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-5-question-quality-2026-10-10",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-05",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     5
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; answer-free bundle only; textbook-only evaluated separately per Domain"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "dae14c6a0c1ab2673719e0909be74ccb5bb28d4a",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -28,6 +28,11 @@
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
   },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "64d8d16fff8ab732574c78e51a037bb3942b810f4d596354bfcd8f115cfcc565",
+    "coverage_matrix_sha256": "441c486434788fd82e91dd78e7ddaf6ea38ffc2d24618fe6edd9d2bd9568214b"
+  },
   "questions": [
     {
       "id": "M1-Q55",
@@ -36,7 +41,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "書込み再開にはsecondaryの昇格が必要。",
+      "notes": "書込み再開をsecondaryで行うにはfailover groupを昇格する構成が要件に合う。Replication groupだけで書込み可能になるというAは、replicationとfailoverの役割を混同しており、要件文から区別できる。",
       "correct": true
     },
     {
@@ -46,7 +51,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "secure viewで列・行を限定してshareする。",
+      "notes": "列と行を制限したsecure viewを共有するのが要件に合う。BとDは公開範囲や更新追従の要件を満たさず、Cは名前だけでsecure viewにならないため、判断根拠は明瞭。",
       "correct": true
     },
     {
@@ -57,7 +62,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "clone変更はsourceに反映せず、更新や履歴でstorage増加し得る。",
+      "notes": "Clone上の更新はsourceへ伝播せず、共有された初期データに対する変更や保持履歴によりstorageが増えることがある。DはCOPY GRANTSがOWNERSHIPを引き継ぐという過剰な主張で、複数選択として成立する。",
       "correct": true
     },
     {
@@ -67,7 +72,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "同名objectがあるため退避後にUNDROP。",
+      "notes": "同名objectが現存するため、先に空tableをrenameし、その後に旧tableをUNDROPする手順が必要。Aは名前衝突を無視しており、状況設定が解法を一意に絞っている。",
       "correct": true
     },
     {
@@ -77,7 +82,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Fail-safe復旧はsupport経由だが保証されない。",
+      "notes": "Fail-safeからの復旧は利用者の即時操作として保証されず、Supportへの依頼にも成功・完了時刻の保証はない。『当日中の確実な復旧』要求への回答として適切。",
       "correct": true
     },
     {
@@ -87,7 +92,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "provider作成reader accountでcomputeをproviderが負担。",
+      "notes": "Snowflakeとの契約がない取引先にproviderがreader accountを提供する形で、reader accountの利用compute費用はprovider負担となる。Bは費用負担を逆にしており、Cは複数providerを利用する通常consumerの説明に近い。",
       "correct": true
     },
     {
@@ -97,7 +102,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "非database-role shareではimported privilegesを付与。",
+      "notes": "Database roleで区分されていないshareの権限はimported database上のIMPORTED PRIVILEGESをconsumer roleへ付与して利用させる。warehouseは確認済みとあるため、compute権限との取り違えも避けられる。",
       "correct": true
     },
     {
@@ -107,8 +112,10 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "受領dataを自databaseのsecure view経由でreshareする想定。imported database内viewの可否/制約との比較に少し不確実さがある。",
-      "correct": true
+      "notes": "列の一部だけを下流公開するには、自身の通常databaseにsecure viewを作って共有する案が意図された解答と判断した。ただし、incoming listingのresharing.enabledとonly_within_organizationの設定は、許可された範囲でのresharing自体を示しており、設問はview経由が必須である理由を『一部列』以外に明示していない。Aはimported database内のview作成制限を問う選択肢と読めるが、前提知識の差で迷う余地がある。",
+      "correct": true,
+      "reported_ambiguous": true,
+      "adjudication": "採点者判定（2026-10-10）: 設問の文面の複数解釈ではなく、再共有の製品制約への不確信。公式 Reshare incoming data as a resharer の Prerequisites / Limitations は、自分のdatabase内のsecure viewを必要とし、imported databaseの直接変更・imported objectの別shareへの直接付与を禁止する。A/B/Dは成立せずCのみ適切。 https://docs.snowflake.com/en/collaboration/resharing-as-resharer"
     },
     {
       "id": "M1-Q63",
@@ -117,7 +124,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "再作成objectへshare grantを付け直す。",
+      "notes": "DROP後に同名で再作成したtableは新しいobjectであり、shareへのobject権限を再付与する必要がある。future grantsが既に適用されていたとは記されていないためDは対応にならない。",
       "correct": true
     },
     {
@@ -128,7 +135,7 @@
       ],
       "confidence": "medium",
       "ambiguous": false,
-      "notes": "提供policyとrunner template、集計限定の出力設計。clean roomのrole/runner指定の細部に若干不確実さがある。",
+      "notes": "提供データの公開先・policyとrunnerが使えるtemplateを設定し、集計のみを返す出力条件を許可分析で確認する設計を選んだ。Aはowner権限とanalysis runnerの役割を混同し、Cはtable全体公開が集計制約を保証しないため、選択肢上は識別しやすい。",
       "correct": true
     },
     {
@@ -138,8 +145,10 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "共有dataを自身のwarehouseでqueryして内部dataと結合。",
-      "correct": true
+      "notes": "取得した共有tableをconsumer自身のwarehouseでqueryし、自社売上と組み合わせる。Cも同一region shareでstorageとquery computeの双方をconsumerが負担すると述べていて、単一選択問題でDと競合する。『適切なもの』が一つに定まらず、Cに誤った費用説明を入れたことだけで除外する設計は弱い。",
+      "correct": true,
+      "reported_ambiguous": true,
+      "adjudication": "採点者判定（2026-10-10）: Cの共有storage費用をconsumer負担とする説明は、同一region共有の仕様に反する。公式 About Secure Data Sharing / How does Secure Data Sharing work? はconsumerに共有データのstorage課金が発生せずquery computeを負担すると明記する。Cが誤りであることは不十分な前提ではなく設問で問う知識であり、Dとの競合はない。 https://docs.snowflake.com/en/user-guide/data-sharing-intro"
     },
     {
       "id": "M1-Q66",
@@ -148,7 +157,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "指定顧客向け有料private listingと別region fulfillment。",
+      "notes": "指定顧客だけへの有料提供はpaid private listing、別regionへの配送管理はCross-Cloud Auto-Fulfillmentが要件に対応する。選択肢の組合せが要件と明瞭に対応している。",
       "correct": true
     },
     {
@@ -158,7 +167,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "Native Appと必要なconsumer data権限の明示grant。",
+      "notes": "顧客account内の既存tableを検査するにはapplication packageを配布し、consumerがinstall後に必要なtableアクセスを許可する構成を選ぶ。Aはwarehouse権限だけでtableデータへのアクセスも得られるかのようにしており、BとDも権限境界を無視する。",
       "correct": true
     }
   ],
@@ -172,12 +181,7 @@
     "passed": true
   },
   "notes": [
-    "M1-Q67: A/B/Dはconsumer table権限が未許可という明示条件を満たさず、Cだけが条件に沿うため、Native Appの知識以外からも推測可能。",
-    "複数問で正解の並びが同じ概念語（たとえば要件の語をそのまま選択肢が反復）になっており、全問横断では正解位置に目立つ偏りは見られない。各問の選択肢順も概ね分散している。"
-  ],
-  "content_hashes": {
-    "textbook_sha256": null,
-    "questions_sha256": "bb541f775c2cb2f6adc4430b481e9695e802daef8b9c5423f04bc653121125c9",
-    "coverage_matrix_sha256": "09c382ec6b80f112c29304a5712897c95d29da0d4defa998ee8aef78df11159b"
-  }
+    "13問に回答した。M1-Q65はCとDが単一選択で競合するため曖昧と判断した。M1-Q62もresharing許可の範囲は明記されている一方、view経由が必須となる前提が不足していると感じた。",
+    "複数の誤答は要件に直接反するか用語を混同しており、特にM1-Q55、Q56、Q58、Q59、Q60、Q66では知識が浅くても消去しやすい。正答の位置だけからの推測は明白でない。"
+  ]
 }

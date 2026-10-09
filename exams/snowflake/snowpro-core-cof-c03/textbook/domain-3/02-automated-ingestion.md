@@ -143,10 +143,20 @@ Streamをqueryすると、source objectの列に加えて次のmetadata列が付
 | 列 | 意味 |
 |---|---|
 | `METADATA$ACTION` | その行に対するDML操作。`INSERT`または`DELETE` |
-| `METADATA$ISUPDATE` | `UPDATE`の一部だったか。`UPDATE`は削除行と挿入行のペアとして記録され、そのとき`TRUE`になる |
+| `METADATA$ISUPDATE` | 差分が既存行の更新を表す場合、削除行と挿入行のペアで`TRUE`になる |
 | `METADATA$ROW_ID` | 行を追跡する一意で不変のID |
 
-`UPDATE`という`METADATA$ACTION`の値は存在しません。更新は`DELETE`と`INSERT`のペアで表され、`METADATA$ISUPDATE = TRUE`で識別します。
+`UPDATE`という`METADATA$ACTION`の値は存在しません。Offset時点から存在する行を更新した場合、Standard streamは変更前の`DELETE`と変更後の`INSERT`を返し、両方の`METADATA$ISUPDATE`は`TRUE`です。
+
+Standard streamが返すのは、offsetから現在までの正味の差分です。途中のSQL操作を1件ずつ保存した監査logではないため、未消費区間での操作の組合せによって結果が変わります。
+
+| 未消費区間の操作 | Standard streamが返す差分 |
+|---|---|
+| Offset時点から存在する行をUPDATE | 変更前のDELETEと変更後のINSERT。両方`ISUPDATE=TRUE` |
+| 新しい行をINSERTし、その行をUPDATE | 更新後の値を持つINSERT 1行。`ISUPDATE=FALSE` |
+| 新しい行をINSERTし、その行をDELETE | 正味の変更がないため0行 |
+
+たとえば新規注文の金額を100でINSERTし、消費前に120へUPDATEすると、返るのは金額120のINSERT 1行です。INSERT→DELETEでも元のINSERTを返すappend-only streamとは区別します。根拠: `docs-streams-intro`。
 
 ### 3種類のstream
 
@@ -387,7 +397,7 @@ DROP ROLE OBJ32_RUN;
 - `ON_ERROR`既定はbulk loadが`ABORT_STATEMENT`、Snowpipeが`SKIP_FILE`。
 - StreamのoffsetはDMLで消費したときだけ進む。`SELECT`では進まない。
 - Streamはデータを保持せず、offsetとsourceの変更履歴から変更レコードを生成する。
-- `METADATA$ACTION`は`INSERT`と`DELETE`だけ。更新は`METADATA$ISUPDATE = TRUE`で表す。
+- `METADATA$ACTION`は`INSERT`と`DELETE`だけ。Standard streamは正味の差分を返し、既存行の更新と未消費区間のINSERT→UPDATEでは`METADATA$ISUPDATE`が異なる。
 - 作成直後のtaskはsuspended。`ALTER TASK ... RESUME`が必要。
 - Dynamic Tableの`REFRESH_MODE = AUTO`は作成時に解決され、以後固定される。
 

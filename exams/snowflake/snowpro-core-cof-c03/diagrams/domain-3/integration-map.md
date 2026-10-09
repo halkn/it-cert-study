@@ -21,12 +21,14 @@ flowchart LR
   SI -->|bucket / path を許可| CS[(Cloud storage)]
   AI -->|HTTPS endpointを許可| HS[HTTPS proxy service<br/>API Gateway / Git host]
   EAI -->|network ruleを許可| NET[外部network location]
-  NI -->|通知を配送| MSG[Queue / email / webhook]
-  SEC -->|認証を委譲| IDP[External IdP / OAuth client]
+  NI -->|送信| MSG[Queue / email / webhook]
+  INQ[Cloud message queue] -->|受信| NI
+  SEC ---|SSO / OAuthの認証・認可設定| IDP[External IdP / OAuth client]
 ```
 
-- 左からSnowflakeへ入る矢印がdriverとconnector、Snowflakeから外へ出る矢印がintegrationです。
+- Driverとconnectorは外部application／productの接続部品、integrationはSnowflake account内の連携設定objectです。矢印は主なアクセスや通知の向き、線は設定の対応関係を表します。
+- Security integrationはSSOやOAuthの認証・認可、notification integrationは通知の送信または受信に使います。Integrationを外向き通信だけに限定しません。
 - Storage integrationは`STORAGE_ALLOWED_LOCATIONS`でbucketとpathを、API integrationは`API_ALLOWED_PREFIXES`でHTTPS endpointを許可します。
 - Git repositoryはAPI integration（`API_PROVIDER = git_https_api`）を参照します。token認証ではsecretも使い、認証なしではsecretを省略します。
 
-根拠: `docs-drivers-overview`, `docs-kafka-connector-overview`, `docs-spark-connector-overview`, `docs-storage-integration-ddl`, `docs-api-integration-ddl`, `docs-git-repository-ddl`, `docs-external-access-integration-ddl`, `docs-notification-integration-ddl`, `docs-security-integration-ddl`
+根拠: `docs-drivers-overview`, `docs-kafka-connector-overview`, `docs-spark-connector-overview`, `docs-storage-integration-ddl`, `docs-api-integration-ddl`, `docs-git-repository-ddl`, `docs-external-access-integration-ddl`, `docs-notification-integration-ddl`, `docs-security-integration-ddl`, `docs-security-integration-saml2`

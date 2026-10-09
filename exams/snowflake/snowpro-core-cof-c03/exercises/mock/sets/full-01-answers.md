@@ -274,7 +274,7 @@ offsetが進むのはstreamをDML transactionで使ったときだけです。`S
 - A: taskが実行されている前提のため、suspendedは今回の症状の説明になりません。
 - B: offsetが進んでいなければ、同じ変更が繰り返し返ります。まずDMLでの消費を確認します。
 - C: `APPEND_ONLY`は追跡する変更の種類を絞る設定で、繰り返し処理の原因にはなりません。
-- D: clustering keyはquery性能の話で、streamの消費とは関係しません。
+- D: Staleはsourceの変更履歴を参照できず変更を読めなくなる状態です。同じ変更を繰り返し読み取れる今回の症状とは異なります。
 
 ### 周辺知識
 source履歴の有効期間を外れるとstreamはstaleになり得ます。通常のtableでは保持期間と`MAX_DATA_EXTENSION_TIME_IN_DAYS`（既定14日）の大きい方が基準となるため、一律14日ではありません。`SHOW STREAMS`の`STALE_AFTER`より前にDMLをcommitして消費します。共有tableではretentionを延長しません。
@@ -517,13 +517,13 @@ C
 
 ### 正解理由
 
-同名衝突を解消しcurrent schemaでUNDROPすれば旧objectを復元できます。
+同名衝突を解消し、削除時のschemaをcurrent schemaとして旧table名を指定すれば復元できます。復元先は削除時のschemaであり、current schemaへ移動する機能ではありません。
 
 ### 各誤答が誤りである理由
 
 - A: 同名objectが存在するとUNDROPは失敗します。
 - B: 同名でも新規tableは別objectで、旧tableの履歴を引き継ぎません。
-- C: 同名衝突を解消しcurrent schemaでUNDROPすれば旧objectを復元できます。
+- C: 同名衝突を解消し、削除時のschemaをcurrent schemaとして旧table名を指定すれば復元できます。復元先は削除時のschemaであり、current schemaへ移動する機能ではありません。
 - D: 保持期間の変更は自動復元・置換の操作ではありません。
 
 ### 周辺知識
@@ -531,6 +531,8 @@ C
 同じ名前と同じobjectを区別します。
 
 ### 解答根拠
+
+- `docs-undrop-table-reference` — https://docs.snowflake.com/en/sql-reference/sql/undrop-table
 
 - `docs-time-travel` — https://docs.snowflake.com/en/user-guide/data-time-travel
 
@@ -2367,7 +2369,7 @@ A, B
 - D: `MATCH_BY_COLUMN_NAME`はロード時に列名でマッチさせるoptionで、アンロードでは使いません。
 
 ### 周辺知識
-アンロードしたファイルは既定でgzip圧縮されます。`MAX_FILE_SIZE`の既定は16 MBで上限は5 GBです。
+アンロード時の`COMPRESSION=AUTO`はCSV／JSONではgzip、ParquetではSnappyを選びます。`MAX_FILE_SIZE`の既定は16 MBで上限は5 GBです。
 ### 解答根拠
 - `docs-copy-into-location` — https://docs.snowflake.com/en/sql-reference/sql/copy-into-location
 ### 追加学習

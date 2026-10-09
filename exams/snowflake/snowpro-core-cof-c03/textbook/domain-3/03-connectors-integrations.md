@@ -52,9 +52,9 @@
 |---|---|---|
 | Driver | 自作applicationからSnowflakeへ接続し、SQLを送る | JDBC、ODBC、Python Connector、Node.js、Go |
 | Connector | 既存product（Kafka、Spark）とSnowflakeの間を繋ぐ | Kafka connector、Spark connector |
-| Integration | Snowflakeが外部serviceへアクセスする際の資格情報と許可範囲を定義する | Storage、API、security、notification、external access |
+| Integration | 外部serviceとの連携に必要な認証・アクセス・通知の設定を定義する | Storage、API、security、notification、external access |
 
-DriverとconnectorはSnowflakeの外側から中へ接続する部品、integrationはSnowflakeの中から外へ出る経路を定義するobjectです。この向きの違いを押さえると混同しにくくなります。
+Driverとconnectorはapplicationや外部product側で使う接続部品、integrationはSnowflake account内に保持する連携設定objectです。Integrationの用途は種類によって異なり、storageアクセス、API呼出し、SSOなどの認証、通知の送受信を扱います。接続方向だけでは分類できません。例えばSAML2 security integrationは外部IdPとSnowflakeへのSSOを構成します。
 
 [図を開く: Driver・connector・integrationの担当範囲](../../diagrams/domain-3/integration-map.md)
 
@@ -228,7 +228,7 @@ Integrationは複数の種類があり、いずれもaccount-level objectです�
 | Security integration | 外部IdPやOAuth clientとの認証・認可（`SAML2`、`EXTERNAL_OAUTH`、`OAUTH`、`OIDC`、`SCIM`、`API_AUTHENTICATION`） |
 | Storage integration | Cloud storageへのアクセス |
 | API integration | External functionやGitなど、HTTPS proxy serviceの呼び出し |
-| Notification integration | Cloud message queue、email、webhookへの通知（[2.2](../domain-2/02-data-governance.md)） |
+| Notification integration | Cloud message queueからの受信、queue・email・webhookへの送信（[2.2](../domain-2/02-data-governance.md)） |
 | External access integration | UDFやprocedureのhandlerから外部network locationへ出る通信。`ALLOWED_NETWORK_RULES`が必須 |
 
 「認証の話ならsecurity」「storageならstorage」「HTTPS呼び出しならAPI」「通知ならnotification」「UDFからの外向き通信ならexternal access」と対応付けます。
@@ -264,7 +264,7 @@ DESC STAGE s3_landing;
 
 ## 試験で重要なポイント
 
-- DriverとconnectorはSnowflakeへ接続する側、integrationはSnowflakeから外部serviceへ出る経路を定義するobject。
+- Driverとconnectorは接続部品、integrationはSnowflake account内の連携設定object。認証・storage・API・通知などの用途で種類を選ぶ。
 - Snowflake Connector for Pythonはpure Python packageで、JDBCやODBCに依存しない。
 - Spark connectorは内部でJDBC driverを使い、Spark UDFはpushdownできない。
 - Kafka connectorはSnowpipeとSnowpipe Streamingの両方をサポートする。
@@ -298,7 +298,7 @@ DESC STAGE s3_landing;
 
 ## 章のまとめ
 
-- Driverは自作applicationからの接続、connectorは既存productとの受け渡し、integrationは外部serviceへの経路を担当する。
+- Driverは自作applicationからの接続、connectorは既存productとの受け渡し、integrationは外部serviceとの連携設定を担当する。
 - Kafka connectorは2つのロード方式を選べ、Spark connectorはJDBC経由でpushdownを行う。
 - Storage integrationはstorage、API integrationはHTTPS endpointを対象とし、許可範囲の指定パラメータが異なる。
 - Git integrationはAPI integrationとGit repositoryを組み合わせ、token認証ならsecretを追加する。`FETCH`でremoteから同期する。
@@ -325,6 +325,7 @@ DESC STAGE s3_landing;
 - `docs-git-setting-up` — https://docs.snowflake.com/en/developer-guide/git/git-setting-up
 - `docs-git-repository-ddl` — https://docs.snowflake.com/en/sql-reference/sql/create-git-repository
 - `docs-alter-git-repository` — https://docs.snowflake.com/en/sql-reference/sql/alter-git-repository
+- `docs-security-integration-saml2` — https://docs.snowflake.com/en/sql-reference/sql/create-security-integration-saml2
 - `docs-security-integration-ddl` — https://docs.snowflake.com/en/sql-reference/sql/create-security-integration
 - `docs-notification-integration-ddl` — https://docs.snowflake.com/en/sql-reference/sql/create-notification-integration
 - `docs-external-access-integration-ddl` — https://docs.snowflake.com/en/sql-reference/sql/create-external-access-integration
