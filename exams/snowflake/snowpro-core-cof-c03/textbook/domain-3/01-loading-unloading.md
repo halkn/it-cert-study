@@ -1,7 +1,7 @@
 # 3.1 データをロード／アンロードする
 
 > Status: complete
-> Last verified: 2026-08-30
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -195,7 +195,7 @@ CREATE FILE FORMAT my_csv_format
 | `STRIP_OUTER_ARRAY` | JSON | `FALSE` | 最外周の`[ ]`を外して要素ごとに1行にするか |
 | `BINARY_AS_TEXT` | PARQUET | `TRUE` | binary列をtextとして解釈するか |
 
-`SKIP_HEADER = 1`を付け忘れるとheader行がデータ行として読まれ、`STRIP_OUTER_ARRAY = TRUE`を付け忘れるとJSON配列全体が1行のVARIANTになります。どちらもerrorにならないまま結果が壊れるため、原因の切り分けに使えるように挙動を覚えます。
+`SKIP_HEADER = 1`を付け忘れるとheader行がデータ行として読まれます。文字列列なら無エラーで列名を取り込む場合がありますが、NUMBER列へ列名を読み込むなど型が合わなければerrorとなり、`ON_ERROR`に従って中止・skipされます。`STRIP_OUTER_ARRAY = TRUE`を付け忘れるとJSON配列全体が1行のVARIANTになります。成功件数だけでなく、型と結果の粒度を確認します。
 
 ### 名前付きformatとinline指定の使い分け
 
@@ -226,11 +226,12 @@ FROM @raw_events_stage/orders/
 
 Snowflakeはtableごとにload metadataを保持し、ロード済みのファイルを再度ロードしません。ここで押さえる期限は64日です。
 
-- ファイルの`LAST_MODIFIED`が64日より古い、または初回ロードから64日以上経過した場合、そのファイルのロード状態は「不明」になります。
+- ファイルの`LAST_MODIFIED`が64日以内なら、ロード状態を判定できます。それより古くても、そのファイルの成功ロードまたはtableの初回ロードが64日以内なら状態は既知です。
+- `LAST_MODIFIED`とtableの初回ロードがともに64日より古く、成功ロード済みの場合はそのロードも64日より古いと、状態を確定できず既定ではskipします。例えば古いファイルでも、昨日初回ロードしたtableなら一律に状態不明とはなりません。
 - 不明な状態のファイルをロードするには`LOAD_UNCERTAIN_FILES = TRUE`を指定します。既定は`FALSE`です。
 - `FORCE = TRUE`はload metadataを無視して全ファイルをロードします。既定は`FALSE`で、重複データが生じ得ます。
 
-`LOAD_UNCERTAIN_FILES`は「状態が不明なものだけ」を対象にし、`FORCE`は「状態に関係なく全部」を対象にします。重複を避けたい運用で`FORCE = TRUE`を選ぶのは誤りです。
+`LOAD_UNCERTAIN_FILES = TRUE`は利用できるload metadataで重複を避けながら、状態不明のファイルもロード対象にします。「不明なものだけ」を抽出する設定ではありません。`FORCE = TRUE`はload metadataを無視して対象ファイルをロードするため、重複を避けたい運用では選びません。
 
 ### ロード中の簡易変換でできること・できないこと
 
@@ -269,7 +270,7 @@ FROM (SELECT * FROM orders WHERE order_date >= '2026-08-01')
 | `OVERWRITE` | `FALSE` | 同名ファイルを上書きしない |
 | `HEADER` | `FALSE` | 列名の見出し行を出力しない |
 
-アンロードしたファイルは既定でgzip圧縮されます。「1ファイルにまとめたい」なら`SINGLE = TRUE`、「BIツールでそのまま開きたい」なら`HEADER = TRUE`というように、要件からoptionへ対応付けます。`MAX_FILE_SIZE`の既定16 MBは小さく、大きな結果は自動的に多数のファイルへ分かれます。
+`COMPRESSION = AUTO`のアンロードでは、CSV／JSONはgzip、ParquetはSnappyで圧縮されます。圧縮の既定値は出力形式と組み合わせて判断します。「1ファイルにまとめたい」なら`SINGLE = TRUE`、CSVへ列名の見出し行を付けたいなら`HEADER = TRUE`を指定します。`MAX_FILE_SIZE`の既定16 MBは小さく、大きな結果は自動的に多数のファイルへ分かれます。
 
 ### ファイルサイズは圧縮後100〜250 MBを目安にする
 
@@ -396,7 +397,7 @@ SELECT * FROM TABLE(VALIDATE(orders, JOB_ID => '_last'));
 
 - Copy optionをstage定義へ置かない。File formatはstageに持てるが、copy optionは`COPY INTO`で指定する。
 - `FORCE = TRUE`を重複回避の手段と取り違えない。重複を生む方の設定である。
-- `LOAD_UNCERTAIN_FILES`は状態不明のファイルだけを対象にし、`FORCE`とは範囲が違う。
+- `LOAD_UNCERTAIN_FILES`は利用できるmetadataで重複を避け、状態不明のファイルもロードする。`FORCE`はmetadataを無視する。
 - `COPY INTO`の変換で`WHERE`、`JOIN`、`GROUP BY`、`FLATTEN`は使えない。
 - Directory tableはファイルのmetadataを持つだけで、ファイル本体をtable化しない。
 - `LOAD_HISTORY`ではSnowpipeのロードを追えない。
@@ -421,7 +422,7 @@ SELECT * FROM TABLE(VALIDATE(orders, JOB_ID => '_last'));
 
 - Stageは置き場所と権限、file formatは読み方、copy optionはロードの振る舞いを担当する。
 - Internal stageの3種類は「誰が使うか」「どのtableか」で選び、権限を運用するならnamed internal stageを使う。
-- `COPY INTO`はload metadataで重複を防ぎ、64日を超えると状態が不明になる。
+- `COPY INTO`はload metadataで重複を防ぐ。64日を基準に、ファイル更新・成功ロード・tableの初回ロードの時点を組み合わせて状態を判定する。
 - Error対応は、事前方針（`ON_ERROR`）、事前検証（`VALIDATION_MODE`）、事後調査（`VALIDATE()`と履歴view）の3段階で使い分ける。
 
 ## 次に学ぶこと
@@ -446,3 +447,4 @@ SELECT * FROM TABLE(VALIDATE(orders, JOB_ID => '_last'));
 - `docs-copy-history` — https://docs.snowflake.com/en/sql-reference/account-usage/copy_history
 - `docs-load-history` — https://docs.snowflake.com/en/sql-reference/account-usage/load_history
 - `docs-access-control-privileges` — https://docs.snowflake.com/en/user-guide/security-access-control-privileges
+- `docs-data-load-considerations-load` — https://docs.snowflake.com/en/user-guide/data-load-considerations-load

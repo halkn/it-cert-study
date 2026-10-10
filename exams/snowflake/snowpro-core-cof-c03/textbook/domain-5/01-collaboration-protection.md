@@ -1,7 +1,7 @@
 # 5.1 コラボレーションとデータ保護を説明する
 
 > Status: complete
-> Last verified: 2026-10-03
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -96,7 +96,9 @@ UNDROP TABLE orders;
 
 最初は10分前の検索、次は誤更新直前の検証用複製、最後はDROPしたtableの復元です。別の状況で使う例で、連続実行する手順ではありません。SELECTやcloneだけでは元tableを書き戻しません。誤ったDMLの修復は過去結果を確認してから別途行います。
 
-UNDROPはDROP直前の状態でobjectを復元します。対象のOWNERSHIPと復元先のCREATE権限が必要で、tableはcurrent schema、schemaはcurrent databaseで復元します。同名objectが存在すると失敗するので、新しく作った同名objectと消えたobjectを混同せず、既存側をrenameしてから復元します。
+UNDROPはDROP直前の状態でobjectを復元します。対象のOWNERSHIPと復元先のCREATE権限が必要です。Tableは削除時のdatabase／schemaへ、schemaは削除時のdatabaseへ復元されます。同名objectが存在すると失敗するので、新しく作った同名objectと消えたobjectを混同せず、既存側をrenameしてから復元します。
+
+Current database／schemaは省略した名前の解決先です。上の例では元の`prod.public`を選んで`orders`を指定しています。別schemaを選択中でも`UNDROP TABLE prod.public.orders`と修飾すれば復元先は`prod.public`であり、current schemaへ移動する操作にはなりません。根拠: `docs-undrop-table-reference`, `docs-undrop-schema`。
 
 ### 保持期間はEditionとtable種別の両方で決まる
 
@@ -161,5 +163,7 @@ Temporary／transientにはFail-safeがありません。再生成できる中�
 - `docs-clone-command` — https://docs.snowflake.com/en/sql-reference/sql/create-clone
 - `docs-clone-considerations` — https://docs.snowflake.com/en/user-guide/object-clone
 - `docs-time-travel` — https://docs.snowflake.com/en/user-guide/data-time-travel
+- `docs-undrop-table-reference` — https://docs.snowflake.com/en/sql-reference/sql/undrop-table
+- `docs-undrop-schema` — https://docs.snowflake.com/en/sql-reference/sql/undrop-schema
 - `docs-temp-transient-tables` — https://docs.snowflake.com/en/user-guide/tables-temp-transient
 - `docs-fail-safe` — https://docs.snowflake.com/en/user-guide/data-failsafe

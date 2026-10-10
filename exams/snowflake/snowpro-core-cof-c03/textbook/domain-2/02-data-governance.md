@@ -1,7 +1,7 @@
 # 2.2 データガバナンス機能と用途を定義する
 
 > Status: complete
-> Last verified: 2026-08-17
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -170,7 +170,7 @@ CMKを無効化・削除するとdata accessへ影響するため、availability
 Snowflake Alertは、condition、action、評価timingを持つschema-level objectです。
 
 - Scheduled alertは定期的に既存data全体へconditionを評価します。
-- Alert on new dataはtable／viewへ新しいrowが現れたとき、その新規dataを評価します。
+- Alert on new dataはtable／viewへ新しいrowが現れたとき、その新規dataを評価します。対象table／viewではchange trackingを有効にします。Tableなら`ALTER TABLE <table_name> SET CHANGE_TRACKING = TRUE`で設定します。
 
 Credit使用量が閾値を超えたかを30分ごとに調べ、trueなら通知procedureをcallする、といった構成に使えます。Alertは判断とactionを担当します。Message配送先のcredentialやchannelはnotification integrationへ分離します。
 
@@ -212,11 +212,15 @@ SnowsightのLineage tabに加え、`SNOWFLAKE.CORE.GET_LINEAGE`でprogrammatic�
 
 ## Mini hands-on — policyの適用単位を観察する
 
-次は、同じtableにmasking policyとrow access policyを適用し、roleによる結果の違いを確認する構成例です。Enterprise以上の演習accountと、database・role・policyを作成できる管理roleが必要です。共有環境では管理者のpolicyを変更せず、専用databaseで実行します。
+次は、同じtableにmasking policyとrow access policyを適用し、roleによる結果の違いを確認する構成例です。Enterprise以上の演習accountと、database・role・policyを作成できる管理roleが必要です。共有環境では管理者のpolicyを変更せず、専用databaseとX-Small warehouseで実行します。以下の専用名が既に存在する場合は停止し、別の名前へ揃えて変更してください。INSERT／SELECTでwarehouse課金が発生し、起動ごとの最低60秒課金とtableのstorage費用があります。演習後は専用objectを削除します。
 
 ```sql
 USE ROLE ACCOUNTADMIN;
 
+CREATE WAREHOUSE OBJ22_LAB_WH
+  WAREHOUSE_SIZE = XSMALL AUTO_SUSPEND = 60
+  AUTO_RESUME = TRUE INITIALLY_SUSPENDED = TRUE;
+USE WAREHOUSE OBJ22_LAB_WH;
 CREATE DATABASE OBJ22_LAB;
 CREATE ROLE OBJ22_APAC_ANALYST;
 CREATE ROLE OBJ22_GLOBAL_PII;
@@ -253,10 +257,12 @@ ALTER TABLE OBJ22_LAB.PUBLIC.CUSTOMERS
 ALTER TABLE OBJ22_LAB.PUBLIC.CUSTOMERS
   ADD ROW ACCESS POLICY OBJ22_LAB.PUBLIC.REGION_FILTER ON (REGION);
 
+GRANT USAGE ON WAREHOUSE OBJ22_LAB_WH TO ROLE OBJ22_APAC_ANALYST;
 GRANT USAGE ON DATABASE OBJ22_LAB TO ROLE OBJ22_APAC_ANALYST;
 GRANT USAGE ON SCHEMA OBJ22_LAB.PUBLIC TO ROLE OBJ22_APAC_ANALYST;
 GRANT SELECT ON TABLE OBJ22_LAB.PUBLIC.CUSTOMERS TO ROLE OBJ22_APAC_ANALYST;
 
+GRANT USAGE ON WAREHOUSE OBJ22_LAB_WH TO ROLE OBJ22_GLOBAL_PII;
 GRANT USAGE ON DATABASE OBJ22_LAB TO ROLE OBJ22_GLOBAL_PII;
 GRANT USAGE ON SCHEMA OBJ22_LAB.PUBLIC TO ROLE OBJ22_GLOBAL_PII;
 GRANT SELECT ON TABLE OBJ22_LAB.PUBLIC.CUSTOMERS TO ROLE OBJ22_GLOBAL_PII;
@@ -267,6 +273,7 @@ Secondary roleの影響を除き、APAC担当roleで結果を確認します。
 ```sql
 USE ROLE OBJ22_APAC_ANALYST;
 USE SECONDARY ROLES NONE;
+USE WAREHOUSE OBJ22_LAB_WH;
 
 SELECT REGION, EMAIL
 FROM OBJ22_LAB.PUBLIC.CUSTOMERS
@@ -280,6 +287,7 @@ ORDER BY REGION;
 ```sql
 USE ROLE OBJ22_GLOBAL_PII;
 USE SECONDARY ROLES NONE;
+USE WAREHOUSE OBJ22_LAB_WH;
 
 SELECT REGION, EMAIL
 FROM OBJ22_LAB.PUBLIC.CUSTOMERS
@@ -293,6 +301,7 @@ ORDER BY REGION;
 ```sql
 USE ROLE ACCOUNTADMIN;
 DROP DATABASE IF EXISTS OBJ22_LAB;
+DROP WAREHOUSE IF EXISTS OBJ22_LAB_WH;
 DROP ROLE IF EXISTS OBJ22_APAC_ANALYST;
 DROP ROLE IF EXISTS OBJ22_GLOBAL_PII;
 ```

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-domain-5-baseline-2026-10-03",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-5-baseline-2026-10-10",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-03",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     5
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "Lowest-performance available general model; fresh independent agent with no conversation history"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "b954ed60d204b8c83aa92f483e782b2dbdc4fa43",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -29,6 +29,11 @@
     "per_domain_score_percent": 70,
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
+  },
+  "content_hashes": {
+    "textbook_sha256": "af4b5991326346d24c82405051db1b65f42932809f5852f82fa72f135d1f4206",
+    "questions_sha256": "64d8d16fff8ab732574c78e51a037bb3942b810f4d596354bfcd8f115cfcc565",
+    "coverage_matrix_sha256": "441c486434788fd82e91dd78e7ddaf6ea38ffc2d24618fe6edd9d2bd9568214b"
   },
   "questions": [
     {
@@ -46,7 +51,7 @@
           "heading": "別regionへの複製と業務の切替"
         }
       ],
-      "notes": "secondaryをprimaryへ昇格して書込みを再開するのがfailoverであり、failover groupが切替能力を持つ。A: replication groupだけでは昇格能力を保証しない。B: shareは読取り専用で共有objectへINSERTできない。C: cloneの変更は独立しており同期しない。",
+      "notes": "Failover groupはsecondaryをprimaryへ昇格し、書込みを再開する構成。Replication group単独は切替能力を保証せず、shareのimportは読取り用、cloneは変更が独立して同期しない。",
       "correct": true
     },
     {
@@ -64,7 +69,7 @@
           "heading": "読取り権限を渡して最新データを共同利用する"
         }
       ],
-      "notes": "必要な列・行だけを返すsecure viewを公開し、基底tableをshareへ直接追加しない構成が示されている。Aが要件を満たす。B: cloneは作成後の本番更新に同期せず、全列・全行の公開にもならない。C: SECURE指定だけでは許可条件は生まれず、必要なfilter/policyを別途設計する。D: Time Travelは過去状態の検索であり、shareへ登録して最新更新に追従させる機能ではない。",
+      "notes": "必要な列・行だけを返すsecure viewを公開し、基底tableをshareへ直接追加しない構成が示されている。Cloneは更新に追従せず、SECUREだけでは許可条件が生まれず、Time Travel queryは共有対象や継続更新の仕組みではない。",
       "correct": true
     },
     {
@@ -83,7 +88,7 @@
           "heading": "初期データを共有して独立した開発用分岐を作る"
         }
       ],
-      "notes": "clone後の変更は新しいpartitionに保存され、元とcloneの変更は相互反映されないためB。変更partitionと履歴保持にはstorage費用が発生し得るためC。Aは変更独立の説明に反する。D: COPY GRANTSで明示grantを引き継げるがOWNERSHIPはコピーしない。",
+      "notes": "Clone後の変更はsourceへ反映されず、変更分partitionや履歴保持にstorage費用が生じ得る。Aは独立性に反し、DはCOPY GRANTSでもOWNERSHIPをコピーしないという本文と反する。",
       "correct": true
     },
     {
@@ -101,7 +106,7 @@
           "heading": "保持期間内の過去状態を検索・複製・復元する"
         }
       ],
-      "notes": "UNDROPはDROP直前の状態に復元する。同名objectが存在すると失敗するため、既存の空tableをrenameしてから正しいcurrent schemaで復元する。A: 同名objectがある状態ではUNDROPが失敗。B: AT OFFSETは空tableの履歴を旧tableの履歴へ変えない。D: 保持期間延長はすでにある同名objectの置換や失われた履歴の復活ではなく、保持期間もEdition等で決まる。",
+      "notes": "同名objectがあるとUNDROPは失敗するので、新規の空tableをrenameしてから復元する。AT OFFSETは空tableを旧tableとして復元せず、90日設定はStandardの上限を超え、既存objectの置換にもならない。",
       "correct": true
     },
     {
@@ -119,7 +124,7 @@
           "heading": "Time Travel終了後の最終復旧をSnowflakeへ依頼する"
         }
       ],
-      "notes": "Time Travel後のFail-safe期間ではSnowflake Supportへ依頼できるがbest effortであり、数時間から数日かかり成功・即時復旧は保証しない。Dが適切。A: Fail-safeは利用者がSQLで履歴を検索する期間ではない。B: 7日間のFail-safeは変更不能で、90日へ延長できない。C: UNDROPはTime Travel終了後にFail-safeから利用者が即時復元する手段ではない。",
+      "notes": "Fail-safe期間中はSnowflake Supportへ依頼できるが、best effortで数時間から数日かかり、成功や即時復旧は保証されない。利用者のAT検索期間ではなく、90日へ延長する設定でもなく、UNDROPの即時復旧でもない。",
       "correct": true
     },
     {
@@ -137,7 +142,7 @@
           "heading": "Provider・consumer・reader accountの責務と費用負担"
         }
       ],
-      "notes": "Providerは契約のない取引先にreader accountを作成でき、readerはwarehouseで共有データをqueryする。Reader warehouse creditはprovider負担。Aが該当。B: 通常consumerと異なりcreditはprovider負担。C: readerは作成したproviderのデータのみを利用し、ロード/DML不可。D: 通常共有では物理コピーせず、データstorageの負担をreaderへ移すものではない。",
+      "notes": "Providerはreader accountを作成・管理し、reader warehouseのcreditを負担する。Readerは作成providerのデータだけを使い、ロードやDMLはできず、通常consumerと同様に独自契約へ請求されるものではない。",
       "correct": true
     },
     {
@@ -155,7 +160,7 @@
           "heading": "共有objectとconsumer内のroleを二段階で許可する"
         }
       ],
-      "notes": "Providerがdatabase roleで区分していないshareの場合、consumerはIMPORTED PRIVILEGESをconsumer自身のaccount roleへgrantする。Bが適切。A: Provider側に同名roleを作るのではない。C: imported objectのcloneは利用できない。D: schema USAGEだけでは共有アクセス権を代替できない。",
+      "notes": "Database roleで区分されないshareではconsumer account roleへIMPORTED PRIVILEGESをgrantする。Provider側に同名roleを作ることはconsumerの権限付与にならず、cloneはimported objectで使えず、schema USAGEだけでは共有アクセスのgrantを代替しない。",
       "correct": true
     },
     {
@@ -173,7 +178,7 @@
           "heading": "受け取ったデータを再共有する条件を確認する"
         }
       ],
-      "notes": "許可されたresharingでは、自分の通常databaseにsecure viewを作り、そのviewを下流共有する。条件は同一regionかつ自organization内で満たされる。Cが適切。A: imported database内にviewを作るのではない。B: imported tableを直接shareへgrantできない。D: Native Appへの変換はproviderのresharing設定を免除しない。",
+      "notes": "再共有は自分の通常databaseにsecure viewを作り、そのviewを下流へ共有する。Imported database内のview作成やimported tableの直接grantは不可で、Native App化もproviderのresharing条件を無視する根拠にならない。",
       "correct": true
     },
     {
@@ -191,7 +196,7 @@
           "heading": "共有objectとconsumer内のroleを二段階で許可する"
         }
       ],
-      "notes": "DROP後に同名で再作成した新しいtableはshareへ明示的にgrantが必要なのでA。B: consumer warehouseのサイズはprovider側shareのobject権限を付与しない。C: imported databaseでTime Travelを有効化することはできず、共有権限の代替でもない。D: shareにfuture grantsは利用できない。",
+      "notes": "DROP後に同名で再作成したtableはshareへ明示的にgrantする必要がある。Warehouse拡大やconsumerのTime Travelはprovider側の共有object権限を補わず、shareへのfuture grantsは利用できない。",
       "correct": true
     },
     {
@@ -210,7 +215,7 @@
           "heading": "生データの公開と分析の許可を分けるData Clean Room"
         }
       ],
-      "notes": "現行collaboration方式ではdata offeringのデータ・policyを公開し、analysis runnerが許可されたtemplateで分析する。また集計のみを返すには出力とpolicyを設計・確認する。よってB,D。A: ownerだけではanalysis runnerとして実行権限を持たない。C: private listingでtable全体を公開することは集計制約を生まない。",
+      "notes": "現行collaboration方式ではdata offeringの公開先・policyとanalysis runnerが利用できるtemplateを設計し、集計のみを返す出力条件を設計・確認する。Ownerだけではtemplate実行権限がなく、private listingでtable全体を公開しても集計制約は成立しない。",
       "correct": true
     },
     {
@@ -228,7 +233,7 @@
           "heading": "Marketplaceで製品を発見・取得・公開する"
         }
       ],
-      "notes": "Listing取得後、consumerは共有データを自分のwarehouseでqueryし、自社データと組み合わせる。Dが適切。A: Marketplaceはcompute/warehouseではない。B: 共有objectは読取り専用で更新できない。C: 同一region共有データ自体のstorage料金はconsumerに発生せず、query computeを負担する（根拠: textbook/domain-5/02-data-sharing.md『Provider・consumer・reader accountの責務と費用負担』）。",
+      "notes": "Listing取得後はconsumerが共有データを自分のwarehouseでqueryし、自社データと組み合わせる。Marketplace自体はwarehouseではなく、共有tableへの更新もできず、同一region shareのstorage料金はconsumerではなく元データ側である。",
       "correct": true
     },
     {
@@ -250,7 +255,7 @@
           "heading": "別regionへListingの製品を自動配送する"
         }
       ],
-      "notes": "指定顧客限定の有料提供はpaid private listing、別region配送をSnowflakeに管理させるのはCross-Cloud Auto-Fulfillment。Bが適切。A: free/publicは対象の公開範囲と料金に合わず、Resource Monitorは配送機能ではない。C: publicは限定顧客向けと異なりClient Redirectは接続URLの振替でlisting配送ではない。D: 同一region direct shareは別region配送を満たさず、Time Travelも配送機能ではない。",
+      "notes": "指定顧客限定の有料提供はpaid private listing、別region配送をSnowflakeに管理させるのはCross-Cloud Auto-Fulfillment。Free publicは公開先・料金条件が異なり、Client Redirectは配送機能ではなく、direct shareとTime Travelもlistingの別region自動配送を満たさない。",
       "correct": true
     },
     {
@@ -266,9 +271,13 @@
         {
           "file": "textbook/domain-5/03-marketplace-listings.md",
           "heading": "Native Appでconsumerのデータの近くにlogicを届ける"
+        },
+        {
+          "file": "textbook/domain-5/03-marketplace-listings.md",
+          "heading": "インストールとconsumerデータへのアクセスは別"
         }
       ],
-      "notes": "Providerがapplication packageをListingで提供し、consumerがinstallして、consumerの既存tableへの必要なアクセスをgrant/referenceで許可する。Cが適切。A: CREATE WAREHOUSE等の運用resource権限と既存data accessは別で、tableへの許可がないと検査できない。B: installだけではSELECT権限は付与されない。D: reader accountからconsumer accountの既存tableへアクセスする仕組みとは記載されず、appをconsumer account内で実行する要件にも合わない。",
+      "notes": "Providerがapplication packageをListingで公開し、consumerがinstallした後に既存tableへの必要なアクセスを許可する。InstallだけではSELECT権限が付かず、CREATE WAREHOUSEだけでもtableアクセスにならず、reader accountから他consumer accountのtableを読む構成でもない。",
       "correct": true
     }
   ],
@@ -281,10 +290,7 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "notes": "全回答確定後に親が採点。初回評価後の修正を別の新規2エージェントで再試験。最終回答の確定後は技術本文・設問を変更せず、review→completeの状態表示とDomain READMEの進捗・評価リンクのみ更新して最終hashを保存。問題品質のJSONはagentの確定回答メッセージから転記。",
-  "content_hashes": {
-    "textbook_sha256": "06b1363d761608d3985e2562614e278b1bc1a7b030fb58fb11398d85aba3bc80",
-    "questions_sha256": "bb541f775c2cb2f6adc4430b481e9695e802daef8b9c5423f04bc653121125c9",
-    "coverage_matrix_sha256": "30b240a5612e0ad8e72819a6427437ab8e61b1c985df51d585d579d9519bbf34"
-  }
+  "notes": [
+    "13問すべてをbundle内のDomain 5 textbook本文だけで判断した。根拠の強さと誤答選択肢の除外可能性を各問で記録した。"
+  ]
 }

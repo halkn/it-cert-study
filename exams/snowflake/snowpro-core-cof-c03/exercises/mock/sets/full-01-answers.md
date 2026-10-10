@@ -206,7 +206,7 @@ Snowpipe Streamingは行を直接送る取り込みAPIで、stageファイル作
 - A: Auto-ingestはstageファイルの到着通知に基づく方式で、ファイル化を介さない要件と異なります。
 - B: Stage上のCOPYはファイルを入力にするため、指定された行送信方式ではありません。
 - C: Snowpipe Streamingは行を直接送る取り込みAPIで、stageファイル作成を必要としません。
-- D: Target lagはDynamic Tableの結果の鮮度目標で、外部から行を送る取り込みAPIではありません。
+- D: insertFilesはpipeへstage上のファイル一覧を通知するAPIです。Applicationの行をファイル化せず送るAPIではありません。
 
 ### 周辺知識
 
@@ -215,6 +215,8 @@ File ingestionとrow ingestionを、入力の形から区別します。
 ### 解答根拠
 
 - `docs-snowpipe-streaming-overview` — [Snowpipe Streaming](https://docs.snowflake.com/en/user-guide/snowpipe-streaming/data-load-snowpipe-streaming-overview)
+
+- `docs-snowpipe-rest` — https://docs.snowflake.com/en/user-guide/data-load-snowpipe-rest-overview
 
 ### 追加学習
 
@@ -272,10 +274,10 @@ offsetが進むのはstreamをDML transactionで使ったときだけです。`S
 - A: taskが実行されている前提のため、suspendedは今回の症状の説明になりません。
 - B: offsetが進んでいなければ、同じ変更が繰り返し返ります。まずDMLでの消費を確認します。
 - C: `APPEND_ONLY`は追跡する変更の種類を絞る設定で、繰り返し処理の原因にはなりません。
-- D: clustering keyはquery性能の話で、streamの消費とは関係しません。
+- D: Staleはsourceの変更履歴を参照できず変更を読めなくなる状態です。同じ変更を繰り返し読み取れる今回の症状とは異なります。
 
 ### 周辺知識
-offsetが長期間進まないと、`MAX_DATA_EXTENSION_TIME_IN_DAYS`（既定14日）の延長期間を超えた時点でstreamはstaleになります。
+source履歴の有効期間を外れるとstreamはstaleになり得ます。通常のtableでは保持期間と`MAX_DATA_EXTENSION_TIME_IN_DAYS`（既定14日）の大きい方が基準となるため、一律14日ではありません。`SHOW STREAMS`の`STALE_AFTER`より前にDMLをcommitして消費します。共有tableではretentionを延長しません。
 ### 解答根拠
 - `docs-streams-intro` — https://docs.snowflake.com/en/user-guide/streams-intro
 - `docs-streams` — https://docs.snowflake.com/en/user-guide/streams
@@ -515,13 +517,13 @@ C
 
 ### 正解理由
 
-同名衝突を解消しcurrent schemaでUNDROPすれば旧objectを復元できます。
+同名衝突を解消し、削除時のschemaをcurrent schemaとして旧table名を指定すれば復元できます。復元先は削除時のschemaであり、current schemaへ移動する機能ではありません。
 
 ### 各誤答が誤りである理由
 
 - A: 同名objectが存在するとUNDROPは失敗します。
 - B: 同名でも新規tableは別objectで、旧tableの履歴を引き継ぎません。
-- C: 同名衝突を解消しcurrent schemaでUNDROPすれば旧objectを復元できます。
+- C: 同名衝突を解消し、削除時のschemaをcurrent schemaとして旧table名を指定すれば復元できます。復元先は削除時のschemaであり、current schemaへ移動する機能ではありません。
 - D: 保持期間の変更は自動復元・置換の操作ではありません。
 
 ### 周辺知識
@@ -529,6 +531,8 @@ C
 同じ名前と同じobjectを区別します。
 
 ### 解答根拠
+
+- `docs-undrop-table-reference` — https://docs.snowflake.com/en/sql-reference/sql/undrop-table
 
 - `docs-time-travel` — https://docs.snowflake.com/en/user-guide/data-time-travel
 
@@ -1995,7 +1999,7 @@ Tagをbudget対象に追加するにはそのtagのAPPLYBUDGETが必要です。
 ### 各誤答が誤りである理由
 
 - A: Tagをbudget対象に追加するにはそのtagのAPPLYBUDGETが必要です。Objectへtagを割り当てるAPPLYとは別です。
-- B: Warehouse設定の変更権限であり、tagをbudgetへ追加する権限ではありません。
+- B: APPLYはobjectへtagを割り当てる権限です。Tagをbudget対象へ追加するAPPLYBUDGETとは異なり、問題文では割当権限は取得済みです。
 - C: 閲覧権限を増やしても対象追加権限は得られません。
 - D: 新規tag作成の権限であり、既存tagのbudget追加とは異なります。
 
@@ -2035,7 +2039,7 @@ D. 変換なしの対応する検証COPYを別途実行し、変換・ロード�
 
 ### 周辺知識
 
-事前検証、ロード時のerror処理、実行後のerror調査を分けます。
+入力の事前検証は変換SELECT内の式の正しさを保証しません。変換結果の検証、ロード時のerror処理、実行後のerror調査を分けます。
 
 ### 解答根拠
 
@@ -2064,8 +2068,8 @@ IDENTIFIERを使うと、変数に入れた文字列をobject identifierとし�
 
 - A: SQL variableの値を直接置くだけではtable識別子としての参照になりません。
 - B: IDENTIFIERを使うと、変数に入れた文字列をobject identifierとして扱えます。
-- C: CURRENT_DATABASEは現在のdatabaseを返すcontext functionで、指定tableの読み取りではありません。
-- D: Session parameterの設定と、利用者定義変数のobject名参照を混同しています。
+- C: 文字列literalのtarget_tableをobject名として解決します。$を付けてSQL変数の値を参照していないため、保持したSALES.PUBLIC.ORDERSを指しません。
+- D: SALES.PUBLIC内のTARGET_TABLEという名前を解決します。文字列中のtarget_tableをSQL変数として展開する指定ではありません。
 
 ### 周辺知識
 
@@ -2365,7 +2369,7 @@ A, B
 - D: `MATCH_BY_COLUMN_NAME`はロード時に列名でマッチさせるoptionで、アンロードでは使いません。
 
 ### 周辺知識
-アンロードしたファイルは既定でgzip圧縮されます。`MAX_FILE_SIZE`の既定は16 MBで上限は5 GBです。
+アンロード時の`COMPRESSION=AUTO`はCSV／JSONではgzip、ParquetではSnappyを選びます。`MAX_FILE_SIZE`の既定は16 MBで上限は5 GBです。
 ### 解答根拠
 - `docs-copy-into-location` — https://docs.snowflake.com/en/sql-reference/sql/copy-into-location
 ### 追加学習
@@ -2602,9 +2606,9 @@ Owner roleが処理を実行できることと、taskを操作するroleの権�
 A, B, C
 
 ### 正解理由
-Git integrationはsecret、`git_https_api`を指定したAPI integration、Git repository objectの3つで構成します。
+Token認証のGit integrationはsecret、`git_https_api`を指定したAPI integration、Git repository objectの3つで構成します。
 ### 各誤答が誤りである理由
-- A: private repositoryへの認証にはsecretが必要です。
+- A: token認証を使うprivate repositoryへの認証にはsecretが必要です。
 - B: API integrationが対象repositoryのURL接頭辞と使えるsecretを限定します。
 - C: Git repository objectが`ORIGIN`、`API_INTEGRATION`、`GIT_CREDENTIALS`を結び付けます。
 - D: external stageとstorage integrationはcloud storage向けで、Git integrationでは使いません。
@@ -2823,9 +2827,10 @@ C
 - D: `VALIDATION_MODE`はデータをロードしないため、行数は増えません。
 
 ### 周辺知識
-load metadataはtableごとに保持され、ファイルの`LAST_MODIFIED`が64日より古い場合などにロード状態が不明になります。状態不明のファイルだけを対象にするのは`LOAD_UNCERTAIN_FILES = TRUE`です。
+Load metadataはtableごとに保持されます。`LAST_MODIFIED`が64日より古くても、そのファイルの成功ロードまたはtableの初回ロードが64日以内なら状態は既知です。いずれも64日より古いと状態を確定できず、既定ではskipします。`LOAD_UNCERTAIN_FILES = TRUE`は利用できるmetadataで重複を避けながら状態不明のファイルもロードし、`FORCE = TRUE`はmetadataを無視します。
 ### 解答根拠
 - `docs-copy-into-table` — https://docs.snowflake.com/en/sql-reference/sql/copy-into-table
+- `docs-data-load-considerations-load` — https://docs.snowflake.com/en/user-guide/data-load-considerations-load
 ### 追加学習
 - `docs-copy-history` — https://docs.snowflake.com/en/sql-reference/account-usage/copy_history
 

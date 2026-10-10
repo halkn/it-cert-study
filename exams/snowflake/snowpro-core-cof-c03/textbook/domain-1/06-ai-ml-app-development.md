@@ -1,7 +1,7 @@
 # 1.6 AI/MLとアプリケーション開発機能を説明する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -37,7 +37,7 @@ Notebooks、Streamlit、Snowpark、Cortex AI Functions／Search／Analyst、Snow
 
 ## 成果物から機能を選ぶ
 
-![AI/ML app selection](../../diagrams/domain-1/ai-ml-app-selection.md)
+[図を開く: AI/MLとapplication開発の選定](../../diagrams/domain-1/ai-ml-app-selection.md)
 
 機能は排他的ではありません。Notebookは開発interface、Snowparkはdata processing API、Snowflake MLはML lifecycle、Streamlitはend-user applicationです。異なる層を組み合わせます。
 

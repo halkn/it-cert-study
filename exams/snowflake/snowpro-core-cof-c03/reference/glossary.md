@@ -80,7 +80,7 @@
 | Data lineage | Sourceからtargetへのdata movementまたはobject dependencyの関係 | 2.2 | `docs-data-lineage` |
 | Finding | Trust Centerのscannerが検出した調査対象のsecurity上の問題 | 2.2 | `docs-trust-center` |
 | Masking policy | Query時にcolumnの返却値をcontextに応じて変換するpolicy | 2.2 | `docs-column-security` |
-| Notification integration | Email、queue、webhookなどへのmessage配送設定 | 2.2 | `docs-notifications` |
+| Notification integration | Cloud queueからの通知受信や、email・queue・webhookへの通知送信の設定object | 2.2 | `docs-notifications`, `docs-notification-integration-ddl` |
 | Privacy policy | Differential privacyで個人に関する推測riskを抑えるpolicy | 2.2 | `docs-differential-privacy` |
 | Row access policy | Query時に各rowを返すかBooleanで判定するpolicy | 2.2 | `docs-row-access-policies` |
 | Tag | Objectへkey-value型の分類metadataを付けるschema-level object | 2.2 | `docs-object-tagging` |
@@ -121,7 +121,7 @@
 | Serverless task | Warehouseを指定せず、Snowflakeのcompute資源で実行するtask | 3.2 | `docs-tasks-intro` |
 | Snowpipe | StageのファイルをSnowflake管理のcomputeで継続的に取り込むservice | 3.2 | `docs-snowpipe-intro` |
 | Snowpipe Streaming | ファイルを介さず行を直接tableへ書き込む取り込みAPI | 3.2 | `docs-snowpipe-streaming-overview` |
-| Stream | Objectの変更をoffsetで追跡し、変更レコードを返すobject | 3.2 | `docs-streams-intro` |
+| Stream | Objectの変更をoffsetで追跡するobject。Standard streamはoffset間の正味の差分を返す | 3.2 | `docs-streams-intro` |
 | Streamのstale | Offsetが参照する変更履歴を利用できなくなり、変更を読めない状態 | 3.2 | `docs-streams-intro` |
 | TARGET_LAG（target lag） | Dynamic Tableがbase dataに対して目標とする鮮度。固定scheduleや厳密な完了保証ではない | 1.5・3.2 | `docs-dynamic-tables` |
 | Task | SQLをscheduleまたは先行taskの完了で実行するobject | 3.2 | `docs-create-task` |

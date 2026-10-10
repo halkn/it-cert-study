@@ -17,6 +17,10 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D1-Q11: declarative pipeline](d1-q11.md)
 - [D1-Q12: AI機能の組合せ](d1-q12.md)
 - [D1-Q13: ML application構成](d1-q13.md)
+- [D1-Q14: Pruningとclusteringの判断](d1-q14.md)
+- [D1-Q15: IDE・自動化・処理APIの組合せ](d1-q15.md)
+- [D1-Q16: Organization階層とschema object](d1-q16.md)
+- [D1-Q17: Multi-clusterのmodeとpolicy](d1-q17.md)
 
 ## Domain 2
 
@@ -45,6 +49,8 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D3-Q07: Dynamic Tableとstream + taskの選定](d3-q07.md)
 - [D3-Q08: Integrationの選定](d3-q08.md)
 - [D3-Q09: 接続部品の使い分け](d3-q09.md)
+- [D3-Q10: 外部接続flowと内部refresh](d3-q10.md)
+- [D3-Q11: Git認証とstorage integration](d3-q11.md)
 
 ## Domain 4
 
@@ -69,3 +75,4 @@ ID は `D<domain>-Q<number>`（例: `D1-Q01`）を使用し、関連する複数
 - [D5-Q06: 共同分析と公開先](d5-q06.md)
 - [D5-Q07: 公開・料金・配送](d5-q07.md)
 - [D5-Q08: Appの権限境界](d5-q08.md)
+- [D5-Q09: Marketplace取得とconsumer費用](d5-q09.md)

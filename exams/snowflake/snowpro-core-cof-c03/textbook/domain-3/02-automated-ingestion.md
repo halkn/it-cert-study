@@ -1,7 +1,7 @@
 # 3.2 自動データ取り込みを実行する
 
 > Status: complete
-> Last verified: 2026-08-30
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -96,7 +96,7 @@ FILE_FORMAT = (FORMAT_NAME = my_csv_format);
 
 ### Auto-ingestとREST APIの2方式
 
-- **Auto-ingest**: cloud storageのevent notification（Amazon S3 event notification、Azure Event Grid、Google Pub/Sub）を受けて、対象ファイルをingest queueへ入れます。`AUTO_INGEST = TRUE`で有効にし、cloud側の通知設定とnotification integrationが必要です。
+- **Auto-ingest**: cloud storageのevent notificationを受けて、対象ファイルをingest queueへ入れます。`AUTO_INGEST = TRUE`に加え、cloudごとに通知経路を設定します。Amazon S3はSnowflake管理SQSへのevent notificationを使い、SNS経由なら`AWS_SNS_TOPIC`を指定します。Azure Event Grid／Google Pub/Subではnotification integrationを作り、pipeの`INTEGRATION`で指定します。すべてのcloudで同じintegrationが必須ではありません。
 - **REST API**: clientが`insertFiles`エンドポイントをpipe名とファイル一覧で呼び出します。sessionを維持しないため、認証はkey-basedの方式を使います。`AUTO_INGEST = FALSE`のpipeはこの呼び出しで動きます。
 
 Pipeをpauseしている間、event notificationが保持されるのは14日です。それを超えるとpipeはstaleになり、古い通知の処理は保証されません。Pipeが取りこぼしたファイルを取り込み直すには`ALTER PIPE ... REFRESH`を使いますが、対象にできるのは直近7日以内にstageされたファイルです。
@@ -143,10 +143,20 @@ Streamをqueryすると、source objectの列に加えて次のmetadata列が付
 | 列 | 意味 |
 |---|---|
 | `METADATA$ACTION` | その行に対するDML操作。`INSERT`または`DELETE` |
-| `METADATA$ISUPDATE` | `UPDATE`の一部だったか。`UPDATE`は削除行と挿入行のペアとして記録され、そのとき`TRUE`になる |
+| `METADATA$ISUPDATE` | 差分が既存行の更新を表す場合、削除行と挿入行のペアで`TRUE`になる |
 | `METADATA$ROW_ID` | 行を追跡する一意で不変のID |
 
-`UPDATE`という`METADATA$ACTION`の値は存在しません。更新は`DELETE`と`INSERT`のペアで表され、`METADATA$ISUPDATE = TRUE`で識別します。
+`UPDATE`という`METADATA$ACTION`の値は存在しません。Offset時点から存在する行を更新した場合、Standard streamは変更前の`DELETE`と変更後の`INSERT`を返し、両方の`METADATA$ISUPDATE`は`TRUE`です。
+
+Standard streamが返すのは、offsetから現在までの正味の差分です。途中のSQL操作を1件ずつ保存した監査logではないため、未消費区間での操作の組合せによって結果が変わります。
+
+| 未消費区間の操作 | Standard streamが返す差分 |
+|---|---|
+| Offset時点から存在する行をUPDATE | 変更前のDELETEと変更後のINSERT。両方`ISUPDATE=TRUE` |
+| 新しい行をINSERTし、その行をUPDATE | 更新後の値を持つINSERT 1行。`ISUPDATE=FALSE` |
+| 新しい行をINSERTし、その行をDELETE | 正味の変更がないため0行 |
+
+たとえば新規注文の金額を100でINSERTし、消費前に120へUPDATEすると、返るのは金額120のINSERT 1行です。INSERT→DELETEでも元のINSERTを返すappend-only streamとは区別します。根拠: `docs-streams-intro`。
 
 ### 3種類のstream
 
@@ -179,9 +189,11 @@ INSERT INTO orders_history SELECT * FROM orders_stream;
 
 ### Staleを避ける
 
-Offsetがsource objectのdata retention期間の外へ出ると、streamはstaleになり変更を返せなくなります。未消費のstreamがある場合、Snowflakeはretention期間を一時的に延長してstale化を防ぎますが、延長できる上限は`MAX_DATA_EXTENSION_TIME_IN_DAYS`が決め、既定は14日です。
+Offsetがsource objectのdata retention期間の外へ出ると、streamはstaleになり変更を返せなくなります。未消費streamのために短いretentionを延長する上限は`MAX_DATA_EXTENSION_TIME_IN_DAYS`で、既定は14日です。この値は、もともと長いTime Travel保持期間を14日に縮めるものではありません。
 
-長期間消費されないstreamは、この延長期間を過ぎるとstaleになります。したがってstreamは「作って放置する」ものではなく、消費するtaskとセットで運用します。`SYSTEM$STREAM_HAS_DATA('<stream>')`で消費すべき変更の有無を判定できます。
+通常の対象tableでは、最終消費時点に`DATA_RETENTION_TIME_IN_DAYS`と`MAX_DATA_EXTENSION_TIME_IN_DAYS`の大きい方を加えて`STALE_AFTER`を計算します。保持1日・延長14日なら14日、保持90日・延長14日なら90日が基準です。`SHOW STREAMS`／`DESCRIBE STREAM`で`STALE_AFTER`を確認し、それより前にDMLをcommitして消費します。期限後はいつstaleになってもおかしくないため、読み取れることを保証しません。
+
+共有table／view上のstreamはsourceのretentionを延長しません。また、空のstreamで`SYSTEM$STREAM_HAS_DATA('<stream>')`が`FALSE`を返すとstale化を防げます。変更があるstreamではこの確認だけで消費したことにはなりません。
 
 <a id="tasks"></a>
 ## Task — 処理をscheduleと依存関係で動かす
@@ -279,13 +291,50 @@ OpenflowはApache NiFi上に構築された統合サービスで、多数のproc
 
 ## Mini hands-on — stream + taskで増分を反映する
 
-Streamで変更を検知し、変更があるときだけtaskで反映します。
+専用roleが少量の注文変更を読み、taskで履歴tableへ反映する演習です。設定時はaccount-levelのrole・database・warehouse作成とgrantができる管理roleを使います。以下の専用名が既に存在する場合は停止し、別の名前へ揃えて変更してください。Taskのownerには`EXECUTE TASK`、warehouseの`USAGE`、処理対象の権限が必要です。
+
+X-Small warehouseには起動ごとの最低60秒課金があり、tableにもstorage費用がかかります。`AUTO_SUSPEND = 60`を設定し、確認後はtaskを停止して専用objectを削除します。
+
+### 演習環境と実行roleを準備する
 
 ```sql
+USE ROLE ACCOUNTADMIN;
+CREATE DATABASE OBJ32_LAB;
+CREATE WAREHOUSE OBJ32_LAB_WH
+  WAREHOUSE_SIZE = XSMALL AUTO_SUSPEND = 60
+  AUTO_RESUME = TRUE INITIALLY_SUSPENDED = TRUE;
+CREATE ROLE OBJ32_RUN;
+SET LAB_USER = CURRENT_USER();
+GRANT ROLE OBJ32_RUN TO USER IDENTIFIER($LAB_USER);
+GRANT USAGE ON DATABASE OBJ32_LAB TO ROLE OBJ32_RUN;
+GRANT USAGE ON SCHEMA OBJ32_LAB.PUBLIC TO ROLE OBJ32_RUN;
+GRANT CREATE TABLE, CREATE STREAM, CREATE TASK
+  ON SCHEMA OBJ32_LAB.PUBLIC TO ROLE OBJ32_RUN;
+GRANT USAGE ON WAREHOUSE OBJ32_LAB_WH TO ROLE OBJ32_RUN;
+GRANT EXECUTE TASK ON ACCOUNT TO ROLE OBJ32_RUN;
+
+USE ROLE OBJ32_RUN;
+USE SECONDARY ROLES NONE;
+USE DATABASE OBJ32_LAB;
+USE SCHEMA PUBLIC;
+USE WAREHOUSE OBJ32_LAB_WH;
+CREATE TABLE orders (order_id NUMBER, amount NUMBER);
+CREATE TABLE orders_history (
+  order_id NUMBER, amount NUMBER, action STRING, is_update BOOLEAN
+);
 CREATE STREAM orders_stream ON TABLE orders;
+```
+
+このroleがtableを所有しているため、最初のstream作成時にsourceのchange trackingも有効にできます。既存tableを利用する場合は、change trackingを有効にする権限とSELECT権限を別途確認します。
+
+### 変更を投入し、taskを実行する
+
+```sql
+INSERT INTO orders VALUES (1, 100), (2, 200);
+SELECT * FROM orders_stream;
 
 CREATE TASK apply_orders
-  WAREHOUSE = etl_wh
+  WAREHOUSE = OBJ32_LAB_WH
   SCHEDULE = '5 MINUTES'
   WHEN SYSTEM$STREAM_HAS_DATA('orders_stream')
 AS
@@ -294,13 +343,37 @@ AS
   FROM orders_stream;
 
 ALTER TASK apply_orders RESUME;
-
-SELECT SYSTEM$STREAM_HAS_DATA('orders_stream');
-SELECT * FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
-  TASK_NAME => 'APPLY_ORDERS'));
+EXECUTE TASK apply_orders;
 ```
 
-`RESUME`を忘れるとtaskは動きません。`TASK_HISTORY`に実行行が出ないときは、まずtaskの状態と`WHEN`条件を確認します。
+最初のSELECTでは2行の変更を確認できますが、offsetは進みません。`RESUME`は定期実行を有効にし、`EXECUTE TASK`は今回の確認を単発で依頼します。実行は非同期なので、次の履歴で`SUCCEEDED`になるまで結果を確認してから、履歴tableとstreamを読みます。
+
+```sql
+SELECT NAME, STATE, ERROR_MESSAGE
+FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(TASK_NAME => 'APPLY_ORDERS'))
+ORDER BY SCHEDULED_TIME DESC;
+
+SELECT * FROM orders_history ORDER BY order_id;
+SELECT * FROM orders_stream;
+SELECT SYSTEM$STREAM_HAS_DATA('orders_stream');
+```
+
+Taskが成功すると履歴tableは`(1,100,'INSERT',FALSE)`と`(2,200,'INSERT',FALSE)`の2行になります。DMLのcommitでstreamのoffsetが進み、その後に変更を追加していなければstreamは0行、`SYSTEM$STREAM_HAS_DATA`は`FALSE`です。実行履歴がなければtaskの状態・権限・`WHEN`条件を確認します。実行errorがあれば履歴の`ERROR_MESSAGE`を読み、結果を確認する前に原因を解消します。
+
+### 定期実行を停止し、専用環境を片付ける
+
+```sql
+ALTER TASK apply_orders SUSPEND;
+```
+
+進行中の実行が完了したことをTASK_HISTORYで確認してから、管理roleでこの演習の専用objectだけを削除します。
+
+```sql
+USE ROLE ACCOUNTADMIN;
+DROP DATABASE OBJ32_LAB;
+DROP WAREHOUSE OBJ32_LAB_WH;
+DROP ROLE OBJ32_RUN;
+```
 
 ## Compare — 要件から取り込み方式を選ぶ
 
@@ -324,7 +397,7 @@ SELECT * FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
 - `ON_ERROR`既定はbulk loadが`ABORT_STATEMENT`、Snowpipeが`SKIP_FILE`。
 - StreamのoffsetはDMLで消費したときだけ進む。`SELECT`では進まない。
 - Streamはデータを保持せず、offsetとsourceの変更履歴から変更レコードを生成する。
-- `METADATA$ACTION`は`INSERT`と`DELETE`だけ。更新は`METADATA$ISUPDATE = TRUE`で表す。
+- `METADATA$ACTION`は`INSERT`と`DELETE`だけ。Standard streamは正味の差分を返し、既存行の更新と未消費区間のINSERT→UPDATEでは`METADATA$ISUPDATE`が異なる。
 - 作成直後のtaskはsuspended。`ALTER TASK ... RESUME`が必要。
 - Dynamic Tableの`REFRESH_MODE = AUTO`は作成時に解決され、以後固定される。
 
@@ -333,7 +406,7 @@ SELECT * FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
 - 「serverless＝無課金」と読み替えない。Snowpipeもserverless taskも利用量で課金される。
 - SnowpipeのcomputeはResource Monitorの対象外である。
 - Streamを`SELECT`しただけでは消費にならない。
-- Streamのstale化は`MAX_DATA_EXTENSION_TIME_IN_DAYS`（既定14日）を超えた放置で起きる。
+- Streamのstale化はsource履歴の有効期間を外れると起きる。既定14日を一律の寿命とせず、保持設定・共有の例外と`STALE_AFTER`を確認する。
 - Task graphのscheduleはroot taskだけが持つ。子taskは`AFTER`で繋ぐ。
 - Dynamic Tableのtarget lagはrefresh間隔の指定ではなく、鮮度の目標である。
 - OpenflowのBYOCはAWSのcommercial regionが対象で、全cloudではない。
@@ -354,6 +427,8 @@ SELECT * FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
 - [C3-3.2-Q12: Dynamic Tableのtarget lag](../../exercises/chapter/c3-3.2-q12.md)
 - [C3-3.2-Q13: Dynamic Tableとstream + task](../../exercises/chapter/c3-3.2-q13.md)
 - [C3-3.2-Q14: Openflowのデプロイ形態](../../exercises/chapter/c3-3.2-q14.md)
+
+- [D3-Q10: Domain演習](../../exercises/domain/d3-q10.md)
 
 ## 章のまとめ
 

@@ -41,7 +41,7 @@ Consumerはdatabase roleで区分されていないshareを取り込み、import
 - A. Snowpipe auto-ingest
 - B. Stage上のCOPY INTO
 - C. Snowpipe Streaming
-- D. Dynamic TableのTARGET_LAG
+- D. Snowpipe REST APIのinsertFiles
 
 ## 第4問
 
@@ -70,7 +70,7 @@ streamとtaskで増分反映を組みました。streamをworksheetで`SELECT`�
 - A. taskがsuspendedになっていないか
 - B. streamがDML文で消費されているか
 - C. streamが`APPEND_ONLY`になっていないか
-- D. source tableのclustering keyが設定されているか
+- D. streamがstaleになって変更を読み取れなくなっていないか
 
 ## 第6問
 
@@ -520,7 +520,7 @@ Pythonでtableのfilter・join・集約を記述し、大量データをclient�
 
 必要選択数: 1
 
-基底tableのcolumnを変更する前に、そのデータを使うviewと、CTASで作られた下流tableへの影響を調べたいと考えています。適切な調査方針はどれですか。
+Enterprise以上のaccountで必要な閲覧権限を持つ利用者が、基底tableのcolumnを変更する前に、そのデータを使うviewと、CTASで作られた下流tableへの影響を調べたいと考えています。対象のoperationはlineageのサポート対象で、保持期間内とします。適切な調査方針はどれですか。
 
 ### 選択肢
 
@@ -756,7 +756,7 @@ Support userには電話番号末尾4桁だけを返し、research analystの集
 ### 選択肢
 
 - A. Tagに対するAPPLYBUDGET
-- B. Warehouseに対するMODIFY
+- B. Tagに対するAPPLY
 - C. Custom budgetのVIEWER instance role
 - D. Tagを含むschemaへのCREATE TAG
 
@@ -764,7 +764,7 @@ Support userには電話番号末尾4桁だけを返し、research analystの集
 
 必要選択数: 1
 
-ファイルの一部columnをSELECTで変換してtableへCOPYする前に、入力ファイルのerrorを検査したいと考えています。VALIDATION_MODEの制約を踏まえた方法として適切なものはどれですか。
+ファイルの一部columnをSELECTで変換してtableへCOPYする前に、入力ファイルの形式・parse errorを検査したいと考えています。VALIDATION_MODEの制約を踏まえた方法として適切なものはどれですか。
 
 ### 選択肢
 
@@ -783,8 +783,8 @@ Support userには電話番号末尾4桁だけを返し、research analystの集
 
 - A. SELECT * FROM $target_table;
 - B. SELECT * FROM IDENTIFIER($target_table);
-- C. SELECT * FROM CURRENT_DATABASE();
-- D. ALTER SESSION SET target_table = SALES.PUBLIC.ORDERS;
+- C. SELECT * FROM IDENTIFIER('target_table');
+- D. SELECT * FROM IDENTIFIER('SALES.PUBLIC.target_table');
 
 ## 第61問
 
@@ -869,7 +869,7 @@ Pythonでwarehouseやdatabase等のSnowflake resourceをobjectとして操作す
 
 必要選択数: 1
 
-BI queryは単独なら速いものの、始業時に200 usersが接続するとqueueが増えます。response timeを優先し自動対応する最適解はどれですか。
+BI queryは単独なら速いものの、始業時に200 usersが接続するとqueueが増えます。Peak時はresponse timeを優先してclusterを追加し、peak後は負荷に合わせてcluster数を自動的に減らしたいと考えています。最適解はどれですか。
 ### 選択肢
 - A. 単一clusterのwarehouseをsize upし、同時query数が増えてもscale outしない
 - B. Auto-scale multi-cluster warehouseとEconomy policy
@@ -994,7 +994,7 @@ Serverless taskのowner roleには処理するtableへの権限とEXECUTE TASK�
 
 必要選択数: 3
 
-GitHubのprivate repositoryにあるSQLスクリプトを、Snowflakeから直接実行できるようにします。必要なものを3つ選んでください。
+GitHubのtoken認証を使うprivate repositoryにあるSQLスクリプトを、Snowflakeから直接実行できるようにします。必要なものを3つ選んでください。
 ### 選択肢
 - A. 認証情報を保持するsecret
 - B. `API_PROVIDER = git_https_api`のAPI integration
@@ -1050,7 +1050,7 @@ SQLだけで表現できる集約結果を、鮮度目標を宣言して自動�
 ### 選択肢
 - A. `TARGET_LAG`はbase dataに対する遅れの目標を表す
 - B. 作成時に`REFRESH_MODE = AUTO`により解決されたrefresh modeは、定義を変更しなくても実行のたびに`INCREMENTAL`と`FULL`の間で自動的に切り替わる
-- C. 指定できる最小の`TARGET_LAG`は60秒である
+- C. 時間幅を指定する`TARGET_LAG`の最小値は`'60 seconds'`である
 - D. `TARGET_LAG = '10 minutes'`を指定すると、refreshは10分間隔の固定scheduleで実行される
 
 ## 第82問

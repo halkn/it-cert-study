@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-1-quality-mock-100-2026-10-04",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-1-question-quality-2026-10-10",
   "evaluation_type": "question-quality",
-  "evaluated_on": "2026-10-04",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     1
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -28,6 +28,11 @@
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
   },
+  "content_hashes": {
+    "textbook_sha256": null,
+    "questions_sha256": "7bd623dcf4e33f00ea785d42006242338b31df5f1ee2a2079fc8902b2e83b8c0",
+    "coverage_matrix_sha256": "c604bc2151d5fd37c0ae43e296ddbcda9b3fa0b8fc505c3732c1774532d2d6d3"
+  },
   "questions": [
     {
       "id": "M1-Q01",
@@ -36,7 +41,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "独立warehouseで同じ永続データを共有できる。",
+      "notes": "独立warehouseでcomputeを分離し、共通の永続dataを参照できる。A/Bは同一warehouseの競合を残し、Cは鮮度要件に反する。",
       "correct": true
     },
     {
@@ -47,7 +52,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "PHIの保管にはBusiness Critical以上のEdition要件とSnowflakeとのBAA等の条件確認が必要。A/Cはwarehouse種別やサイズの話で要件に答えていない。",
       "correct": true
     },
     {
@@ -59,7 +64,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "region選択、row-level securityに必要なEnterprise以上、compute分離に別warehouseがそれぞれ対応する。",
       "correct": true
     },
     {
@@ -69,7 +74,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "version管理したproject/SQLをCLIからCI実行するのが要件に合う。TerraformはSQLやStreamlit codeの任意実行手順そのものではない。",
       "correct": true
     },
     {
@@ -79,7 +84,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "指定済み条件から、current roleと付与privilegeが差分候補。",
+      "notes": "table権限はroleに付与されるため、接続条件が揃っているならcurrent roleとそのprivilegeの差を比較する。問題文は他の主な要因を明示的に除外しており明瞭。",
       "correct": true
     },
     {
@@ -89,7 +94,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "複数accountを包含して管理する最上位単位はOrganization。",
       "correct": true
     },
     {
@@ -99,7 +104,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "user-level設定はaccount既定を保ったまま特定userの新規session既定にできる。",
       "correct": true
     },
     {
@@ -107,9 +112,9 @@
       "selected_option_ids": [
         "D"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "Standard policyはresponse優先と理解。",
+      "notes": "Standard policyは性能を優先してclusterを追加し、負荷低下時にclusterを減らすauto-scale要件に合う。Economyはcredit効率を優先する。",
       "correct": true
     },
     {
@@ -119,7 +124,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "短いauto-suspendで休止中costを抑え、auto-resumeで要求時に起動できる。60分は待機costを増やし、Snowpark-optimizedは用途に過剰。",
       "correct": true
     },
     {
@@ -129,7 +134,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "頻繁な同一filterなのでclustering評価が候補。",
+      "notes": "日付filterによるpruning不足に対し、日付expressionのclustering keyが直接の候補。低DMLかつ頻出filterなので評価対象として妥当。",
       "correct": true
     },
     {
@@ -138,9 +143,9 @@
         "B",
         "D"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "secure materialized viewの可否に多少迷い。コストと性能評価は必要。",
+      "notes": "Materialized viewはsecureとして定義でき、maintenance/storage costとsecure処理の性能影響を評価する。要件を具体化しており曖昧さは小さい。",
       "correct": true
     },
     {
@@ -150,7 +155,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "大量文書から関連passageを低遅延で検索し回答appへ渡す用途はCortex Search。",
       "correct": true
     },
     {
@@ -161,7 +166,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "承認済みmetric定義を使う自然言語分析にはCortex Analystとsemantic model/viewが対応する。",
       "correct": true
     },
     {
@@ -172,7 +177,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "永続dataはwarehouse computeと独立して保存され、認証・metadataはCloud Servicesが担う。C/Dはstorageとcompute/serviceの役割を取り違えている。",
       "correct": true
     },
     {
@@ -180,9 +185,9 @@
       "selected_option_ids": [
         "C"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "30日Time TravelがEnterprise機能との認識。",
+      "notes": "標準permanent tableの30日Time TravelにはEnterpriseが最小。保持期間という具体条件でEdition選択を問えている。",
       "correct": true
     },
     {
@@ -192,7 +197,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "ブラウザーでSQL結果、query、warehouse状態を扱う中心interfaceはSnowsight。",
       "correct": true
     },
     {
@@ -202,7 +207,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "既存VS Code内でSQL・Snowpark開発と接続操作をまとめるならSnowflake拡張。",
       "correct": true
     },
     {
@@ -213,7 +218,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "式から呼ぶ再利用可能な計算はUDF、複数stepの処理はstored procedure。file format/pipeは役割が異なる。",
       "correct": true
     },
     {
@@ -223,7 +228,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "変数に格納した文字列をobject identifierとして解釈するにはIDENTIFIER($target_table)を使う。",
       "correct": true
     },
     {
@@ -233,7 +238,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Standard scaling policyは追加clusterの起動応答を性能優先にする。Economyはcredit節約優先で条件に合いにくい。",
       "correct": true
     },
     {
@@ -243,7 +248,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "大きなmemoryを要するSnowpark workload向けwarehouse typeはSnowpark-optimized。",
       "correct": true
     },
     {
@@ -252,9 +257,9 @@
         "A",
         "B"
       ],
-      "confidence": "medium",
+      "confidence": "high",
       "ambiguous": false,
-      "notes": "停止でlocal cacheが消えることと、起動ごとの最低課金が該当。",
+      "notes": "suspendでwarehouse local cacheは失われ、再開後のcache再構築が遅延要因になり得る。また起動ごとに最低60秒課金がある。選択肢Cは永続dataの再ロードと誤認させる。",
       "correct": true
     },
     {
@@ -264,7 +269,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Transient tableはsession終了後も残り、明示dropまで利用でき、permanent tableより履歴保持要件が軽い。",
       "correct": true
     },
     {
@@ -274,7 +279,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "外部stage上のfile metadataに基づき外部dataを読み取り専用で参照するのはexternal table。",
       "correct": true
     },
     {
@@ -284,7 +289,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "micro-partition metadataの値域等をpredicateと比較して不要なpartitionをpruneする。",
       "correct": true
     },
     {
@@ -294,7 +299,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "頻度が低く更新が多い小tableでは検索改善とreclustering compute/storage費用の比較が必要。",
       "correct": true
     },
     {
@@ -304,7 +309,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "SQL/Python/Markdownをcell単位で扱う分析成果物はSnowflake Notebooks。",
       "correct": true
     },
     {
@@ -314,7 +319,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "利用者向けの対話型Python data appをdeployする用途はStreamlit in Snowflake。",
       "correct": true
     },
     {
@@ -324,7 +329,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "Snowpark DataFrame等で処理計画を構築し、Snowflake側へ処理をpush downする。",
       "correct": true
     },
     {
@@ -334,7 +339,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "SQL pipeline内で各行の本文を要約・分類する用途はCortex AI Functions。",
       "correct": true
     },
     {
@@ -344,7 +349,7 @@
       ],
       "confidence": "high",
       "ambiguous": false,
-      "notes": "",
+      "notes": "自作予測modelのversion metadata管理と推論利用にはSnowflake ML Model Registryが直接対応する。",
       "correct": true
     }
   ],
@@ -357,12 +362,10 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "review_notes": [
-    "Agent confidence and optional quality observations are retained verbatim. Function-selection distractors require distinguishing actual feature responsibilities; lower difficulty alone is not an ambiguity."
-  ],
-  "content_hashes": {
-    "textbook_sha256": null,
-    "questions_sha256": "35a7ade77f3ff675164cf282dbc15257e0cb132c7207f02de7a832df21dc8829",
-    "coverage_matrix_sha256": "d7329515c568bca6399ac86402525c41f1b61f8fad15fc101871a041e69399d3"
-  }
+  "notes": [
+    "31問とも要求された選択数と内容が概ね整合し、設問文から想定する目的・制約を読み取れる。複数正答を意図した設問も選択肢数が明記されている。解答を左右する重大な曖昧さは見当たらない。",
+    "いくつかの選択肢は明らかに別機能の役割を述べており、知識が薄くても消去できる。例としてQ02のwarehouse size/Snowpark-optimized、Q04のTerraform、Q12/Q13のModel Registryやforecasting、Q72のfile format/pipe、Q78のDynamic/Transient tableがある。これらは distractor の識別力を弱めるが、正解位置の偏りは目立たない。",
+    "Q05はcurrent roleだけが残るよう前提を詳細に固定しており診断性が高い一方、実務上よくある接続差分を大半除外した問題設定である。問題としては一意だが、認可トラブルの総合診断を測る設問ではない。",
+    "Q08/Q74はscaling policyの挙動差を問えている。Q76は最低60秒課金の表現が簡潔で、厳密には各resume後の課金単位を指すことが明確になるとさらによい。"
+  ]
 }

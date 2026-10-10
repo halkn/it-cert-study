@@ -1,7 +1,7 @@
 # 1.5 ストレージ概念を説明する
 
 > Status: complete
-> Last verified: 2026-08-13
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -41,6 +41,8 @@ Micro-partitionとpruning、natural／explicit clustering、6つのtable type、
 Snowflake tableへdataをloadすると、Snowflakeが自動でmicro-partitionへ分割し、columnar形式で保存します。利用者がpartitionを事前定義する必要はありません。各micro-partitionにはcolumnごとの値範囲、distinct value数などのmetadataが記録されます。
 
 Query optimizerはpredicateとmetadataを比較し、条件に一致し得ないmicro-partitionをpruneします。残ったpartitionでも不要columnをscanしません。Pruningはrowを読んでから捨てる処理ではなく、metadataでstorage scan自体を避ける仕組みです。
+
+標準tableのPRIMARY KEYはdata modeling用の情報であり、指定しただけで日付検索の索引を自動作成する機能ではありません。Hybrid tableのindexとは分けて理解します。またqueryのORDER BYは返す行の順序を指定し、保存済みmicro-partitionの配置を書き換えません。配置に影響するload順序やclustering keyと、query結果の並べ替えを区別します。
 
 <a id="data-clustering"></a>
 ## Data clusteringは値範囲の重なりを減らす
@@ -119,6 +121,8 @@ Query ProfileのPartitions scanned／totalを確認します。Temporary table�
 
 [Domain D1-Q10〜Q11](../../exercises/domain/README.md)、[模擬M1-Q10〜Q11](../../exercises/mock/README.md)へ進みます。
 
+- [D1-Q14: Domain演習](../../exercises/domain/d1-q14.md)
+
 ## 章のまとめ
 
 Snowflakeはmicro-partition metadataでpruningし、必要な場合だけclustering keyで値配置を維持します。Tableはpersistence、storage形式、更新方式から、viewは結果保存とprivacyから選びます。
@@ -137,3 +141,5 @@ Snowflakeはmicro-partition metadataでpruningし、必要な場合だけcluster
 - `docs-dynamic-tables` — https://docs.snowflake.com/en/user-guide/dynamic-tables/overview
 - `docs-views` — https://docs.snowflake.com/en/user-guide/views-introduction
 - `docs-secure-views` — https://docs.snowflake.com/en/user-guide/views-secure
+- `docs-constraints` — https://docs.snowflake.com/en/sql-reference/constraints
+- `docs-create-index` — https://docs.snowflake.com/en/sql-reference/sql/create-index

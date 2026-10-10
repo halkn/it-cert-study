@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evaluation_id": "snowpro-core-cof-c03-domain-1-baseline-mock-100-2026-10-04",
+  "evaluation_id": "snowflake-snowpro-core-cof-c03-domain-1-baseline-2026-10-10",
   "evaluation_type": "textbook-only",
-  "evaluated_on": "2026-10-04",
+  "evaluated_on": "2026-10-10",
   "exam_id": "snowflake-snowpro-core-cof-c03",
   "domains": [
     1
@@ -10,10 +10,10 @@
   "model": {
     "id": "gpt-6-luna",
     "reasoning_effort": "low",
-    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; final answer-free bundle only"
+    "selection_basis": "lowest-performance available general model; fresh independent agent with no conversation history; separate answer-free bundle for each Domain and evaluation type"
   },
   "source_revision": {
-    "git_commit": "d3ab42dcf581d07d8b9b1d6579c347920446331e",
+    "git_commit": "a2df9636c17a0bfe7ee8a299d710d4d3a5f96333",
     "working_tree_dirty": true
   },
   "test_controls": {
@@ -30,6 +30,11 @@
     "textbook_evidence_percent": 90,
     "maximum_ambiguous_questions": 0
   },
+  "content_hashes": {
+    "textbook_sha256": "7553d15e40a76abaa308dbb6ae3607d7c589c19e16430d1863b69c08106d249c",
+    "questions_sha256": "7bd623dcf4e33f00ea785d42006242338b31df5f1ee2a2079fc8902b2e83b8c0",
+    "coverage_matrix_sha256": "c604bc2151d5fd37c0ae43e296ddbcda9b3fa0b8fc505c3732c1774532d2d6d3"
+  },
   "questions": [
     {
       "id": "M1-Q01",
@@ -37,20 +42,20 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/01-architecture.md",
-          "heading": "分離とEditionを使い分ける場面"
+          "heading": "3層に分ける理由"
         },
         {
           "file": "textbook/domain-1/01-architecture.md",
-          "heading": "試験で重要なポイント"
+          "heading": "Compute layer"
         }
       ],
-      "notes": "ETLとdashboardには別々のVirtual Warehouseを割り当てられ、中央の永続dataを共有できる。Aは同じcomputeを共有し、Bもcompute独立性を作らない。Cは共通data鮮度の要件に反し、別copyは不要。本文は別warehouseが互いのcompute性能へ直接影響しないと説明する。",
+      "notes": "正解D。ETLとdashboardに独立warehouseを割り当てればcomputeは独立し、中央の永続dataを共有できる。Aは同じwarehouseを共有するためworkload分離にならず、Bも同じwarehouse内のcluster追加で独立computeに分ける要件を直接満たさない。Cはdata copyを第一選択にせず同じ永続dataを共有できる本文の説明に反する。",
       "correct": true
     },
     {
@@ -60,9 +65,9 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/01-architecture.md",
@@ -73,7 +78,7 @@
           "heading": "Edition選定で注意すること"
         }
       ],
-      "notes": "PHI等の高機密dataにはBusiness Critical以上を検討し、Business CriticalでPHIを扱う際もSnowflakeとのBAAなど必要条件がある。AとCはwarehouse性能／typeとEditionのsecurity・compliance要件を混同している。",
+      "notes": "正解B,D。PHIなど高機密dataにはBusiness Critical以上を検討し、PHIを扱うにはEditionだけでなくSnowflakeとのBAAなど必要条件を確認する。AとCはwarehouse size/typeを変更してもEditionやcompliance要件を満たさないという本文の軸の区別に反する。",
       "correct": true
     },
     {
@@ -84,9 +89,9 @@
         "E"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/01-architecture.md",
@@ -101,7 +106,7 @@
           "heading": "分離とEditionを使い分ける場面"
         }
       ],
-      "notes": "地理的位置はcloud platform／region、row-level securityはEnterprise以上のEdition、ETLとdashboardのcompute分離は別々のVirtual Warehouseで満たす。Bは永続dataのcopyを要求しない本文の設計に反し、Dはwarehouse sizeがregionやEditionを決めないという軸の違いに反する。",
+      "notes": "正解A,C,E。地理的位置はcloud platform／region、row-level securityはEnterprise以上のEdition、compute分離は別Virtual Warehouseで対応する。Bはdata copyを用途分離の第一選択とする説明に反し、Dはwarehouse sizeがregionやEditionを決めないと明記されている。",
       "correct": true
     },
     {
@@ -110,20 +115,20 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/02-interfaces-and-tools.md",
-          "heading": "Snowflake CLIでterminalから反復可能に操作する"
+          "heading": "同じSnowflakeへ異なる入口から接続する"
         },
         {
           "file": "textbook/domain-1/02-interfaces-and-tools.md",
-          "heading": "CLIを選ぶ場面"
+          "heading": "Snowflake CLIでterminalから反復可能に操作する"
         }
       ],
-      "notes": "version管理したproject／SQL fileとSnowflake CLIはCI/CDから同じdeployment操作を反復する用途に合う。Aは手動再現で反復可能なCI手順でなく、CはTerraformのresource構成管理を任意SQLやStreamlit codeの実行と誤認、Dは個人の直接production deployで統制要件に合わない。",
+      "notes": "正解B。CLIはCI/CDから操作を繰り返し、project fileをversion管理する用途に挙げられている。Aは手動再現で反復deployment要件に合わず、CはTerraform適用を任意SQL処理やapplication codeの実行手順と同一視しており本文が区別する。Dは各developerの直接production deployで、Git review後の同一CI手順という要件に合う中心toolではない。",
       "correct": true
     },
     {
@@ -132,9 +137,9 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/02-interfaces-and-tools.md",
@@ -145,7 +150,7 @@
           "heading": "3つのtoolで共通するsession context"
         }
       ],
-      "notes": "interfaceを変えてもprivilegeは増えず、実行可否はactive roleとprivilegeで決まる。warehouse、database／schema、接続条件は問題文で一致・確認済みなので、次はcurrent roleとそのprivilegeを比較する。AとBは既に同一／確認済み、Dは本文に根拠がなく接続も成功している。",
+      "notes": "正解C。tableのSELECT可否はactive roleのprivilegeで決まり、interfaceは権限を増やさない。同一warehouse、名前解決、USAGEが確認済みなのでA,Bは既確認条件、接続成功済みなので接続元を制御するnetwork policyのDも本文の切り分けにより除外できる。",
       "correct": true
     },
     {
@@ -154,16 +159,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/03-object-hierarchy.md",
           "heading": "OrganizationとAccountの境界"
         }
       ],
-      "notes": "Organizationは複数accountをregionやcloud platformをまたいで結び、usageとbillingを横断管理する最上位単位。Failover groupとReplication groupは本文でその包含・管理単位として説明されず、Organization accountも階層表にない。",
+      "notes": "正解C。Organizationはregionやcloud platformをまたぐ複数accountを結び、usageやbillingを横断管理する。Organization accountは管理用の特別なaccount、Replication groupは選択objectの同期、Failover groupはsecondary昇格可能な同期構成であり、accountを包含する最上位単位ではない。",
       "correct": true
     },
     {
@@ -172,16 +177,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/03-object-hierarchy.md",
           "heading": "Session context、SQL variable、parameterを区別する"
         }
       ],
-      "notes": "session parameterのprecedenceはaccount→user→sessionで、user設定はそのuserの新規sessionのdefaultになり、account defaultを維持できる。Accountは全体設定、Sessionはcurrent session override、Warehouseはobject parameterのlevelであり、要件に合わない。",
+      "notes": "正解B。session parameterはaccount→user→sessionのprecedenceで、user設定はそのuserの新規sessionのdefaultになる。Aはaccount全体の設定変更、Cはcurrent sessionだけのoverride、D warehouseはobject parameterの設定対象であり、service userの新規sessionのdefaultという条件に合わない。",
       "correct": true
     },
     {
@@ -190,20 +195,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/04-virtual-warehouses.md",
           "heading": "Multi-clusterとScaling policyでconcurrencyを処理する"
-        },
-        {
-          "file": "textbook/domain-1/04-virtual-warehouses.md",
-          "heading": "Workloadから構成を選ぶ"
         }
       ],
-      "notes": "queueする多数のBI queryにはauto-scale multi-clusterでscale outし、response time重視ならStandard policyを使う。Economyはcredit節約優先でqueue時間が長くなり得る。単一clusterのsize upはconcurrency症状への選択でなく、Maximizedは自動増減せず最大clusterを常時起動する要件でもない。",
+      "notes": "正解D。Auto-scaleとStandard policyは応答性を優先し、MIN/MAXの範囲でclusterを増減できる。Aはscale outしないためqueueへの対応にならず、BはEconomyがcredit節約を優先してqueue待ちが長くなり得る。CはMaximizedで固定cluster数となり負荷後のscale inができない。",
       "correct": true
     },
     {
@@ -212,9 +213,9 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/04-virtual-warehouses.md",
@@ -225,7 +226,7 @@
           "heading": "Auto-suspendとcacheのtrade-off"
         }
       ],
-      "notes": "ad-hoc／開発には小さめwarehouseと短めauto-suspendが第一構成で、自動起動にはauto-resumeを有効にする。Bは待機costを抑えにくく、Cは必要時の自動起動を満たさず、Dは大きなmemoryを要するSnowpark workload向けで短いqueryの根拠がない。",
+      "notes": "正解A。ad-hoc／開発には小さめ・短いauto-suspendが初期構成で、auto-resumeにより必要時に再開できる。Bは待機cost抑制に長すぎ、Cは自動起動要件を満たさず、DはSnowpark-optimizedを要するmemory-intensive workloadではない。",
       "correct": true
     },
     {
@@ -234,9 +235,9 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
@@ -247,7 +248,7 @@
           "heading": "間違えやすいポイント"
         }
       ],
-      "notes": "大きなtableで頻繁に使うselective filterに対し、日付expressionのclustering keyを評価すると値範囲の重なりとpruningを改善し得る。AとDはcompute／同時実行を変えるだけでpruningの問題を直さず、Cのstandard viewは結果保存・物理並べ替えを行わない。",
+      "notes": "正解B。大規模tableで頻繁なselective filterに使うcolumn/expressionにはclustering keyを評価できる。Aはwarehouse拡大でpruning不良を直せず、CのORDER BYは保存配置を書き換えずstandard viewは結果を保持しない、Dはconcurrency向けscale outでscan pruningの改善にならない。",
       "correct": true
     },
     {
@@ -257,16 +258,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
           "heading": "View typeを計算・保存・privacyで選ぶ"
         }
       ],
-      "notes": "Secureはmaterialized viewにも付けられる。materialized viewはquery結果を保存する一方storage／maintenance costがあり、secure viewにはoptimization制約によるperformance影響があるため評価が必要。Aはstandard viewが結果を保存しない点に反し、Cはsecure指定でmaintenance costが消えるという根拠がない。",
+      "notes": "正解B,D。secureはstandard/materializedの属性となり、materialized viewもsecureにできる。materializedはstorageとmaintenance costがあり、secure処理はoptimization制約による性能影響があり得るので評価する。Aはstandard viewが結果を保存しない、Cはsecure指定でmaintenance costが消えるとの本文根拠がなく誤り。",
       "correct": true
     },
     {
@@ -275,20 +276,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "Cortex Search"
-        },
-        {
-          "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "比較表"
+          "heading": "Cortexをdata typeと質問で選ぶ"
         }
       ],
-      "notes": "Cortex Searchはsupport ticket等のunstructured text corpusから関連箇所を低latencyで検索し、RAG／retrieval layerに向く。Analystはstructured metricの自然言語質問、個別AI functionはrow-level task、Model Registryはcustom model lifecycleなのでpassage retrievalの中心機能ではない。",
+      "notes": "正解A。Cortex Searchはunstructured text corpusから関連箇所を低latencyで検索するretrieval layerである。Bはstructured business dataへの質問からSQL生成、CはrowへのAI task、Dはmodel lifecycle管理であり大量manual/ticketからpassageを取得する用途ではない。",
       "correct": true
     },
     {
@@ -298,20 +295,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "Cortex Analyst"
-        },
-        {
-          "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "比較表"
+          "heading": "Cortexをdata typeと質問で選ぶ"
         }
       ],
-      "notes": "Cortex Analystがstructured business dataへの自然言語質問からSQLを生成し、semantic model／viewがmetric等のbusiness meaningをphysical dataへ対応付ける。Searchはunstructured document retrieval、forecasting modelは要件のtext-to-SQL／metric definitionを担わない。",
+      "notes": "正解A,D。Cortex Analystはstructured business dataへのnatural-language questionからSQLを生成し、semantic model/viewがmetricやdimension等を物理dataへ対応付ける。Bはunstructured corpus retrieval、Cはcustom predictive model用途で、承認済みmetricに沿うSQL生成の中心要件と異なる。",
       "correct": true
     },
     {
@@ -321,9 +314,9 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/01-architecture.md",
@@ -332,13 +325,9 @@
         {
           "file": "textbook/domain-1/01-architecture.md",
           "heading": "Database Storage layer"
-        },
-        {
-          "file": "textbook/domain-1/01-architecture.md",
-          "heading": "queryが3層を通る流れ"
         }
       ],
-      "notes": "永続dataはwarehouseごとの複製ではなく中央Database Storageに保持され、Cloud Servicesはauthenticationとmetadata管理を担う。Cはwarehouse local cacheと永続storageを混同し、Dは永続dataをCloud Servicesが保存するという誤った層の割当て。",
+      "notes": "正解A,B。永続dataは中央のDatabase Storageが保持し、warehouse停止と分離される。認証とmetadata管理はCloud Servicesの責務。Cは永続dataがwarehouse local diskに置かれるという誤りで、DはCloud Servicesが業務dataの保存を引き継ぐという誤り。",
       "correct": true
     },
     {
@@ -347,16 +336,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/01-architecture.md",
           "heading": "Snowflake Edition"
         }
       ],
-      "notes": "permanent tableのTime TravelはStandardで最大1日、Enterprise以上で最大90日なので30日を満たす最小EditionはEnterprise。Business CriticalとVPSは上位要件向けで不要、Standardでは保持期間が不足する。",
+      "notes": "正解C。permanent tableのTime TravelはStandardで最大1日、Enterprise以上で最大90日なので30日に必要な最小EditionはEnterprise。Aは保持上限不足。BとDも要件を満たし得るが最小ではなく、上位機能や隔離は要件に含まれない。",
       "correct": true
     },
     {
@@ -365,20 +354,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/02-interfaces-and-tools.md",
           "heading": "Snowsightで探索・実行・監視する"
-        },
-        {
-          "file": "textbook/domain-1/02-interfaces-and-tools.md",
-          "heading": "Snowsightを選ぶ場面"
         }
       ],
-      "notes": "Snowsightはbrowserのweb interfaceで、query結果の探索・可視化とwarehouseやqueryの視覚的監視に使える。CLIはterminal／script、VS Code extensionはlocal IDE、Snowparkはprocessing APIであり該当interfaceでない。",
+      "notes": "正解B。Snowsightはbrowser interfaceでquery結果の確認やquery history、warehouse等の監視に使える。Aはterminal command、Cはlocal IDE、Dはprocessing APIであり、ブラウザーからの探索・監視の中心interfaceではない。",
       "correct": true
     },
     {
@@ -387,20 +372,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/02-interfaces-and-tools.md",
           "heading": "Visual Studio Code拡張でcodeとSnowflake操作を統合する"
-        },
-        {
-          "file": "textbook/domain-1/02-interfaces-and-tools.md",
-          "heading": "VS Code拡張を選ぶ場面"
         }
       ],
-      "notes": "VS Code extensionはlocal IDEへSnowflake接続、SQL実行、repository内code編集、Snowpark Python stored procedureのdebugを統合する。Aは既存Git workflowを移す必要があり、BはTerraformの役割違い、Cは求めるIDE統合を使わない。",
+      "notes": "正解D。公式VS Code拡張はlocal IDEから接続、SQL実行、object探索を行い、Snowpark Python stored procedureの作成とdebugにも使える。Aはrepositoryをbrowserへ移す要件ではなく、BはTerraformを任意処理実行とする誤り、CはIDE workflow統合という明示要件を満たさない。",
       "correct": true
     },
     {
@@ -410,9 +391,9 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/03-object-hierarchy.md",
@@ -420,10 +401,10 @@
         },
         {
           "file": "textbook/domain-1/03-object-hierarchy.md",
-          "heading": "Database、Schema、Schema objectを用途で区別する"
+          "heading": "stageとfile formatとpipe"
         }
       ],
-      "notes": "SELECT式から呼ぶ値計算はUDF、DDL／DMLを含む複数stepの処理はstored procedureに向く。file formatはfile解釈規則、pipeは新着fileをtableへ取り込むCOPY定義なのでBとCは用途が異なる。",
+      "notes": "正解A,D。SELECT式で呼ぶ値計算にはUDF、複数stepやDDL/DMLを含む手続きにはstored procedureを使う。Bのfile formatはfileの読み方、Cのpipeは継続file取り込みのCOPY定義であって、提示された二つの処理ではない。",
       "correct": true
     },
     {
@@ -432,16 +413,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/03-object-hierarchy.md",
           "heading": "Session context、SQL variable、parameterを区別する"
         }
       ],
-      "notes": "SQL variableの値をobject identifierとして使う場合はIDENTIFIER($name)で明示するためB。$target_table単独はliteral値参照で識別子としての指定を欠く。CURRENT_DATABASEはtable行を読むSQLでなく、ALTER SESSIONはSQL variable設定方法でもない。",
+      "notes": "正解B。SQL variableをobject identifierに使う場合はIDENTIFIER($name)で明示すると本文にある。Aはobject名参照にIDENTIFIERがなく、Cは変数値ではなく文字列target_tableを渡す。Dは指定値と異なる固定identifierを使っている。",
       "correct": true
     },
     {
@@ -450,16 +431,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/04-virtual-warehouses.md",
           "heading": "Multi-clusterとScaling policyでconcurrencyを処理する"
         }
       ],
-      "notes": "Auto-scale範囲を維持し、credit節約より応答性を優先するにはStandard scaling policyを選ぶ。AはMIN=MAXの固定cluster数になり、Dのauto-suspendは実行中query queueを解消せず、Cはscale out余地をなくす。",
+      "notes": "正解B。Auto-scaleのcluster増減で応答性をcredit節約より優先するpolicyはStandard。AはMIN=MAXのMaximizedとなりpolicyは意味を持たず増減しない。Cはcluster追加上限を1にして増加を妨げる。Dのauto-suspendはidle warehouse全体の停止設定で実行中query queueを解消しない。",
       "correct": true
     },
     {
@@ -468,16 +449,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/04-virtual-warehouses.md",
           "heading": "Type、generation、sizeを別々に選ぶ"
         }
       ],
-      "notes": "Snowpark-optimized warehouseは大きなdatasetを処理するmemory-intensive Snowpark workload向けで、node当たりmemoryが大きくmemory／CPU architectureをRESOURCE_CONSTRAINTで選べる。Standard generationやcluster数増加は同じtype固有のmemory構成を示さない。",
+      "notes": "正解C。Snowpark-optimizedはmemory-intensive Snowpark workload向けで、node当たりmemoryが大きくresource constraintでmemory/CPU architectureを選ぶ。A,Bは一般SQL等のStandard generation、Dはconcurrencyのscale outでありmemory構成を選ぶ要件に対応しない。",
       "correct": true
     },
     {
@@ -487,16 +468,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/04-virtual-warehouses.md",
           "heading": "Auto-suspendとcacheのtrade-off"
         }
       ],
-      "notes": "Suspendでlocal data cacheが失われ、resume後最初のqueryが遅くなり得る。また頻繁なresumeでは起動ごとに60秒minimum billingが繰り返される。停止でpermanent dataをreloadするとは書かれておらず、auto-suspendはwarehouse sizeを縮小しない。",
+      "notes": "正解A,B。suspendでlocal data cacheが失われ、resume直後のqueryが遅くなる場合がある。また起動ごとに60秒minimum billingが生じ得る。Cはpermanent data再ロードとは本文が述べず、永続dataはstorage側。Dはauto-suspendがsizeを縮小する設定との説明がない。",
       "correct": true
     },
     {
@@ -505,16 +486,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
           "heading": "Table typeを保存場所・lifecycle・refreshで選ぶ"
         }
       ],
-      "notes": "Transient tableはSnowflake storageに置かれ、明示dropまで存続し、Fail-safeがない再生成可能な長期中間dataに向く。Temporaryはsession終了でpurgeされ、permanentは不要な長期復旧保護を含み、external tableは外部fileのread-only参照。",
+      "notes": "正解B。TransientはSnowflake storageで明示DROPまで存続し、Fail-safeなし。Temporaryはsession終了時にpurgeされる。Permanentには不要な復旧保護があり、external tableは外部stage fileのread-only参照なので中間dataを保持する要件とは異なる。",
       "correct": true
     },
     {
@@ -523,16 +504,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
           "heading": "Table typeを保存場所・lifecycle・refreshで選ぶ"
         }
       ],
-      "notes": "External tableはexternal stage上のfileをloadせずread-onlyで参照するschema-on-read interface。Dynamic tableはSELECT結果のmaterializeとrefresh、Transientは内部storageのlifecycle、Icebergはopen table format／metadata／snapshot等を目的とする。",
+      "notes": "正解D。External tableはexternal stage上のfileをloadせずread-onlyでqueryするinterface。Aのdynamic tableはSELECT結果をmaterializeしrefresh、BはSnowflake storageの中間table、CのIcebergはopen table formatでsnapshot/transaction semantics等を持ち、不要とされた形式である。",
       "correct": true
     },
     {
@@ -541,16 +522,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
           "heading": "Micro-partition metadataがscanを減らす"
         }
       ],
-      "notes": "Snowflakeはmicro-partitionごとの列値域等のmetadataをpredicateと比較し、条件に一致し得ないpartitionをpruneする。partitionを利用者が事前作成する必要はなく、primary key indexやORDER BYによる永続dataの並べ替えにも依存しない。",
+      "notes": "正解A。micro-partitionごとのcolumn値域等のmetadataをpredicateと比較し、該当し得ないpartitionをpruneする。Bは利用者がpartitionを事前定義する必要はない。Cのprimary keyは標準tableで日付索引を自動作成せず、DのORDER BYはquery結果の行順指定で保存配置を書き換えない。",
       "correct": true
     },
     {
@@ -559,16 +540,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/05-storage-concepts.md",
           "heading": "Data clusteringは値範囲の重なりを減らす"
         }
       ],
-      "notes": "Clustering keyはlarge tableで頻繁なselective filter等に使う場合に検討し、query benefitがreclustering computeとTime Travel storageのmaintenance costを上回るか評価する。Aは費用を無視し、Bは実際のfilterを無視、DはAutomatic Clusteringの費用低減をquery warehouse sizeへ結び付ける根拠がない。",
+      "notes": "正解C。clustering keyはlarge tableの頻繁なselective filter/joinで検討し、reclustering computeとTime Travel storageを含むmaintenance costがquery benefitを上回る場合に使う。Aはcostを除外、Bは実際のfilterと無関係なkey選定、Dはwarehouse sizeとAutomatic Clustering費用が連動するとの根拠が本文にない。",
       "correct": true
     },
     {
@@ -577,20 +558,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
           "heading": "Notebooksで分析と実験を反復する"
-        },
-        {
-          "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "比較表"
         }
       ],
-      "notes": "NotebooksはSQL、Python、Markdownをcellで組み合わせて対話実行し、試行錯誤する分析・実験環境。Analystはstructured dataの自然言語SQL生成、Model Registryはmodel lifecycle、CLI connection設定は実験notebookではない。",
+      "notes": "正解B。NotebooksはSQL、Python、Markdownをcellで組み合わせ、cell単位で対話実行する環境。Aはstructured dataへのnatural-language SQL、Cはmodel lifecycle object、Dは接続設定であり、この成果物・反復要件を満たさない。",
       "correct": true
     },
     {
@@ -599,20 +576,16 @@
         "D"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
           "heading": "Streamlit in Snowflakeで利用者向けdata appを作る"
-        },
-        {
-          "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "比較表"
         }
       ],
-      "notes": "Streamlit in SnowflakeはPythonでinteractive web applicationを作成・deployし、input form等を利用者に提供するdata appに向く。Notebookは作成者の探索・実験、Snowparkはprocessing API、Cortex Searchは文書retrievalであり対話画面ではない。",
+      "notes": "正解D。Streamlit in SnowflakeはPythonでinteractive web applicationを構築・deployし、他利用者へ提供するdata app用途。Aは作成者の探索・実験向けNotebook、Bはprocessing APIでUIではなく、Cはunstructured retrieval serviceで画面構築ではない。",
       "correct": true
     },
     {
@@ -621,16 +594,16 @@
         "A"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
           "heading": "SnowparkでPython／Java／Scala処理をpush downする"
         }
       ],
-      "notes": "Snowpark DataFrame等はlogical planを構築し、Python等のfilter・join・transformをSnowflakeへpush downして全件client downloadを避ける。Connectorで全件fetchしてpandas処理は逆の設計で、Analystとstorage integrationもこの処理APIではない。",
+      "notes": "正解A。Snowpark DataFrame等で処理計画を構築し、Snowflakeへpush downするAPIである。Bはclientへ全件downloadして処理する対照的な設計、Cはstructured natural-language questionからSQL生成、Dはaccess設定用objectであり該当しない。",
       "correct": true
     },
     {
@@ -639,16 +612,16 @@
         "C"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
-          "heading": "Cortex AI Functions"
+          "heading": "Cortexをdata typeと質問で選ぶ"
         }
       ],
-      "notes": "Cortex AI FunctionsはSQL／Pythonからtext等の要約・分類を行い、table rowへmanaged AI taskを組み込める。Searchはcorpus retrieval、Analystはstructured questionからSQL生成、Model Registryはcustom model lifecycleであり要件と異なる。",
+      "notes": "正解C。Cortex AI FunctionsはSQL/Pythonからtext等のcompletion、classification、extractionなどを行い、table rowへAI処理を組み込む。Aはcorpus検索、Bはstructured business dataへの自然言語SQL、Dは自作predictive modelのversion管理であり、行単位要約・分類の要件と異なる。",
       "correct": true
     },
     {
@@ -657,16 +630,16 @@
         "B"
       ],
       "confidence": "high",
-      "ambiguous": false,
       "evidence_status": "sufficient",
       "distractor_exclusion_supported": true,
+      "ambiguous": false,
       "evidence": [
         {
           "file": "textbook/domain-1/06-ai-ml-app-development.md",
           "heading": "Snowflake MLでpredictive modelのlifecycleを管理する"
         }
       ],
-      "notes": "Snowflake MLのModel Registryはmodel version／metadataとdeployment・inferenceを管理し、自作dataとalgorithmで訓練したPython predictive modelを利用する要件に直接対応する。Search indexは文書検索、file formatはfile解釈、Analystはsemantic modelを使うtext-to-SQLである。",
+      "notes": "正解B。Snowflake MLのModel Registryはmodel version、metadata、deployment/inferenceを管理し、Snowflake内外でtrainingしたPython modelにも使える。Aはunstructured retrieval、Cはfile解釈規則、Dはstructured text-to-SQL用semantic layerであり、custom predictive model lifecycle要件ではない。",
       "correct": true
     }
   ],
@@ -679,9 +652,7 @@
     "ambiguous_question_count": 0,
     "passed": true
   },
-  "content_hashes": {
-    "textbook_sha256": "2247775df3fd398d910fb5304d8e64621bd4d0d66f69a28f57b05829427cd243",
-    "questions_sha256": "35a7ade77f3ff675164cf282dbc15257e0cb132c7207f02de7a832df21dc8829",
-    "coverage_matrix_sha256": "d7329515c568bca6399ac86402525c41f1b61f8fad15fc101871a041e69399d3"
-  }
+  "notes": [
+    "31問すべてをbundle内のtextbook本文だけで回答した。各問の根拠は十分で、誤答選択肢も本文の明示内容または本文内の機能区分から除外できると判断した。曖昧と判断した問題はない。"
+  ]
 }

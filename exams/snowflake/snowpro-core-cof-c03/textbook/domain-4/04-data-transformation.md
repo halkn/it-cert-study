@@ -1,7 +1,7 @@
 # 4.4 データ変換を実行する
 
 > Status: complete
-> Last verified: 2026-10-03
+> Last verified: 2026-10-05
 
 ## この章で学ぶこと
 
@@ -223,7 +223,7 @@ pathとFLATTENで半構造化データを扱い、stageではfile内容とmetada
 
 ## 次に学ぶこと
 
-[Domain演習](../../exercises/domain/README.md)で診断・最適化・cache・変換を組み合わせます。その後は[Domain 5](../domain-5/README.md)へ進みますが、Domain 5は未完成です。
+[Domain演習](../../exercises/domain/README.md)で診断・最適化・cache・変換を組み合わせます。その後は[Domain 5](../domain-5/README.md)でデータの保護・共有・公開を学びます。
 
 ## 根拠・関連する公式ドキュメント
 
